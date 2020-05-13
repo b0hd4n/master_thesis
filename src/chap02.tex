@@ -1,7 +1,54 @@
 \chapter{Experiment setup}
+\label{chapter:experiment_setup}
 
-\section{Dataset}
+In this chapter we describe the data used for experiments, training setup and In this chapter we describe the data, training setup and experiments that were run to answer the questions asked in this thesis.
+
+
+\section{Dataset(s)}
+\label{section:datasets}
+
+
+\subsection{English to 36 languages}
+\label{dataset:en-to-36}
+
+To observe effects of linguistic similarity of target languages is is important to examine enough possible variations of those.
+The OPUS dataset (\cite{TIEDEMANN12.463}) is an open and free collection of texts covers more than 90 languages with data from several domains.\footnote{Available at \url{http://opus.nlpl.eu/}} 
+
+For our experiments the source language is English only. Sampling and splitting of the data is the one used for ELITR project.\footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL_.pdf}}
+For each of language pairs \XXX{TODO: link to the table and table itself} and each sub-dataset the data was splitted to training, validation and testing sets. For each of the two latter sets 2000 random sentences were selected and the rest of the data remained for the training set. In cases where the sub-dataset contained less than 16000 sentence pairs no data went to the validation set.
+Later for each language pair there were 1000000 sentence pairs sampled from all training sub-sets. Firstly, if available, the sentences were taken from Europarl, then EUbooks, OpenSubtitles, and then all remaining sub-datasets. \XXX{should I write about this more/less?} 
+The same procedure was used to sample x000 of validation set sentences per each language pair. The test sets were left separate, so that the result on each domain would be observable.
+
+Later an overlap in the source side of different language pairs was found. Although this would not directly lead to unfair increase of the test score, such sentence pairs were removed from the training sets. This filtering decreased the amound of sentence pairs to 0.85-0.95 millions per language pair.
+
+
+
+\section{Experiments}
+
+
+Given that the main question is in possible effects of target language groupings, the variable object in experiments is the data itself. Due to that, the setup similar to \cite{johnson-etal-2017-googles} was chosen. At the beginning of a source sentence there is a tag that signals into which target language the sentence needs to be translated. 
+
+\XXX{descripe task en2l1l2 is subsampled dataset with en2l1 and en2l2 sentences}
+\XXX{Experiments: monolingual baseline, n-lingual baselines (random), group by language group, group by linguistic similarity.}
+
+Model tuning. First of all, the hyperparameters of MT model are tuned on couple of language pairs from one dataset. The parameters leading to the same result in shorter time were preferred. Then the selected parameters were used on all experimends with the dataset.
+
 
 \section{Training}
 
-\section{Experiments}
+\subsection{Marian-NMT}
+
+Considering that varying element of described experiments is the data but not the model itself and, no less importantly, the amount of models needed to be trained, \textit{MARIAN-NMT} (\cite{mariannmt}) was chosen for its speed and ease to use.
+The framework has efficient \textit{sequence to sequence} and \textit{Transformer} models implemented. Considering significantly better BLEU scores and training cost\footnote{\cite{attention-is-all-you-need}} the \textit{Transformer} model was chosen to conduct the experiments.
+
+The initial selection is made with respect to \cite{training-tips}.
+
+\subsection{Computational cluster}
+
+Many computations - cluster used.
+
+Resourses are used by other people, disc quota is limited -- 
+parallel launching of experiments, 
+switching to the next each 2 hours, 
+saving only best models and the last one,
+removing subsampled datasets

@@ -4,7 +4,7 @@ all: thesis.pdf abstract.pdf
 
 # LaTeX must be run multiple times to get references right
 thesis.pdf: $(wildcard *.tex) bibliography.bib thesis.xmpdata
-	cp thesis.pdf ../thesis.pdf
+#	cp thesis.pdf ../thesis.pdf
 
 %.pdf: %.tex
 	#pdflatex $<
