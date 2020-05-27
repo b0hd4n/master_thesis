@@ -3,6 +3,110 @@
 
 In this chapter we describe the data used for experiments, training setup and In this chapter we describe the data, training setup and experiments that were run to answer the questions asked in this thesis.
 
+\section{Questions and constraints}
+\label{section:questions_and_constraints}
+\todo{Limited resources, reasonable quality is still needed}
+
+Constraints:
+\begin{displayquote}
+	Translation quality for multi-lingual system is insignificantly worse than for
+	mono-lingual one-to-one tranlsation system.
+
+	Maximum possible target languages are combined in one model.
+\end{displayquote}
+
+Questions:
+\begin{displayquote}
+	How \emph{in average} adding one more randomly selected target language
+	to the multitarget model affects its En\to{}De performance?
+
+	How is it different if we add a linguistically similar, not randomly selected language?
+
+	How is adding one more language from the same language family or group 
+	\emph{in average} affects tranlsation performance for selected language
+	pair (e.g. En\to{}De)?
+\end{displayquote}
+
+
+
+\section{Experiments}
+\label{section:experiments}
+\subsection{Starting point}
+\label{subsection:starting_point}
+
+In \cite{johnson-etal-2017-googles} autors proposed a way to build a multi-lingual
+machine tranlsation model without any changes to the \emph{Transformer} architecture.
+In fact, the only change should be performed on the input data. To make the \emph{Transformer}
+model process multi-lingual data the language tag is added to the source sentence.
+For example, the following En\to{}Cz sentence pair:
+
+\begin{displayquote}
+Hello world! \to{} Ahoj světe!
+\end{displayquote}
+is modified to:
+
+\begin{displayquote}
+\tagto{cs} Hello world! \to{} Ahoj světe!
+\end{displayquote}
+
+With given method it is possible to produce translations in multiple languages using the
+same model just by altering the prepended target language tag.
+It was also demonstrated that this method slightly improves translation quality for 
+low resource languages when compared to monolingual translation model.
+
+In this and the following
+(\perscite{arivazhagan-2019-mmnmt-in-the-wild}, \perscite{aharoni-etal-2019-massively})
+papers from Google many different cases are tried and described.
+However, in each setting there is usually only one model of each kind considered.
+For example, when in \parcite{aharoni-etal-2019-massively} authors compare 5-to-5,
+25-to-25, 50-to-50, etc. models, there is only one 5-to-5 model, one 25-to-25, etc.
+
+
+\subsection{Proposed experiments}
+\label{subsection:proposed_experiments}
+
+% Given the questions and constraints given in \ref{section:questions_and_constraints},
+% the variable object in experiments is the data itself. Due to that, the setup similar
+% to \cite{johnson-etal-2017-googles} was chosen. 
+
+\XXX{Experiments: monolingual baseline}
+
+Target language tags do not affect BLEU: \perscite{siddhant-2020-x-ling-effect}.
+mNMT models en-to-4 and 4-to-en trained;
+ 1) \tagto{xx} added to the source;
+ 2) target language encoded separately.
+BLEU scores are comparable using both approaches.
+
+\XXX{Experiments: n-lingual baselines (random)}
+
+Multilingual models with random set of languages.
+The purpouse is twofold: 
+to show BLEU score decrease with increasing number of target languages and
+to serve as a baseline for multitarget models with target languages grouped by
+in non-random way, e.g. by language group or linguistic similarity.
+
+\XXX{Experiments: group by language group}
+
+If all target languages are from one language group we expect to observe
+better translation quality comparing to multilingual baseline results 
+with randomly selected target languages.
+This is expected due to shared parts of vocabulary (todo: expand with examples)
+and linguistic properties (again, expand with examples).
+Germanic group: da, de, is, no, nl, sv.
+Slavic with cyrillic script: bg, mk, ru, uk.
+Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
+
+\XXX{Experiments: group by linguistic similarity}
+
+From \perscite{siddhant-2020-x-ling-effect} follows that languages' script
+and similarly the amount of shared vocabulary is not so important
+for XX\to{}En translation direction.
+Example with Serbian and Croatian, with the same vocabulary but
+in different scripts.
+
+
+
+
 
 \section{Dataset(s)}
 \label{section:datasets}
@@ -14,34 +118,88 @@ In this chapter we describe the data used for experiments, training setup and In
 To observe effects of linguistic similarity of target languages is is important to examine enough possible variations of those.
 The OPUS dataset (\cite{TIEDEMANN12.463}) is an open and free collection of texts covers more than 90 languages with data from several domains.\footnote{Available at \url{http://opus.nlpl.eu/}} 
 
-For our experiments the source language is English only. Sampling and splitting of the data is the one used for ELITR project.\footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL_.pdf}}
-For each of language pairs \XXX{TODO: link to the table and table itself} and each sub-dataset the data was splitted to training, validation and testing sets. For each of the two latter sets 2000 random sentences were selected and the rest of the data remained for the training set. In cases where the sub-dataset contained less than 16000 sentence pairs no data went to the validation set.
-Later for each language pair there were 1000000 sentence pairs sampled from all training sub-sets. Firstly, if available, the sentences were taken from Europarl, then EUbooks, OpenSubtitles, and then all remaining sub-datasets. \XXX{should I write about this more/less?} 
-The same procedure was used to sample x000 of validation set sentences per each language pair. The test sets were left separate, so that the result on each domain would be observable.
+For our experiments the source language is English only.
+Sampling and splitting of the data is the one used for ELITR project.\footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL_.pdf}}
+For each of language pairs and each sub-dataset
+the data was splitted to training, validation and testing sets.
+For each of the two latter sets 2000 random sentences were selected
+and the rest of the data remained for the training set.
+In cases where the sub-dataset contained less than 16000 sentence pairs
+no data went to the validation set.
+Later for each language pair there were 1000000 sentence pairs
+sampled from all training sub-sets.
+Firstly, if available, the sentences were taken from Europarl,
+then EUbooks, OpenSubtitles, and then all remaining sub-datasets.
+The same procedure was used to sample x000 of validation set sentences
+per each language pair.
+The test sets were left separate, so that the result on each domain would be observable.
 
-Later an overlap in the source side of different language pairs was found. Although this would not directly lead to unfair increase of the test score, such sentence pairs were removed from the training sets. This filtering decreased the amound of sentence pairs to 0.85-0.95 millions per language pair.
+Later an overlap in the source side of different language pairs was found.
+Although this would not directly lead to unfair increase of the test score,
+such sentence pairs were removed from the training sets.
+This filtering decreased the amound of sentence pairs
+to 0.85-0.95 millions per language pair.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/train_set_statistics.png}
+	\mycaption{Training data language statistics}{
+		Languages are on the \emph{X} axis sorted as in appendix.
+		From top to bottom:
+		total number of sentence pairs in training set per language,
+		average amount of subwords per sentence on the source side,
+		the same on the target side,
+		total amount of unique subwords for this target language on the source side,
+		the same on the target side.
+	}
+	\label{fig:language_statistics}
+\end{figure}
 
 
-
-\section{Experiments}
-
-
-Given that the main question is in possible effects of target language groupings, the variable object in experiments is the data itself. Due to that, the setup similar to \cite{johnson-etal-2017-googles} was chosen. At the beginning of a source sentence there is a tag that signals into which target language the sentence needs to be translated. 
-
-\XXX{descripe task en2l1l2 is subsampled dataset with en2l1 and en2l2 sentences}
-\XXX{Experiments: monolingual baseline, n-lingual baselines (random), group by language group, group by linguistic similarity.}
-
-Model tuning. First of all, the hyperparameters of MT model are tuned on couple of language pairs from one dataset. The parameters leading to the same result in shorter time were preferred. Then the selected parameters were used on all experimends with the dataset.
+To train a model on a specific subset of target languages, only related sentence
+pairs are subsampled.
+For example, to prepare data for En\to{}$\{$Fr, De$\}$ setup only sentences which source
+side starts with tags \tagto{fr} or \tagto{de} are selected to the training set.
+Development set is selected in the same way.
 
 
 \section{Training}
 
-\subsection{Marian-NMT}
+\subsection{Tool kits}
 
-Considering that varying element of described experiments is the data but not the model itself and, no less importantly, the amount of models needed to be trained, \textit{MARIAN-NMT} (\cite{mariannmt}) was chosen for its speed and ease to use.
-The framework has efficient \textit{sequence to sequence} and \textit{Transformer} models implemented. Considering significantly better BLEU scores and training cost\footnote{\cite{attention-is-all-you-need}} the \textit{Transformer} model was chosen to conduct the experiments.
+There exists a number of different tools that can be used for training a NMT model.
+General purpouse deep learning programming libraries like
+Tensorflow\footnote{\url{https://tensorflow.org/}} and
+PyTorch\footnote{\url{https://pytorch.org/}} are most popular for deep learning related
+research. With their help it is possible to construct any of today's state-of-the-art
+NMT models; pre-built and pre-trained models are initially present in such frameworks,
+but it is also possible to describe a model from scratch.
 
-The initial selection is made with respect to \cite{training-tips}.
+Another option is presented by specialized NMT tool kits.
+They usually contain efficient and tested implementations of NMT models as well as some of
+usefull preprocessing tools.
+For the experiments described in \ref{section:experiments} there is a need to train significant
+amount of models with the same architecture and settings but different datasets.
+Due to that fact, in this work the use of specialized NMT tool kit is more suitable.
+Let us consider the foolowing list of broadly used tool kits as for year 2020,
+presented in \cite{koehn_2020}:
+\XXX{Book is not yet published (expected in June)}
+
+\begin{itemize}
+  \item OpenNMT (based on Torch/pyTorch)\footnote{\url{https://opennmt.net}}
+  \item Sockeye (based on MXNet)\footnote{\url{https://github.com/awslabs/sockeye}}
+  \item Fairseq (based on pyTorch)\footnote{\url{https://github.com/pytorch/fairseq}}
+  \item Marian (stand-alone implementation in C++)\footnote{\url{marian-nmt.github.io}}
+  \item Google's Transformer (based on Tensorflow)\footnote{\url{
+    https://github.com/tensorflow/models/tree/master/official/transformer}}
+  \item Tensor2Tensor (based on Tensorflow) \footnote{\url{
+    https://github.com/tensorflow/tensor2tensor}}
+\end{itemize}
+
+We chose \textit{MARIAN-NMT} tool kit\footnote{\cite{mariannmt}} as a fast solution
+with stable and efficient \textit{Transformer} \cite{vaswani-2017-transformer} implementation,
+minimum of third-side dependencies, and ability to train models on multiple GPU units in parallel.
+
 
 \subsection{Computational cluster}
 
@@ -52,3 +210,11 @@ parallel launching of experiments,
 switching to the next each 2 hours, 
 saving only best models and the last one,
 removing subsampled datasets
+
+\subsection{Model settings}
+
+The initial parameter selection is made with respect to \cite{training-tips}.
+First of all, the hyperparameters of MT model are tuned
+on couple of language pairs from one dataset.
+The parameters leading to the same result in shorter time were preferred.
+Then the selected parameters were used on all experimends with the dataset.

@@ -46,8 +46,16 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 103-to-103 &         10.25  &         34.42 &         19.9   &         13.89  \\
 \bottomrule
 \end{tabular}
-\caption{From \citep{aharoni-etal-2019-massively} (part of Table 7): higher number of 
-   target languages decreases the model's performance}
+\mycaption{BLEU scores for translation in one direction
+        (part of Table 7 from \citep{aharoni-etal-2019-massively})
+	}{
+		Model trained on 5-to-5 English centric dataset 
+		(English to any and any to English) scores 12.42 BLEU for
+		English-Arabic test set. Every language from 5 languages
+		of 5-to-5 data set is included into 25-to-25 set, as well
+		as every language from 25-to-25 data set is included into
+		50-to-50 and so forth.
+	}
 \label{tab:aharoni-2019-performance-drop}
 \end{table}
 
@@ -62,50 +70,96 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 	\centering
 	\includegraphics[width=0.9\columnwidth]{../img/arivazhagan-2019-diff-per-n-targets.png}
 	\end{minipage}
-	\caption{
-		Performance decrease \citet{arivazhagan-2019-mmnmt-in-the-wild}.
+	\mycaption{
+		Tranlsation performance for 102 languages from 
+		\citet{arivazhagan-2019-mmnmt-in-the-wild}
+	}{
+		Axis \emph{X} is shared between left and right plot.
 		On axis \emph{X} there are languages sorted by amount of training data.
-		The points visualized are 10 languages that are present in all setups
+		Left: amount of training data (axis \emph{Y}) for a language.
+		Right (best viewed in color): Effect of increasing the number of languages on
+		the translation quality. On the axis \emph{X} the languages are sorted the 
+		same way as on the left plot. The points visualized are 10 languages
+		that are present in all setups
 		from En $\leftrightarrow$ 10 to En $\leftrightarrow$ 102.
 	}
 	\label{fig:arivazhagan-2019-diff-per-n-targets}
 \end{figure}
 
-\begin{table}[h]
-\centering
-\begin{tabular}{rrrr}
-\toprule
-n\_targets &   mean &   std & count \\
-\midrule
-         2 &  40.68 &  0.18 &   6 \\
-         3 &  39.51 &  0.61 &  16 \\
-         4 &  39.45 &  0.53 &   4 \\
-         5 &  38.48 &  0.51 &  12 \\
-\bottomrule
-\end{tabular}
 
-\caption{BLEU score for Bulgarian at dataset Europarl/v7 }
-\label{tab:bg/Europarl/v7 }
+\begin{table}[h!]
+\begin{subtable}[t]{0.45\linewidth}
+	\centering
+	\begin{tabular}{rrrr}
+	\toprule
+	n\_targets &   mean &   std & count \\
+	\midrule
+	         1 &  41.40 &  ---  &   1 \\
+	         2 &  40.60 &  0.20 &   3 \\
+	         3 &  39.39 &  0.62 &   8 \\
+	         4 &  39.40 &  0.71 &   2 \\
+	         5 &  38.45 &  0.52 &   6 \\
+	\bottomrule
+	\end{tabular}
+
+	\caption{
+		En\to{}Bg for \emph{Europarl/v7} dataset.
+		}
+	\label{tab:bg/Europarl/v7}
+\end{subtable}
+\begin{subtable}[t]{0.45\linewidth}
+	\centering
+	\begin{tabular}{rrrrrrr}
+	\toprule
+	n\_targets & mean & count & std \\
+	\midrule
+	        1 &     19.50 &    1 &   --  \\
+	        2 &     18.88 &    4 &  0.39 \\
+	        3 &     17.45 &    4 &  0.52 \\
+	        4 &     17.80 &    2 &  0.42 \\
+	\bottomrule
+	\end{tabular}
+	
+	\caption{
+		En\to{}Ru for \emph{OpenSubtitles/v2016} dataset.
+		}
+	\label{ table:ru/OpenSubtitles/v2016 }
+\end{subtable}
+\mycaption{BLEU score change with adding target languages}{
+    (a) First row: for mono-lingual En\to{}Bg model test BLEU score is 41.40.
+    Second row: for 3 (column \emph{count}) En\to{}Any
+    models with two target languages
+    (column \emph{n\_targets}) one of which is Bulgarian
+    the mean BLEU score is 40.60 with standard deviation 0.20.
+    (b): same way as (a)
+}
 \end{table}
 
 
-\begin{table}[h]
-\centering
-\begin{tabular}{rrrrrrr}
-\toprule
-n\_targets & mean & count & std \\
-\midrule
-        2 &     18.8625 &    8.0 &  0.306769 \\
-        3 &     17.5875 &    8.0 &  0.482368 \\
-        4 &     17.8000 &    4.0 &  0.346410 \\
-\bottomrule
-\end{tabular}
 
-\caption{BLEU score for  ru at dataset OpenSubtitles/v2016 }
-\label{ table:ru/OpenSubtitles/v2016 }
-\end{table}
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{rrrrrrr}
+% \toprule
+% n\_targets & mean & count & std \\
+% \midrule
+%         1 &     --.-- &    1 &    -  \\
+%         2 &     18.86 &    8 &  0.31 \\
+%         3 &     17.59 &    8 &  0.48 \\
+%         4 &     17.80 &    4 &  0.35 \\
+% \bottomrule
+% \end{tabular}
+% 
+% \caption{
+% 	BLEU score for En\to{}Ru translation on test set part of
+% 	\emph{OpenSubtitles/v2016} dataset.
+% 	Description is the same as for table \ref{tab:bg/Europarl/v7}
+% 	}
+% \label{ table:ru/OpenSubtitles/v2016 }
+% \end{table}
 
 \section{Performance decrease on richer data sets}
 1 to 3, 4, 5 on UN corpus (much more sentence pairs per target language)
+\cite{eisele-chen-2010-multiun}
 
 

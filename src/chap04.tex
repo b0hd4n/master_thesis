@@ -5,6 +5,41 @@
 compared with random runs
 \subsection{Germanic group}
 
+\begin{figure}[h]
+	\begin{minipage}{0.48\textwidth}
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/de_opensubtitles_13_1.png}
+	\end{minipage}\hfill
+	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
+	\begin{minipage}{0.48\textwidth}
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/de_multiun_25_4.png}
+	\end{minipage}
+	\mycaption{En\to{}De BLEU score difference: Random vs. Germanic}{
+		On \emph{X} axis - number of target languages.
+		On \emph{Y} axis - difference score comparing with monolingual BLEU.
+		Left: OpenSubtitles/v2018, monolingual model's result 13.1 BLEU.
+		Right: MultiUN, monolingual BLEU is 25.4.
+	}
+	\label{fig:de_random_vs_germanic}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{minipage}{0.48\textwidth}
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/da_opensubtitles_15_6.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.48\textwidth}
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/da_europarl_24_6.png}
+	\end{minipage}
+	\mycaption{En\to{}Da BLEU score difference: Random vs. Germanic}{
+		Axis are same as above.
+		Left: OpenSubtitles/v2018, monolingual model's result 15.6 BLEU.
+		Right: Europarl/v3, monolingual BLEU is 24.6.
+	}
+	\label{fig:da_random_vs_germanic}
+\end{figure}
 
 
 
@@ -92,5 +127,23 @@ n\_targets & \multicolumn{2}{l}{mean} & \multicolumn{2}{l}{len} & \multicolumn{2
 \caption{BLEU score for Bulgarian at various datasets }
 \end{table}
 
+\begin{table}[]
+\begin{tabular}{r|rr|cc|rr}
+\toprule
+n\_targets & \multicolumn{2}{c}{mean} & \multicolumn{2}{c}{count} &\multicolumn{2}{c}{std} \\
+          &   cyrillic &  random & cyrillic & random &  cyrillic &    random \\
+\midrule
+        1 & \multicolumn{2}{c|}{41.40} & \multicolumn{2}{c|}{1} & \multicolumn{2}{c}{-}  \\
+\midrule
+        2 &         40.30 &      40.60 &           3 &        3 &       0.17 &      0.20 \\
+        3 &         38.97 &      39.39 &           3 &        8 &       0.23 &      0.62 \\
+        4 &         37.40 &      39.40 &           1 &        2 &        --  &      0.71 \\
+        5 &           --  &      38.45 &         --  &        6 &        --  &      0.52 \\
+\bottomrule
+\end{tabular}
+
+\caption{BLEU score for  bg at dataset Europarl/v7 }
+\label{ table:bg/Europarl/v7 }
+\end{table}
 \section{Selecting target languages by linguistic similarity}
 
