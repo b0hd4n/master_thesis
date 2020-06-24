@@ -2,6 +2,64 @@
 
 \section{History of machine translation}
 
+Han 2018, beginning
+
 \section{Transformer model}
 
+Introduced in \perscite{vaswani-2017-transformer} Transformer model is used as a base
+for numerous state-of-the-art systems as can be seen for example in 
+WMT18 \parcite{bojar-etal-2018-findings} and
+WMT19 \parcite{barrault-EtAl:2019:WMT} results.
+
+Prior to invention of the \textit{Transformer} model, RNN's and CNN's were used
+to encode source side of the sentence pair and to decode it into the target sentence.
+Various window lengths in CNN architectures allowed to capture long range relations
+as well as short range ones; still the range was limited by the maximum window length.
+In RNN-like architectures LSTM and GRU cells were used, as their structure allowed to
+pass the internal state on longer distances due to selective forgetting.
+
+\textit{Transformer} model uses \textit{self attention} mechanism to encode contextual
+information in each word position. \textit{Position encoding} allows passing the position
+information without explisit sequential connections as in RNNs.
+As was stated by \textit{Transformer}'s authors, there are three main points why
+self-attention mechanism should be preferred:
+\begin{itemize}
+  \item total computational complexity per layer;
+  \item the amount of computation that can be parallelized;
+  \item the path length between long-range dependencies in the network.
+\end{itemize}
+
+\begin{table}
+\centering
+\begin{tabular}{l|ccc}
+\toprule
+Layer type        &   Complexity             &  Sequential & Maximum        \\
+                  &   per layer              &  operations & path length    \\
+\midrule
+Self-Attention    & $O(n^2 \cdot d)$         & $O(1)$      & $O(1)$         \\
+Recurrent         & $O(n \cdot d^2)$         & $O(n)$      & $O(n)$         \\
+Convolutional     & $O(k \cdot n \cdot d^2)$ & $O(1)$      & $O(log_k (n))$ \\
+Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  \\
+\bottomrule
+\end{tabular}
+\mycaption{Maximum path lengths, per-layer complexity and minimum number of sequential operations for different layer types} {
+	n is the sequence length, 
+	d is the representation dimension, 
+	k is the kernel size of convolutions and 
+	r the size of the neighborhood in restricted self-attention.
+}
+\label{tab:layer_complexity_comp}
+\end{table}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/transformer_architecture.png}
+	\mycaption{Transformer model architecture} {}
+	\label{fig:transformer_architecture}
+\end{figure}
+
 \section{Translation evaluation}
+
+Han 2018 - history 
+\cite{Papineni02bleu} - BLEU paper
