@@ -2,7 +2,7 @@
 
 \section{History of machine translation}
 
-Han 2018, beginning
+\XXX{is it ok to quote the whole paragraph with short history? e.g. \cite{Han2016}}
 
 \section{Transformer model}
 
@@ -61,5 +61,40 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 \section{Translation evaluation}
 
-Han 2018 - history 
+\subsection*{History}
+
+In 1966 first machine translation evaluation methods were proposed
+by the automatic language processing advisory committee (ALPAC).
+The proposed metrics were "intelligibility" and "fidelity"\citep[p~67]{Translation1966}.
+Metrics were considered independent and the evaluation was meant to be conducted
+by two independent groups of raters.
+\textit{Intelligibility} was measured without reference to the original by
+group of raters fluent in target language and not familiar with the source language.
+The raters were comparing the "informativeness" of evaluated translation with carefully
+prepared reference translation. The metric scale was from 1 (hopelessly unintelligible)
+to 9 (perfectly clear and intelligible).
+\textit{Fidelity} to the sense of the original text was measured by another group of raters,
+which were native speakers of the target language and highly proficient in the source language.
+It was measured on a scale of 0-9 and showed how much additional information was added in
+the evaluated translation comparing to the reference translation.
+
+Advanced Research Projects Agency (ARPA)
+\todo{from White 1999 and Church 1993}
+comprehension evaluation, quality panel evaluation, and evaluation based on adequacy and fluency
+
+Automatic evaluation
+
+- Metric should correlate with human judgments;
+
+- Works with texts of different domains
+
+- Banerjee et al. (2005) correlation, sensitivity, consistency, reliability and generality.
+
+\subsection*{BLEU - bilingual evaluation understudy}
+
 \cite{Papineni02bleu} - BLEU paper
+
+\section{Multi-target machine translation}
+\label{section:multitarget_mt}
+
+\todo{move here parts of ch.3}
