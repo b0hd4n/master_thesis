@@ -207,13 +207,40 @@ minimum of third-party dependencies, and ability to train models on multiple GPU
 
 \subsection{Computational cluster}
 
-Many computations - cluster used.
+In the experiments proposed above the expected number of models to be trained is quite big.
+First of all, there should be 36 models for \textit{mono-target baseline} for En\to{}36 dataset.
+For \textit{multi-target random} experiment the number is much bigger.
+For example, let us consider a case with En\to{}3 models - each model translates from English to 
+3 target languages. Specifying that each of 36 target languages from En\to{}36 dataset
+should appear at least in 3 En\to{}3 models, series of random generation of En\to{}3 setups gave
+the smallest amount of such setups equal to 44. For En\to{}5 case with 5 target languages in each
+model and with the same restriction of minimum occurance the same procedure gave the
+minimum amount of needed models equal to 34.
 
-Resourses are used by other people, disc quota is limited -- 
-parallel launching of experiments, 
-switching to the next each 2 hours, 
-saving only best models and the last one,
-removing subsampled datasets
+To be able to train large number of models in a reasonable amount of time we needed to use
+computational cluster with GPU cards.
+The computational clusters available at the institution are operating under
+SGE\footnote{\url{https://arc.liv.ac.uk/trac/SGE}} scheduling software and are equipped with
+GPU cards with minimum CUDA \textit{compute capability} 6.1.
+
+Considering data storage quota limitation and high utilization of computational resources by
+the cluster's users, the following training pipeline was designed:
+
+\begin{outline}
+    \1 Prepare task list
+    \1 Iterate over the list working with at most N tasks in parallel
+    \1 For each task
+        \2 Subsample the dataset taking only those sentence pairs with target languages
+	   specified in the task
+	\2 Run the training procedure for limited amount of time (e.g. for one hour only)
+	   starting with previous checkpoint if it already exists
+	\2 Regularly compute metrics on the developement set and report them
+	\2 On the event of evaluation on the developenemt set save the best model for each metric
+	\2 After time is out the training is stopped and subsampled datasets are removed
+    \1 If for next selected task the model is already trained then select next task from the list
+    \1 If for next selected task the model is currently being trained then decrease
+       the number N of tasks processed in parallel
+\end{outline}
 
 \subsection{Model settings}
 
