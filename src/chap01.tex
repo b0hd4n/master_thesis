@@ -92,7 +92,46 @@ Automatic evaluation
 
 \subsection*{BLEU - bilingual evaluation understudy}
 
-\cite{Papineni02bleu} - BLEU paper
+In \cite{Papineni02bleu} was introduced a nowel method of audomatic machine translation evaluation -
+BLEU (bilingual evaluation understudy). Its advantages are high speed and low cost of evaluation,
+language independence and high correlation with judgements of highly skilled human raters evaluations.
+
+Shortly, BLEU score incorporates modified n-gram precision scores corrected by brevity penalty,
+which ensures the produced translation lenght is close to the reference one.
+BLEU score is computed for the whole test corpus.
+
+\subsubsection*{Modified \textit{n}-gram precision score}
+
+The main element of the metric is the \textit{precision} measure.
+To compute precision, the number of candidation translatin words (unigrams) that are present in
+any reference translation is divided by the total number of words in the candidate translation.
+This approach leads to overrating candidate translation which consist of only one or couple of
+words that occur in reference translations, as can be seen in the expample below.
+
+Intuitively, after a word from the reference translation has occured it should not be considered
+in the calculation anymore. This intuition is formalized as the \textit{modified unigram precision}.
+It is computed in the following way: first, the maximum number of occurances of a word in any
+reference translation is counted; then the total count of every candidate word is replaced by the
+maximum reference count, added up and divided by the initial total number of candidate words.
+As a result, the sentence which may receive high precision score will receive more realistic evaluation
+measured by modified precision score, as can be seen in the example below.\\
+
+Candidate: \underline{of} \underline{of} \underline{of} of of of of of of of
+
+Reference: London is the capital \underline{of} England and \underline{of} the United Kingdom
+\underline{of} Great Britain and Northern Ireland.
+
+Precision: 1
+
+Modified unigram precision: 3/10
+\\
+Similarly is computed modified \textit{n}-gram precision score for any \textit{n}, but \textit{n}-gram
+counts are collected instead.
+
+\subsubsection*{Sentence length}
+
+\subsubsection*{The formula}
+
 
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
