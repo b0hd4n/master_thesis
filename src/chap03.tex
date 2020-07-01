@@ -1,23 +1,38 @@
-\chapter{Random choise of target languages}
+\chapter{Bilingual and multi-lingual baselines}
 
+In this chapter we describe the baseline experiments.
+Bilingual baselines are needed to specify the starting point:
+how good model can perform on specific translation direction
+for each test set.
 
-\section{Overview}
+After bilingual results are collected and inspected, it is time for
+multi-lingual baselines. As multi-lingual baselines we consider models
+with randomly selected set of target languages. This way we can see
+how much adding more target languages to the model changes its performance
+on the same specific translation direction.
 
-In this chapter we explore the effect of increasing number of target languages
-on the model performance in general.
+E.g. as a bilingual baseline model for German target language the En\to{}De
+model is trained.
+En\to{}${De,Fr}$, En\to{}${De,Az}$, En\to{}${De,Bg}$ En\to{}${Bg,Az}$ models
+provide us with 3 results for En\to{}De direction 2-target baseline, as well
+as one value for En\to{}Fr, two values for En\to{}Bg and two for En\to{}Az.
+These aggregated En\to{}${De,X}$ results will be later compared with
+aggregated En\to{}${De,X1,X2}$ for 3 target languages,
+En\to{}${De,X1,X2,X3}$ for 4 target languages, where X1, ... X\textit{i} are
+randomly selected languages.
+Also in the next chapters these results will serve as a baseline for
+aggregated En\to{}${De,Y1,Y2...}$ results of N target languages for languages
+Y\textit{i} being from some group of languages similar to De.
 
+\section{Expected results}
 
-Multiple possible outcomes can be expected at this experiment:
-either performance drop due to the increased amount of languages to be processed
-by the model of the same size, or the opposite - performance increase due to
-shared knowledge gained by the model from bigger and varying dataset.
-Also, either of these options can be true for different target languages in different scale.
+As we have seen in section \ref{section:multitarget_theory}, models with more languages
+in the mix usually perform slightly or significantly worse than bilingual ones.
+Also, for bilingual baselines no significant change in performace is expected with adding
+the target language tags.
 
-First of all, performance drop is expected.
-Considering that the size of the model is fixed, so is its capacity.
-At some moment adding more target languages should lead to the decrease
-in translation quality for each of every target language
-
+However, there might be different unexpected effects due to slight domain-wise differences
+in corpora content for different target languages.
 
 \section{Performance drop on massively multilingual setup}
 1-to-3, 5, 7, etc. models on en-to-36 dataset (0.9 mil. sentences per target language)
