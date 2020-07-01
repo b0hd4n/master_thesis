@@ -242,6 +242,107 @@ the cluster's users, the following training pipeline was designed:
        the number N of tasks processed in parallel
 \end{outline}
 
+
+\subsection{Inspecting the training process}
+
+As the number of models trained and being trained is growing, monitoring of the training
+process becomes more and more complicated. If the experiments are also being run on different
+computational clusters it becomes very possible that a parameter mistakenly set up to different
+value or a corrupted dataset, or even hardware version may lead to an unexpected difference in results.
+
+To address these and other issues that may occur during the training process we use
+Weights$\&$Biases\footnote{\cite{wandb}} experiment tracking tool.
+Its main features that are useful in this prospective are following:
+\begin{outline}
+	\1 Metric visualization
+		\2 Training and validation loss curves
+		(Figure \ref{fig:single-lang-group-vs-random-dashboard} left subplot)
+		\2 Scatter plots (Figures \ref{fig:inspect-convergence}
+		and \ref{fig:single-lang-group-vs-random-dashboard} middle subplot)
+	\1 Artifact storage
+		\2 Model checkpoints storage
+			\3 stores 'heavy' model files which cannot be stored
+			in \emph{git}
+			\3 along with \emph{git} it makes possible to move training
+			to the different computational cluster system
+		\2 Sample translations of validation set
+			\3 helps to observe improvements of translation quality
+			in time
+			\3 lets verify that model is actually produces meaningfull
+			translation
+	\1 Customizable reports
+	\1 Hardware utilization
+\end{outline}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/slavic_cyrillic_bg.png}
+	\mycaption{%
+		Single language results visualization: models other target languages are randomly selected
+		vs. those selected from similar group of languages
+	}{
+		\todo{split it in print-friendly way}
+		Here is a part of interactive report for 'slavic languages with cyrillic script vs. random'
+		experiment. In this specific case models' performace on Bulgarian part of
+		validation set is compared.
+
+		\emph{Left}: BLEU score for En\to{}Bg translation direction is monitored with
+		training step on \emph{X} axis (top) and training epoch  (bottom).
+		Each curve represents mean value (line) and its min/max value
+		(range) at the point of time of multiple models' results.
+		Models are grouped by number of target languages and experiment subgroup
+		(En\to{}Bg, En\to{}Slavic and En\to{}Random).
+
+		\emph{Middle}: Number of targets (axis \emph{X}) vs.
+		BLEU on En\to{}Bg validation set (axis \emph{Y}) vs.
+		update steps (colos with scale at the top).
+
+		\emph{Right}: Individual models' En\to{}Bg validation BLEU scores.
+	}
+	\label{fig:single-lang-group-vs-random-dashboard}
+\end{figure}
+
+
+\begin{figure}[h]
+	\begin{minipage}{0.8\textwidth}
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/inspect_overfit.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.8\textwidth}
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/inspect-bleu-vs-loss.png}
+	\end{minipage}
+	\mycaption{%
+		Overall model convergence dashboard%
+	}{
+		On these two interactive graphs each point represents one model.
+		Models that are currently training are visualized here together with
+		completely converged models and those which training process is currently
+		on hold.
+
+		\emph{Left}: axis \emph{X} represents the training loss value,
+		axis \emph{Y} represents the value for the same loss function calculated
+		on the validation set. The color of each point represents current training
+		epoch for the model. Normally for any model the point moves from top right
+		part of this graph to the bottom left part, representing both training and
+		validation loss being gradually decreased during the training procedure.
+		The point that moves to the middle left part of the graph may signalize about
+		either \emph{overfitting} of the model on training set, or difference in data
+		distribution in training and validation set, or else some mistake in training
+		settings.
+
+		\emph{Right}: on this plot loss value on the validation set (axis \emph{X})
+		is compared with geometric mean of BLEU scores for each of target languages.
+		For any model during the training procedure its point usually moves from
+		bottom right corner into the cluster of other points.
+		Model which point 'arrives' to any other location than the cluster may need
+		special attention.
+	}
+	\label{fig:inspect-convergence}
+\end{figure}
+
+
+
 \subsection{Model settings}
 
 The initial parameter selection is made with respect to \cite{training-tips}.
