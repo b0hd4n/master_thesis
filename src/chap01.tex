@@ -11,16 +11,18 @@ for numerous state-of-the-art systems as can be seen for example in
 WMT18 \parcite{bojar-etal-2018-findings} and
 WMT19 \parcite{barrault-EtAl:2019:WMT} results.
 
-Prior to invention of the \textit{Transformer} model, RNN's and CNN's were used
+Prior to invention of the \textit{Transformer} model, \acrfull{rnn} and \acrfull{cnn}
+architectures were used
 to encode source side of the sentence pair and to decode it into the target sentence.
-Various window lengths in CNN architectures allowed to capture long range relations
+Various window lengths in \acrshort{cnn} architectures allowed to capture long range relations
 as well as short range ones; still the range was limited by the maximum window length.
-In RNN-like architectures LSTM and GRU cells were used, as their structure allowed to
-pass the internal state on longer distances due to selective forgetting.
+In \acrshort{rnn}-like architectures \acrfull{lstm} and \acrfull{gru} cells were used,
+as their structure allowed to pass the internal state on longer distances
+due to selective forgetting.
 
 \textit{Transformer} model uses \textit{self attention} mechanism to encode contextual
 information in each word position. \textit{Position encoding} allows passing the position
-information without explisit sequential connections as in RNNs.
+information without explisit sequential connections as in \acrshort{rnn}.
 As was stated by \textit{Transformer}'s authors, there are three main points why
 self-attention mechanism should be preferred:
 \begin{itemize}
@@ -64,7 +66,7 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 \subsection*{History}
 
 In 1966 first machine translation evaluation methods were proposed
-by the automatic language processing advisory committee (ALPAC).
+by the \acrfull{alpac}.
 The proposed metrics were "intelligibility" and "fidelity"\citep[p~67]{Translation1966}.
 Metrics were considered independent and the evaluation was meant to be conducted
 by two independent groups of raters.
@@ -78,7 +80,7 @@ which were native speakers of the target language and highly proficient in the s
 It was measured on a scale of 0-9 and showed how much additional information was added in
 the evaluated translation comparing to the reference translation.
 
-Advanced Research Projects Agency (ARPA)
+\acrfull{arpa}
 \todo{from White 1999 and Church 1993}
 comprehension evaluation, quality panel evaluation, and evaluation based on adequacy and fluency
 
@@ -90,15 +92,18 @@ Automatic evaluation
 
 - Banerjee et al. (2005) correlation, sensitivity, consistency, reliability and generality.
 
-\subsection*{BLEU - bilingual evaluation understudy}
+\subsection*{\acrshort{bleu} - bilingual evaluation understudy}
 
-In \cite{Papineni02bleu} was introduced a nowel method of audomatic machine translation evaluation -
-BLEU (bilingual evaluation understudy). Its advantages are high speed and low cost of evaluation,
-language independence and high correlation with judgements of highly skilled human raters evaluations.
+In \cite{Papineni02bleu} was introduced a nowel method of automatic machine
+translation evaluation - \acrfull{bleu}.
+Its advantages are high speed and low cost of evaluation,
+language independence and high correlation with judgements
+of highly skilled human raters evaluations.
 
-Shortly, BLEU score incorporates modified n-gram precision scores corrected by brevity penalty,
+Shortly, \acrshort{bleu} score incorporates modified n-gram precision scores
+corrected by brevity penalty,
 which ensures the produced translation lenght is close to the reference one.
-BLEU score is computed for the whole test corpus.
+\acrshort{bleu} score is computed for the whole test corpus.
 
 \subsubsection*{Modified \textit{n}-gram precision score}
 
@@ -109,7 +114,8 @@ This approach leads to overrating candidate translation which consist of only on
 words that occur in reference translations, as can be seen in the expample below.
 
 Intuitively, after a word from the reference translation has occured it should not be considered
-in the calculation anymore. This intuition is formalized as the \textit{modified unigram precision}.
+in the calculation anymore.
+This intuition is formalized as the \textit{modified unigram precision}.
 It is computed in the following way: first, the maximum number of occurances of a word in any
 reference translation is counted; then the total count of every candidate word is replaced by the
 maximum reference count, added up and divided by the initial total number of candidate words.
@@ -138,7 +144,7 @@ counts are collected instead.
 
 \subsection{Multi-lingual machine translation}
 
-With constant improvement of neural MT systems performance researchers started to
+With constant improvement of neural \acrshort{mt} systems performance researchers started to
 experiment with incorporating multiple source and/or target languages into one model,
 and the results are promising: having L1\to{}L2 and L2\to{}L3 non-parallel
 corpora makes possible to train a model that can produce L1\to{}L3 tranlsation
@@ -155,7 +161,8 @@ MNMT (multi-lingual neural machine translation) in the following way
 (Figure \ref{fig:mnmt_categorized}):
 
 \textbf{Multivay translation.}
-The goal is constructing a single NMT system for one-to-many, many-to-one or many-to-many
+The goal is constructing a single \acrshort{nmt} system for
+one-to-many, many-to-one or many-to-many
 translation using parallel corpora for more than one language pair.
 
 \textbf{Low or Zero-Resource Translation.}
@@ -219,11 +226,11 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 103-to-103 &         10.25  &         34.42 &         19.9   &         13.89  \\
 \bottomrule
 \end{tabular}
-\mycaption{BLEU scores for translation in one direction
+\mycaption{\acrshort{bleu} scores for translation in one direction
         (part of Table 7 from \citep{aharoni-etal-2019-massively})
 	}{
 		Model trained on 5-to-5 English centric dataset
-		(English to any and any to English) scores 12.42 BLEU for
+		(English to any and any to English) scores 12.42 \acrshort{bleu} for
 		English-Arabic test set. Every language from 5 languages
 		of 5-to-5 data set is included into 25-to-25 set, as well
 		as every language from 25-to-25 data set is included into
@@ -264,8 +271,9 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 
 In this chapter we introduced theoretical and historical background for this work.
 Firstly, we took a short walk through the history of machine translation.
-Then we described the most used type of NMT models -- self-attention \textit{Transformer} model.
+Then we described the most used type of \acrshort{nmt} models --
+self-attention \textit{Transformer} model.
 After that we went over the history of translation evaluation in general and the most
-used method of automatic evaluation -- BLEU -- in particular.
+used method of automatic evaluation -- \acrshort{bleu} -- in particular.
 In the end multi-lingual neural machine tranlsation was reviewed with more detailed view into
 'complete sharing' scheme.

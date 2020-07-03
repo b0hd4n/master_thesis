@@ -11,14 +11,14 @@ Models En\to{}Germanic are compared to En\to{}non-Germanic, where non-Germanic c
 of any langauge except from the Germanic group.
 On Figures \ref{fig:de_random_vs_germanic} and \ref{fig:da_random_vs_germanic} some selected
 results are visualized along with vocabulary changes. Results for OpenSubtitles/v2018 mean
-the BLEU score on test set part sampled from OpenSubtitles/v2018.
+the \acrshort{bleu} score on test set part sampled from OpenSubtitles/v2018.
 On both figures the subfigure (a) shows the result on spontaneous or pseudo-spontaneous speech
 transcripts, sub-figure (b) shows the result for prepared speeches or documents from Europarl
 or UN meetings.
 
 In this case observations are twofold:
 \begin{itemize}
-	\item For test sets with lower bilingual BLEU score adding more target languages
+	\item For test sets with lower bilingual \acrshort{bleu} score adding more target languages
 		to the model improves the score;
 		adding related target languages improves it even more
 	\item Adding more target languages improves translation result on test
@@ -27,18 +27,18 @@ In this case observations are twofold:
 \end{itemize}
 
 \begin{figure}[h]
-	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 13.1 BLEU}[0.48\textwidth]{
+	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 13.1 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/de_opensubtitles_13_1.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
-	\subcaptionbox{MultiUn, bilingual score: 25.4 BLEU}[0.48\textwidth]{
+	\subcaptionbox{MultiUn, bilingual score: 25.4 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/de_multiun_25_4.png}
 	}
 
 	\begin{minipage}{0.48\textwidth}
-		\mycaption{En\to{}De BLEU score difference: Random vs. Germanic}{
+		\mycaption{En\to{}De \acrshort{bleu} score difference: Random vs. Germanic}{
 			On \emph{X} axis - number of target languages.
-			On \emph{Y} axis - difference score comparing with monolingual BLEU.
+			On \emph{Y} axis - difference score comparing with monolingual \acrshort{bleu}.
 			Black vertical lines show standard deviation.
 			(a) Adding random target language as well as a related one slightly
 			improves German translation score on speech transcript.
@@ -59,10 +59,10 @@ In this case observations are twofold:
 \begin{figure}[h]
 
 	\centering
-	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 15.6 BLEU}[0.48\textwidth]{
+	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 15.6 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/da_opensubtitles_15_6.png}
 	}\hfill
-	\subcaptionbox{Europarl/v3, bilingual score: 24.6 BLEU}[0.48\textwidth]{
+	\subcaptionbox{Europarl/v3, bilingual score: 24.6 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/da_europarl_24_6.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
@@ -70,7 +70,7 @@ In this case observations are twofold:
 		\includegraphics[width=0.48\textwidth]{../img/da_tgt_subwords.png}
 	}\hfill
 	\begin{minipage}{0.48\textwidth}
-	\mycaption{En\to{}Da BLEU score difference: Random vs. Germanic}{
+	\mycaption{En\to{}Da \acrshort{bleu} score difference: Random vs. Germanic}{
 		Axis are same as above.
 		(a) For OpenSubtitles test set which which consists of human speech transcripts
 		adding similar target language to the mix significantly imporves the result.
@@ -104,10 +104,10 @@ good results are getting slightly or significantly worse.
 \begin{figure}[h]
 
 	\centering
-	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 23.7 BLEU}[0.48\textwidth]{
+	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 23.7 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/bg_opensubtitles_23_7.png}
 	}\hfill
-	\subcaptionbox{Europarl/v3, bilingual score: 41.4 BLEU}[0.48\textwidth]{
+	\subcaptionbox{Europarl/v3, bilingual score: 41.4 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/bg_europarl_41_4.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
@@ -115,7 +115,7 @@ good results are getting slightly or significantly worse.
 		\includegraphics[width=0.48\textwidth]{../img/bg_tgt_subwords.png}
 	}\hfill
 	\begin{minipage}{0.48\textwidth}
-	\mycaption{En\to{}Bg BLEU score difference: Random vs. Slavic with cyrillic script}{
+	\mycaption{En\to{}Bg \acrshort{bleu} score difference: Random vs. Slavic with cyrillic script}{
 		Axis are same as for Figures \ref{fig:da_random_vs_germanic}
 		and \ref{fig:de_random_vs_germanic}. There is not any data for Cyrillic and
 		5 targets as there are only 4 such languages in the en-to-36 dataset.
@@ -130,10 +130,10 @@ good results are getting slightly or significantly worse.
 \begin{figure}[h]
 
 	\centering
-	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 19.2 BLEU}[0.48\textwidth]{
+	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 19.2 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/ru_opensubtitles_19_2.png}
 	}\hfill
-	\subcaptionbox{MultiUN, bilingual score: 14.6 BLEU}[0.48\textwidth]{
+	\subcaptionbox{MultiUN, bilingual score: 14.6 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{../img/ru_multiun_14_6.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
@@ -141,7 +141,7 @@ good results are getting slightly or significantly worse.
 		\includegraphics[width=0.48\textwidth]{../img/ru_tgt_subwords.png}
 	}\hfill
 	\begin{minipage}{0.48\textwidth}
-	\mycaption{En\to{}Ru BLEU score difference: Random vs. Slavic with cyrillic script}{
+	\mycaption{En\to{}Ru \acrshort{bleu} score difference: Random vs. Slavic with cyrillic script}{
 		Axis are same as for Figures \ref{fig:da_random_vs_germanic},
 		\ref{fig:de_random_vs_germanic} and \ref{fig:bg_random_vs_cyrillic}.
 		There is not any data for Cyrillic and
@@ -197,7 +197,7 @@ good results are getting slightly or significantly worse.
 %\caption{OpenSubtitles/v2018}
 %\label{table:ru/news_v11}
 %\end{subtable}
-%\caption{Mean BLEU score, its standard deviation and number of trained models (count) for Russian at various datasets}
+%\caption{Mean \acrshort{bleu} score, its standard deviation and number of trained models (count) for Russian at various datasets}
 %\end{table}
 %
 %
@@ -233,7 +233,7 @@ good results are getting slightly or significantly worse.
 %\caption{OpenSubtitles/v2018}
 %\label{tab:bg/OpenSubtitles/v2018}
 %\end{subtable}
-%\caption{BLEU score for Bulgarian at various datasets }
+%\caption{\acrshort{bleu} score for Bulgarian at various datasets }
 %\end{table}
 %
 %\begin{table}[]
@@ -251,7 +251,7 @@ good results are getting slightly or significantly worse.
 %\bottomrule
 %\end{tabular}
 %
-%\caption{BLEU score for  bg at dataset Europarl/v7 }
+%\caption{\acrshort{bleu} score for  bg at dataset Europarl/v7 }
 %\label{ table:bg/Europarl/v7 }
 %\end{table}
 

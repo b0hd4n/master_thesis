@@ -19,6 +19,7 @@ thesis.pdf: $(wildcard *.tex) bibliography.bib thesis.xmpdata
 
 	pdflatex $<
 	bibtex thesis
+	makeglossaries thesis
 	pdflatex $<
 	pdflatex $<
 
@@ -27,6 +28,7 @@ abstract.pdf: abstract.tex abstract.xmpdata
 
 clean:
 	rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg *.xmpi
+	rm -f *.acn *.acr *.alg *.glg *.glo *.gls *.ist
 
 clean_all: clean
 	rm -f thesis.pdf abstract.pdf

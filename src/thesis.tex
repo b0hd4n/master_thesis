@@ -59,6 +59,7 @@
 
 \usepackage{indentfirst}    % alignment of first paragraph in section
 
+\usepackage[toc,acronym]{glossaries}     % for terms and abbreviations
 %%% Basic information on the thesis
 
 % Thesis title in English (exactly as in the formal assignment)
@@ -113,6 +114,9 @@ Abstract.
 % Definitions of macros (see description inside)
 \include{macros}
 
+% Terms and abbreviations
+\include{abbreviations}
+
 % Title page and various mandatory informational pages
 \begin{document}
 \include{title}
@@ -142,7 +146,8 @@ Abstract.
 
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
-% \chapwithtoc{List of Abbreviations}
+%\chapwithtoc{List of Abbreviations}
+\printglossary[title=Abbreviations, toctitle=List of abbreviations, type=\acronymtype]
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

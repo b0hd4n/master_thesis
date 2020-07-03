@@ -71,17 +71,17 @@ For example, when in \parcite{aharoni-etal-2019-massively} authors compare 5-to-
 
 \subsubsection*{Monolingual baseline}
 
-Target language tags do not affect BLEU: \perscite{siddhant-2020-x-ling-effect}.
+Target language tags do not affect \acrshort{bleu}: \perscite{siddhant-2020-x-ling-effect}.
 mNMT models en-to-4 and 4-to-en trained;
  1) \tagto{xx} added to the source;
  2) target language encoded separately.
-BLEU scores are comparable using both approaches.
+\acrshort{bleu} scores are comparable using both approaches.
 
 \subsubsection*{n-lingual baselines (random)}
 
 Multilingual models with random set of languages.
 The purpouse is twofold: 
-to show BLEU score decrease with increasing number of target languages and
+to show \acrshort{bleu} score decrease with increasing number of target languages and
 to serve as a baseline for multitarget models with target languages grouped by
 in non-random way, e.g. by language group or linguistic similarity.
 
@@ -286,7 +286,7 @@ Its main features that are useful in this prospective are following:
 		experiment. In this specific case models' performace on Bulgarian part of
 		validation set is compared.
 
-		\emph{Left}: BLEU score for En\to{}Bg translation direction is monitored with
+		\emph{Left}: \acrshort{bleu} score for En\to{}Bg translation direction is monitored with
 		training step on \emph{X} axis (top) and training epoch  (bottom).
 		Each curve represents mean value (line) and its min/max value
 		(range) at the point of time of multiple models' results.
@@ -294,10 +294,10 @@ Its main features that are useful in this prospective are following:
 		(En\to{}Bg, En\to{}Slavic and En\to{}Random).
 
 		\emph{Middle}: Number of targets (axis \emph{X}) vs.
-		BLEU on En\to{}Bg validation set (axis \emph{Y}) vs.
+		\acrshort{bleu} on En\to{}Bg validation set (axis \emph{Y}) vs.
 		update steps (colos with scale at the top).
 
-		\emph{Right}: Individual models' En\to{}Bg validation BLEU scores.
+		\emph{Right}: Individual models' En\to{}Bg validation \acrshort{bleu} scores.
 	}
 	\label{fig:single-lang-group-vs-random-dashboard}
 \end{figure}
@@ -332,7 +332,8 @@ Its main features that are useful in this prospective are following:
 		settings.
 
 		\emph{Right}: on this plot loss value on the validation set (axis \emph{X})
-		is compared with geometric mean of BLEU scores for each of target languages.
+		is compared with geometric mean of \acrshort{bleu} scores
+		for each of target languages.
 		For any model during the training procedure its point usually moves from
 		bottom right corner into the cluster of other points.
 		Model which point 'arrives' to any other location than the cluster may need
