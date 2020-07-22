@@ -11,9 +11,36 @@ with randomly selected set of target languages. This way we can see
 how much adding more target languages to the model changes its performance
 on the same specific translation direction.
 
+
+\section{\todo{Bilingual baseline}}
+\label{section:bilingual_baseline}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/bilingual_en_de.png}
+	\mycaption{En\to{}De bilingual results}{
+		Datasets on the \emph{X} axis are sorted by declining BLEU score.
+	}
+	\label{fig:bilingual_en_de}
+\end{figure}
+
+
+\section{\todo{Multilingual baseline}}
+\label{section:multilingual_baseline}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{../img/random_en_de2.png}
+	\mycaption{En\to{}De monolingual baseline results (RANDOM)}{
+		Datasets with BLEU lower than 10 are removed
+	}
+	\label{fig:random_en_de}
+\end{figure}
+
 E.g. as a bilingual baseline model for German target language the En\to{}De
 model is trained.
-En\to{}${De,Fr}$, En\to{}${De,Az}$, En\to{}${De,Bg}$ En\to{}${Bg,Az}$ models
+En\to{}De,Fr, En\to{}${De,Az}$, En\to{}${De,Bg}$ En\to{}${Bg,Az}$ models
 provide us with 3 results for En\to{}De direction 2-target baseline, as well
 as one value for En\to{}Fr, two values for En\to{}Bg and two for En\to{}Az.
 These aggregated En\to{}${De,X}$ results will be later compared with
@@ -118,4 +145,24 @@ many-to-many setup.
 1 to 3, 4, 5 on UN corpus (much more sentence pairs per target language)
 \cite{eisele-chen-2010-multiun}
 
-
+\begin{table}[h!]
+\centering
+\begin{tabular}{r|c}
+\toprule
+model         & BLEU  \\
+\midrule
+m.esfrru t.ru & 40.35 \\
+m.esru t.ru   & 42.16 \\
+m.frru t.ru   & 41.95 \\
+m.ru t.ru     & 44.20 \\
+m.esfrru t.fr & 45.03 \\
+m.esfr t.fr   & 46.84 \\
+m.frru t.fr   & 45.66 \\
+m.fr t.fr     & 48.64 \\
+m.esfrru t.es & 56.33 \\
+m.esfr t.es   & 57.94 \\
+m.esru t.es   & 57.31 \\
+m.es t.es     & 59.94 \\
+\bottomrule
+\end{tabular}
+\end{table}

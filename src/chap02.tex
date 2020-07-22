@@ -3,9 +3,8 @@
 
 In this chapter we describe the data used for experiments, training setup and In this chapter we describe the data, training setup and experiments that were run to answer the questions asked in this thesis.
 
-\section{Questions and constraints}
+\section{\todo{Questions and constraints}}
 \label{section:questions_and_constraints}
-\todo{Limited resources, reasonable quality is still needed}
 
 Constraints:
 \begin{displayquote}
@@ -96,13 +95,13 @@ Germanic group: da, de, is, no, nl, sv.
 Slavic with cyrillic script: bg, mk, ru, uk.
 Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
 
-\subsubsection*{Group by linguistic similarity}
-
-From \perscite{siddhant-2020-x-ling-effect} follows that languages' script
-and similarly the amount of shared vocabulary is not so important
-for XX\to{}En translation direction.
-Example with Serbian and Croatian, with the same vocabulary but
-in different scripts.
+% \subsubsection*{Group by linguistic similarity}
+% 
+% From \perscite{siddhant-2020-x-ling-effect} follows that languages' script
+% and similarly the amount of shared vocabulary is not so important
+% for XX\to{}En translation direction.
+% Example with Serbian and Croatian, with the same vocabulary but
+% in different scripts.
 
 
 
@@ -161,14 +160,114 @@ to 0.85-0.95 millions per language pair.
 \end{figure}
 
 
-To train a model on a specific subset of target languages, only related sentence
-pairs are subsampled.
-For example, to prepare data for En\to{}$\{$Fr, De$\}$ setup only sentences which source
-side starts with tags \tagto{fr} or \tagto{de} are selected to the training set.
-Development set is selected in the same way.
+\section{Method}
+\label{section:method}
+
+In this section we describe how the models are trained, which metrics
+are collected and then analyzed.
+
+\subsection{Training}
+
+For example, let us take En\to{}$\{$Fr, De$\}$ setup, which means that
+the model to be trained should take a source sentence in English and
+produce translation either in French or in German.
+The language of model's translation depends on the target tag at the beginning
+of the input sentence, i.e. \tagto{fr} tag in source sentence leads to French
+translation.
+
+To train such a model, only related sentence pairs are subsampled
+from the whole training set.
+In this case, from the whole training set we select only those sentence
+pairs which source side starts with tags \tagto{fr} or \tagto{de}.
+Such subsampled dataset is then used to train the model.
+
+During the training procedure, once per specified number of updates
+occurs the checkpointing of the model.
+The model weights are saved to the disc and number of metrics are logged.
+
+\begin{samepage}
+\begin{itemize}
+	\item [Those metrics are:]
+	\item training loss value (mean value for all updates since
+	last checkpoint)
+	\item current learning rate value
+	\item training speed (processed words per second)
+	\item training time since last checkpoint
+	\item current number of updates
+\end{itemize}
+\end{samepage}
+\begin{samepage}
+Hardware usage should also be recorded if possible:
+\begin{itemize}
+	\item GPU usage
+	\item CPU usage
+	\item memory usage
+	\item disc I/O
+	\item network I/O
+\end{itemize}
+\end{samepage}
+
+The hardware metrics are not important for model's evalueation
+but may help early spot mistakes like underuse of GPU or CPU, lack of RAM, etc.
+
+\subsection{Validation}
+
+The validation set is used to track model's performance
+on an unseen set of data and to perform early stopping.
+Once per specified number of steps the validation occurs:
+validation metrics are recorded, for any metric which value was
+improved current model weights are saved as best model by this metric.
+If early stopping condition occured then the training process is stopped.
+
+For any model the validation set is constructed of the big validation set
+by selection only relevant sentence pairs in the same way, as the training set.
+
+For the example setup from above, En\to{}$\{$De,Fr$\}$, the validation set
+consists of equal amount of En\to{}De and En\to{}Fr sentence pairs.
+E.g. if in the complete validation set there are 1000 sentence pairs for
+each of possible target languages, then for En\to{}$\{$De,Fr$\}$
+model the validation set will contain 2000 sentence pairs, and for
+En\to{}$\{$De,Es,Fr$\}$ it will contain 3000 sentence pairs.
+
+For the validation set we collect not only the loss function value
+but also the metric of interest, which is \acrshort{bleu} score.
+However, the \acrshort{bleu} of the whole model's validation set
+is not something we are interested in.
+For the discussed example we collect bleu:fr and bleu:de scores
+which represent \acrshort{bleu} scores for French and German
+parts of validation set.
+E.g., to compute bleu:fr we select only En\to{}Fr sentence pairs from the
+validation set.
+
+Also, geometric mean of the bleu:xx scores is also recorded and may be used
+for early stopping: ending the training process when the metric is not
+improved during last N validation steps.
+
+\begin{samepage}
+All together, the following validation metrics are recorded after the
+validation step:
+\begin{itemize}
+	\item loss function value
+	\item bleu:xx which is \acrshort{bleu} score for each of
+	model's target languages
+	\item translation, which is a geometric mean of all bleu:xx
+	values
+	\item translation time of the model's validation set
+\end{itemize}
+\end{samepage}
 
 
-\section{Training}
+\subsection{\todo{Testing}}
+
+
+
+\subsection{\todo{Analysis}}
+
+
+
+
+
+\section{Training tools}
 
 \subsection{Tool kits}
 
@@ -344,7 +443,7 @@ Its main features that are useful in this prospective are following:
 
 
 
-\subsection{Model settings}
+\subsection{\todo{Model settings}}
 
 The initial parameter selection is made with respect to \cite{training-tips}.
 First of all, the hyperparameters of MT model are tuned
