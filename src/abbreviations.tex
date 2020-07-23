@@ -4,6 +4,11 @@
 % \acrlong{mt} - machine translation
 % \acrfull{mt} - MT (machine translation)
 
+% \Gls{latex} - Latex
+% \gls{latex} - latex
+% \GLS{latex} - LATEX
+% \glspl{term} - terms
+
 \makeglossaries
 
 \newglossaryentry{latex}
@@ -13,9 +18,73 @@
     for scientific documents}
 }
 
+\newglossaryentry{gradient-descent}
+{
+    name=gradient descent,
+    description={An algorithm of iterative optimization of 
+		 differentiable objective function (loss)}
+}
+
+\newglossaryentry{stochastic-gradient-descent}
+{
+    name=stochastic gradient descent,
+    description={Method for iterative optimizing an objective function.
+		 Differs from \gls{gd} by approximating the gradient
+		 on mini-batch of data.}
+}
+
+\newglossaryentry{epoch}
+{
+    name=epoch,
+    description={Refers to one pass of full training dataset to the learning 
+		 algorightm
+		}
+}
+
+\newglossaryentry{early-stopping}
+{
+    name=early stopping,
+    description={Regularization technique to avoid model overfit.
+		 Usualy consists of stopping the training process
+		 when the value of some selected metric on the 
+		 validation set is not improved for last number of
+		 validation steps.
+		}
+}
+
+\newglossaryentry{overfitting}
+{
+    name=overfitting,
+    description={
+		 Occurs when the model's performance on unseen validation
+		 set stops improving while on the training set
+		 it still improves.
+		}
+}
+
+\newglossaryentry{en-to-5}
+{
+    name=en-to-5,
+    description={The dataset created from UN parallel corpus,
+	with source sentences in English and target sentences
+	in one of following 5 languages: Spanish, French, Russian,
+	Arabic and Chinese; described in Section \ref{subsection:en-to-5}
+	}
+}
+
+\newglossaryentry{en-to-36}
+{
+    name=en-to-36,
+    description={The dataset with source sentences in English
+	and target sentences in 36 languages, described
+	in Section \ref{subsection:en-to-36}
+	}
+}
+
 \newacronym{mt}{MT}{machine translation}
 \newacronym{smt}{SMT}{statistical machine translation}
 \newacronym{nmt}{NMT}{neural machine translation}
+\newacronym{sgd}{SGD}{stochastic gradient descent}
 %%% \newacronym{}{}{}
 %%% WMT18, WMT19, WMTxx -- annual Workshop on Statistical Machine Translation
 %%% (year 2018, 2019, 20xx resp.)

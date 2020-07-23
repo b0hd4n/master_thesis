@@ -97,10 +97,18 @@
 \def\red#1{\textcolor{red}{#1}}
 \def\repl#1#2{\textcolor{red}{\sout{#1}}\textcolor{blue}{#2}}
 \def\todo#1{\XXX{TODO: #1}}
-\def\to{$\rightarrow$}
+\def\edit#1{\textcolor{blue}{TO EDIT: #1}}
 
 % better caption
 \newcommand{\mycaption}[2]{\caption[#1]{\textbf{#1.} #2}}
 
 % target language tag <2xx>
 \def\tagto#1{$<$2#1$>$}
+
+% translation directions
+\def\to{$\rightarrow$}
+\def\tomany#1{$\rightarrow\{$#1$\}$}
+% \dir{En}{De} -  En->De
+\def\dir#1#2{#1$\rightarrow$#2}
+% \dir{En}{De, Fr} -  En->{De, Fr}
+\def\dirmany#1#2{#1$\rightarrow$$\{$#2$\}$ }

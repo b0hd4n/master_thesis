@@ -111,8 +111,8 @@ Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
 \label{section:datasets}
 
 
-\subsection{English to 36 languages}
-\label{dataset:en-to-36}
+\subsection{\edit{English to 36 languages}}
+\label{subsection:en-to-36}
 
 To observe effects of linguistic similarity of target languages
 it is important to examine enough possible variations of those.
@@ -123,7 +123,8 @@ domains.\footnote{Available at \url{http://opus.nlpl.eu/}}
 For our experiments the source language is English only.
 
 Sampling and splitting of the data is the one used for
-ELITR project.\footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL_.pdf}}
+ELITR project.%
+\footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL\_.pdf}}
 For each of language pairs and each sub-dataset
 the data was splitted to training, validation and testing sets.
 For each of the two latter sets 2000 random sentences were selected
@@ -159,14 +160,19 @@ to 0.85-0.95 millions per language pair.
 	\label{fig:language_statistics}
 \end{figure}
 
+\subsection{\todo{UN parallel corpus: English to 5 languages}}
+\label{subsection:en-to-5}
+
+\todo{as I show en-to-5 results in RANDOM section, this DS should be here}
+
 
 \section{Method}
 \label{section:method}
 
 In this section we describe how the models are trained, which metrics
-are collected and then analyzed.
+are collected and how are they analyzed.
 
-\subsection{Training}
+\subsection{\edit{Training}}
 
 For example, let us take En\to{}$\{$Fr, De$\}$ setup, which means that
 the model to be trained should take a source sentence in English and
@@ -210,7 +216,8 @@ Hardware usage should also be recorded if possible:
 The hardware metrics are not important for model's evalueation
 but may help early spot mistakes like underuse of GPU or CPU, lack of RAM, etc.
 
-\subsection{Validation}
+\subsection{\edit{Validation}}
+\label{subsection:validation}
 
 The validation set is used to track model's performance
 on an unseen set of data and to perform early stopping.
@@ -239,9 +246,9 @@ parts of validation set.
 E.g., to compute bleu:fr we select only En\to{}Fr sentence pairs from the
 validation set.
 
-Also, geometric mean of the bleu:xx scores is also recorded and may be used
-for early stopping: ending the training process when the metric is not
-improved during last N validation steps.
+Also, an aggregated value of the bleu:xx scores is also recorded
+and may be used for early stopping: ending the training process
+when the metric is not improved during last N validation steps.
 
 \begin{samepage}
 All together, the following validation metrics are recorded after the
@@ -250,24 +257,183 @@ validation step:
 	\item loss function value
 	\item bleu:xx which is \acrshort{bleu} score for each of
 	model's target languages
-	\item translation, which is a geometric mean of all bleu:xx
-	values
+	\item aggregated value of all bleu:xx values
 	\item translation time of the model's validation set
 \end{itemize}
 \end{samepage}
 
+\subsection{\todo{Finishing the training}}
 
-\subsection{\todo{Testing}}
+When should we stop the training?
+It is not possible to say precisely when did the model
+acquire its best performance because of stochastic nature of
+the training algorightm (\acrshort{sgd}).
+Because of that we need to use some method how to decide when
+training process should be stopped.
 
+
+\subsubsection*{Number of \glspl{epoch}}
+
+\todo{First occurance of a term to be italic}
+The easiest approach is to specify number of \glspl{epoch}
+after which the training is stopped.
+This could be a good solution for the case when all models
+that will be compared are trained on the same amount of data from
+the same domain.
+But in our case, adding one more target language adds a constant
+amount of sentence pairs to the training set.
+Roughly, if the number of \glspl{epoch} is specified as a stop
+condition, a bilingual \dir{En}{De} model will see the German
+training data $x$ times, when multilingual \dir{En}{De, Fr, Es}
+will only see the German training data $x / 3$ times.
+
+%What value should be used to compare model's performace in time?
+%The first and the most obvious approach 
+\subsubsection*{Early stopping}
+
+\Gls{early-stopping} is a regularization technique used to avoid
+possible \gls{overfitting} of a model on the training data.
+In general, it works in the following way: after every validation step
+it checks if the metric value improved during last $N$ validations.
+The metric to be controlled and number of validation steps $N$ are
+the parameters of this method
+(Figure \ref{fig:early_stopping}).
+
+Another situation is even more probable: model's validation performance
+is either stalled or slightly improved
+(Figure \ref{fig:early_stopping_no_improvement}).
+In this case \gls{early-stopping} helps to avoid unnessecery spendings
+on computational resources.
+
+\begin{samepage}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{../img/early_stopping.png}
+	\mycaption{\Gls{early-stopping} to prevent overfitting}{
+		At the 'early stopping' point the model's performance
+		on unseen validation set of data does not improve
+		anymore. Further training leads to poorer performance
+		on unseen data. Stopping the training at this point
+		results in better model's performance on unseen data.
+	}
+	\label{fig:early_stopping}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{../img/early_stopping_no_improvement.png}
+	\mycaption{\Gls{early-stopping} as the model is not improving}{
+		Even though the metric value on the training set is
+		still slowly improving, the its value on the unseen
+		validation set is stalled. Further spending of 
+		computational resources is unjustified.
+	}
+	\label{fig:early_stopping_no_improvement}
+\end{figure}
+\end{samepage}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/no_improvement_example.png}
+	\mycaption{No improvement on validation set}{
+		This is one of the early models (\dir{En}{Fi} in this case).
+		\todo{Blue: asdf, red: asdf, green: asdf.}
+		As can be seen, if the model was stopped by BLEU metric,
+		it would have 21.3 BLEU. After 
+	}
+	\label{fig:no_improvement_example}
+\end{figure}
+
+In our case we could use \gls{early-stopping} to ensure more equal conditions
+for models with different sizes of training data. Suitable number $N$
+could be found experimentaly, but which metric should be used?
+
+\todo{cross-entropy, perplexity; they may not represent the model's
+performance, what about BLEU}
+
+Given that the task is to train a model that is as good as possible in
+\textbf{every} of its target directions, the \acrshort{bleu} score of
+the whole translated validation set for this set of languages does not
+say anything about the model's performance in each specified
+translation direction.
+
+\subsubsection*{Aggregated value of BLEU scores}
+
+Therefore, we should use separate BLEU scores which represent
+model's performance in each of translation directions.
+The most intuitive and naive way is to compare BLEU scores
+for each target language.
+But if we will try to set up an early stopping on each of the values,
+the following may happen: BLEU for on of the directions will stay the
+same for long enough to trigger early stopping, but for another direction
+the BLEU score is still growing.
+
+For example, suppose the model is being trained for \dirmany{En}{De, Fr}
+and validation happens after each 1000 update steps.
+At the step 20000 for some selected German validation set
+the model's \dir{En}{De} performance measured by BLEU score
+equals 20, for the \dir{En}{Fr} direction its BLEU score is 15.
+After 10 more validations, model's performance for \dir{En}{De}
+is still equal to 20 BLEU and did not grow, but for \dir{En}{Fr} 
+it has already reached 25 and is still increasing.
+Early stopping will be triggered, and even though the performance
+in \dir{En}{De} direction might have reached its possible maximum
+(assuming that the early stopping period of 10 checks was selected
+efficiently) its \dir{En}{Fr} performance might still improve.
+
+\todo{Geometric mean: good for multiple metrics with different scale}
+
+
+\subsection{\edit{Testing}}
+\label{subsection:testing}
+
+After the training is finished, the received models should be evaluated on unseen
+test data.
+For experiments with \gls{en-to-5} dataset (Section \ref{subsection:en-to-5})
+the test sets are created in the same way as validation sets.
+For \gls{en-to-36} dataset (Section \ref{subsection:en-to-36})
+the test set is divided on subsets by the source dataset.
+It means, that each of source datasets (like OpenSubtitles/v11, 
+Europarl/v7, etc.) there exists a separate test set.
+So after translating the test set for each of target directions of the model
+the following record is created:
+\begin{itemize}
+	\item model name
+	\item source language
+	\item target languages
+	\item tested target language
+	\item \acrshort{bleu} score for this part of translation
+	\item metric, based on which the best model was saved
+	\item dataset name (for \gls{en-to-36})
+\end{itemize}
+
+Let us return to the example setup is En\to{}$\{$De, Fr$\}$ and
+suppose the reported validation metrics are the mean loss function value on
+test set and 'translation' (geometric mean of all reported BLEU scores,
+see Section \ref{subsection:validation}).
+After the training is finished, there will be two models: best by
+loss value and best by 'translation'.
+For each of those two records are created: for En\to{}Fr translation
+and for En\to{}Es. In total, 4 results are recorded.
+
+If the model was trained and tested on \gls{en-to-36} dataset,
+than 4 times \textit{n} records are created, where \textit{n}
+is number of OPUS subdatasets from which the data was sampled.
 
 
 \subsection{\todo{Analysis}}
+
+After required set of models is trained and their test
+metrics are collected, data should be analysed.
 
 
 
 
 
 \section{Training tools}
+
+In the following section we describe the tools that are uset to implement
+what was shown in Section \ref{section:method}.
 
 \subsection{Tool kits}
 
@@ -426,7 +592,7 @@ Its main features that are useful in this prospective are following:
 		part of this graph to the bottom left part, representing both training and
 		validation loss being gradually decreased during the training procedure.
 		The point that moves to the middle left part of the graph may signalize about
-		either \emph{overfitting} of the model on training set, or difference in data
+		either \gls{overfitting} of the model on training set, or difference in data
 		distribution in training and validation set, or else some mistake in training
 		settings.
 
