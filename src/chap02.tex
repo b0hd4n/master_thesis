@@ -1,7 +1,8 @@
 \chapter{Experiment setup}
 \label{chapter:experiment_setup}
 
-In this chapter we describe the data used for experiments, training setup and In this chapter we describe the data, training setup and experiments that were run to answer the questions asked in this thesis.
+In this chapter we describe the data used for experiments, training setup
+and experiments that were run to answer the questions asked in this thesis.
 
 \section{\todo{Questions and constraints}}
 \label{section:questions_and_constraints}
@@ -60,6 +61,14 @@ However, in each setting there is usually only one model of each kind considered
 For example, when in \parcite{aharoni-etal-2019-massively} authors compare 5-to-5,
 25-to-25, 50-to-50, etc. models, there is only one 5-to-5 model, one 25-to-25, etc.
 
+Target language tags do not affect \acrshort{bleu}:
+\perscite{Siddhant2019}
+
+mNMT models en-to-4 and 4-to-en trained;
+ 1) \tagto{xx} added to the source;
+ 2) target language encoded separately.
+\acrshort{bleu} scores are comparable using both approaches.
+
 
 \subsection{Proposed experiments}
 \label{subsection:proposed_experiments}
@@ -68,13 +77,20 @@ For example, when in \parcite{aharoni-etal-2019-massively} authors compare 5-to-
 % the variable object in experiments is the data itself. Due to that, the setup similar
 % to \cite{johnson-etal-2017-googles} was chosen. 
 
-\subsubsection*{Monolingual baseline}
+\subsubsection*{Bilingual baseline}
 
-Target language tags do not affect \acrshort{bleu}: \perscite{siddhant-2020-x-ling-effect}.
-mNMT models en-to-4 and 4-to-en trained;
- 1) \tagto{xx} added to the source;
- 2) target language encoded separately.
-\acrshort{bleu} scores are comparable using both approaches.
+It is important to have a reference point to be able to reason how
+does a change to the system affects its performance.
+
+As a naïve and simple solution, so called \gls{baseline} system,
+should be used a bilingual system with the same settings
+as the systems in further experiments.
+
+Having a performance measurement for a bilingual system in some
+translation direction allows us to say about improvement or deterioration of results after
+implementing a change.
+
+
 
 \subsubsection*{n-lingual baselines (random)}
 
@@ -83,6 +99,7 @@ The purpouse is twofold:
 to show \acrshort{bleu} score decrease with increasing number of target languages and
 to serve as a baseline for multitarget models with target languages grouped by
 in non-random way, e.g. by language group or linguistic similarity.
+
 
 \subsubsection*{Group by language group}
 
@@ -94,6 +111,7 @@ and linguistic properties (again, expand with examples).
 Germanic group: da, de, is, no, nl, sv.
 Slavic with cyrillic script: bg, mk, ru, uk.
 Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
+
 
 % \subsubsection*{Group by linguistic similarity}
 % 
@@ -164,6 +182,7 @@ to 0.85-0.95 millions per language pair.
 \label{subsection:en-to-5}
 
 \todo{as I show en-to-5 results in RANDOM section, this DS should be here}
+\cite{eisele-chen-2010-multiun}
 
 
 \section{Method}
@@ -263,6 +282,7 @@ validation step:
 \end{samepage}
 
 \subsection{\todo{Finishing the training}}
+\label{section:finishing-the-training}
 
 When should we stop the training?
 It is not possible to say precisely when did the model
@@ -331,18 +351,6 @@ on computational resources.
 	\label{fig:early_stopping_no_improvement}
 \end{figure}
 \end{samepage}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\columnwidth]{../img/no_improvement_example.png}
-	\mycaption{No improvement on validation set}{
-		This is one of the early models (\dir{En}{Fi} in this case).
-		\todo{Blue: asdf, red: asdf, green: asdf.}
-		As can be seen, if the model was stopped by BLEU metric,
-		it would have 21.3 BLEU. After 
-	}
-	\label{fig:no_improvement_example}
-\end{figure}
 
 In our case we could use \gls{early-stopping} to ensure more equal conditions
 for models with different sizes of training data. Suitable number $N$
@@ -543,8 +551,9 @@ Its main features that are useful in this prospective are following:
 	\centering
 	\includegraphics[width=1.0\columnwidth]{../img/slavic_cyrillic_bg.png}
 	\mycaption{%
-		Single language results visualization: models other target languages are randomly selected
-		vs. those selected from similar group of languages
+		Single language results visualization: models other
+		target languages are randomly selected
+		vs. those selected from similar group of languages%
 	}{
 		\todo{split it in print-friendly way}
 		Here is a part of interactive report for 'slavic languages with cyrillic script vs. random'
@@ -616,3 +625,63 @@ First of all, the hyperparameters of MT model are tuned
 on couple of language pairs from one dataset.
 The parameters leading to the same result in shorter time were preferred.
 Then the selected parameters were used on all experimends with the dataset.
+
+
+\subsubsection*{Tuning early stopping on early runs}
+
+The initial \gls{early-stopping} setting was that after 5 consecutive
+validation steps without improvement of validation \gls{loss} value
+the training process stopped.
+However, during the training of first couple of bilingual models the following
+situation have happened quite often.
+Further improving performance on validation set by
+couple of tenths of BLEU points took as much time as reaching the optimal state.
+
+On the Figure \ref{fig:no_improvement_de} can be seen that path from
+the beginning of training to optimal point B (26.9 \acrshort{bleu})
+took as much time as its further improvement by 0.2 BLEU
+at point D (27.1 \acrshort{bleu}). However, there were certain models
+with a bit bigger improvement after a much longer time, e.g.
+0.8 \acrshort{bleu} points on Figure \ref{fig:no_improvement_fi}.
+
+Possible situations of this kind were discussed in
+Section \ref{section:finishing-the-training}.
+After considering also some of preliminary multilingual runs
+the 'patience' parameter of \gls{early-stopping} was set to 15.
+After 15 consequent validation steps without metric improvement
+the training process is stopped.
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/no_improvement_de.png}
+	\mycaption{Example change of model's performance on validation set
+		   in time}{
+		Preliminary \dir{En}{De} model.
+
+		\textit{Blue}: validation metric (value on the left axis in BLEU)
+
+		\textit{Red}: validation metric (BLEU) stalled.
+		Each consecutive validation step when the metric
+		is not improved this value is incremented by 1.
+		When the metric is improved this value is reset to 0.
+
+		\textit{Green}: loss function value on validation set is
+		stalled. Same logic as for \textit{Red}.
+
+		BLEU score values at the points of improvement:
+		$A$ -- 26.8, $B$ -- 26.9, $C$ -- 27.0, $D$ -- 27.1.
+	}
+	\label{fig:no_improvement_de}
+
+	\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
+
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/no_improvement_fi.png}
+	\mycaption{Small improvement during long training}{
+		In this case (\dir{En}{Fi}) the difference is a bit more
+		visible: 21.3 at the first point and 21.9 at the best.
+		Colors and scales are the same as at
+		Figure \ref{fig:no_improvement_de}.
+	}
+	\label{fig:no_improvement_fi}
+\end{figure}

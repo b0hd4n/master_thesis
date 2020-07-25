@@ -2,7 +2,7 @@
 
 In this chapter we describe the baseline experiments.
 Bilingual baselines are needed to specify the starting point:
-how good model can perform on specific translation direction
+how good can model perform on specific translation direction
 for each test set.
 
 After bilingual results are collected and inspected, it is time for
@@ -11,10 +11,18 @@ with randomly selected set of target languages. This way we can see
 how much adding more target languages to the model changes its performance
 on the same specific translation direction.
 
+Most of experiments are done on \gls{en-to-36} dataset with couple of
+additional experiments on \gls{en-to-5}.
+
+
+
 
 \section{\todo{Bilingual baseline}}
 \label{section:bilingual_baseline}
 
+
+We trained bilingual models on \gls{en-to-36} dataset and received
+number of values for each translation direction.
 
 \begin{figure}[h]
 	\centering
@@ -31,7 +39,7 @@ on the same specific translation direction.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{../img/random_en_de2.png}
+	\includegraphics[width=1.0\columnwidth]{../img/random_en_de.png}
 	\mycaption{En\to{}De monolingual baseline results (RANDOM)}{
 		Datasets with BLEU lower than 10 are removed
 	}
@@ -143,7 +151,6 @@ many-to-many setup.
 
 \section{Performance decrease on richer data sets}
 1 to 3, 4, 5 on UN corpus (much more sentence pairs per target language)
-\cite{eisele-chen-2010-multiun}
 
 \begin{table}[h!]
 \centering
