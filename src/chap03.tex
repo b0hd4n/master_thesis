@@ -1,32 +1,38 @@
 \chapter{Bilingual and multi-lingual baselines}
 
-In this chapter we describe the baseline experiments.
+In this chapter, we describe the baseline experiments.
 Bilingual baselines are needed to specify the starting point:
-how good can model perform on specific translation direction
+how good can a model perform on a specific translation direction
 for each test set.
 
 After bilingual results are collected and inspected, it is time for
-multi-lingual baselines. As multi-lingual baselines we consider models
-with randomly selected set of target languages. This way we can see
-how much adding more target languages to the model changes its performance
-on the same specific translation direction.
+multi-lingual baselines. For this purpouse, we trained models
+with randomly selected sets of target languages.
+This way we can see how much adding more target languages to the model
+changes its performance on the same specific translation direction.
 
-Most of experiments are done on \gls{en-to-36} dataset with couple of
-additional experiments on \gls{en-to-5}.
-
-
+Most of experiments are done on the \gls{en-to-36} dataset with couple of
+additional experiments on the \gls{en-to-5} dataset.
 
 
+%----------------------------------------------------------------------
 \section{\todo{Bilingual baseline}}
 \label{section:bilingual_baseline}
 
 
-We trained bilingual models on \gls{en-to-36} dataset and received
-number of values for each translation direction.
+We trained bilingual models on the \gls{en-to-36} dataset and received
+a number of values for each translation direction.
 Test results for relevant target directions (i.e. languages from
-'Germanic' and 'Slavic with cyrillic script'
+'Germanic' and 'Slavic with Cyrillic script'
 from Section \ref{subsection:proposed_experiments})
 are shown in Table \ref{table:bilingual-results}.
+For example, for \dir{En}{De} direction we trained a bilingual model.
+After that, we evaluated the model on the test set and received
+\acrshort{bleu} scores for each sub-dataset, as shown
+in \cref{fig:bilingual_en_de}.
+Later, when an \dirmany{En}{De, others} model will be trained and evaluated
+on the same test set, its \dir{En}{De} performance on each sub-dataset
+will be compared with these values.
 
 \begin{figure}[h]
 	\centering
@@ -37,7 +43,111 @@ are shown in Table \ref{table:bilingual-results}.
 	\label{fig:bilingual_en_de}
 \end{figure}
 
+In \cref{fig:bilingual_en_de} we can see that \acrshort{bleu} scores
+for datasets in group 1 (\cref{tab:subdatasets_groups}), i.e.
+Europarl/v7, MultiUN/v1, DGT/v4 and JRC-Acquis/v3.0 are the highest;
+the lowest it is for sub-datasets from groups 4 and 5, such as
+PHP/v1, KDE/v4, Tanzil/v1, GNOME/v1, and Books/v1.
 
+BLEU score values for different test sets cannot be compared directly.
+However, too big or too small value can give us some insight about the
+data.
+
+Let us look closer at some example translations from different
+sub-datasets of the \dir{En}{De} test set.
+In \cref{exmp:biling_de_europarl} we can see a translation produced
+by our bilingual \dir{En}{De} model compared with the reference translation
+and two unnamed online translation systems.
+The sentence pair is from the Europarl/v7 sub-dataset of
+\dir{En}{De} test set.
+As was stated in \cref{subsection:en-to-36}, Europarl/v7 was a prioritized
+source of data to be sampled to the training set.
+Even though our translation has different wording comparing to the reference one,
+the sense is preserved.
+Interestingly, at the same time, our translation is much closer
+to the ones produced by online \acrshort{mt} systems.
+
+\vspace{\baselineskip}
+\begin{minipage}[t]{0.9\textwidth}
+
+\textbf{Source (En):} \tagto{de}  Finally, I fully support the compromise agreement reached by our committee on Article 5 (4).
+
+\textbf{Reference translation (De):}
+Ich unterstütze ohne jede Einschränkung die von unserem Ausschuss
+zu Artikel 5 Absatz 4 erzielte Kompromissvereinbarung.
+
+\textbf{Our bilingual \dir{En}{De}:}
+Schließlich unterstütze ich die von unserem Ausschuss erzielte
+Kompromiss zu Artikel 5 Absatz 4 voll und ganz.
+
+\textbf{OMT-G:}
+Schließlich unterstütze ich voll und ganz die Kompromissvereinbarung,
+die unser Ausschuss zu Artikel 5 Absatz 4 getroffen hat.
+
+\textbf{OMT-D:}
+Schließlich unterstütze ich voll und ganz die von unserem Ausschuss
+erzielte Kompromissvereinbarung zu Artikel 5 Absatz 4.
+
+	\begin{exmp}
+	Bilingual \dir{En}{De} model's output of test set sentence
+	translation (from Europarl/v7 sub-dataset)
+	compared with the reference one and online
+	translation systems OMT-G and OMT-D.
+	Here and further for the online translation system, the target
+	tag is omitted and the target language is selected directly
+	in the system.
+	For our system, the following sentence is firstly preprocessed.
+	\todo{add link to preprocessing section; add short section about bpe}
+	\label{exmp:biling_de_europarl}
+	\end{exmp}
+
+\end{minipage}
+\vspace{\baselineskip}
+
+
+Next prioritized sources for sampling training data were
+Eurobookshop and OpenSubtitles.
+The first dataset has domain and vocabulary similar to the Europarl dataset.
+But OpenSubtitles dataset has data of a different domain:
+transcribed human speech from films and series.
+It has much shorter sentences and the speech of different register.
+
+In \cref{exmp:biling_de_opensubtitles} we can see an issue of another kind
+that might happen: short sentence might not have all
+the needed information. Here English `you' in the reference translation
+is translated as `ihr' (2. person, plural), and in our translation
+as `Sie' (3. person, plural) which refers to a polite form of `you'.
+One of the online \acrshort{mt} systems translates it as
+`du' (2. person, singular).
+The difference in exact translation of `you' affects the translation of
+`know', because in German the verb has different conjugation for each
+person and case, comparing to English, where s/es are only added
+to the verb for 3. person, singular.
+
+\vspace{\baselineskip}
+\begin{minipage}[t]{0.9\textwidth}
+
+\textbf{Source (En):} \tagto{de} Do you know it? 
+
+\textbf{Reference translation (De):} Kennt ihr das?
+
+\textbf{Our bilingual \dir{En}{De}:} Wissen Sie das?
+
+\textbf{OMT-G:} Weißt du es?
+
+\textbf{OMT-D:} Kennen Sie es?
+
+	\begin{exmp}
+	Example sentence from OpenSubtitles/v2018 sub-dataset of 
+	the \dir{En}{De} test set.
+
+	\label{exmp:biling_de_opensubtitles}
+	\end{exmp}
+\end{minipage}
+\vspace{\baselineskip}
+
+
+%----------------------------------------------------------------------
 \section{\todo{Multilingual baseline}}
 \label{section:multilingual_baseline}
 
@@ -50,8 +160,6 @@ are shown in Table \ref{table:bilingual-results}.
 	\label{fig:random_en_de}
 \end{figure}
 
-E.g. as a bilingual baseline model for German target language the En\to{}De
-model is trained.
 En\to{}De,Fr, En\to{}${De,Az}$, En\to{}${De,Bg}$ En\to{}${Bg,Az}$ models
 provide us with 3 results for En\to{}De direction 2-target baseline, as well
 as one value for En\to{}Fr, two values for En\to{}Bg and two for En\to{}Az.
@@ -63,6 +171,8 @@ Also in the next chapters these results will serve as a baseline for
 aggregated En\to{}${De,Y1,Y2...}$ results of N target languages for languages
 Y\textit{i} being from some group of languages similar to De.
 
+
+%----------------------------------------------------------------------
 \section{Expected results}
 
 As we have seen in section \ref{section:multitarget_theory}, models with more languages
@@ -73,6 +183,8 @@ the target language tags.
 However, there might be different unexpected effects due to slight domain-wise differences
 in corpora content for different target languages.
 
+
+%----------------------------------------------------------------------
 \section{Performance drop on massively multilingual setup}
 1-to-3, 5, 7, etc. models on en-to-36 dataset (0.9 mil. sentences per target language)
 
@@ -153,6 +265,8 @@ many-to-many setup.
 % \label{ table:ru/OpenSubtitles/v2016 }
 % \end{table}
 
+
+%----------------------------------------------------------------------
 \section{Performance decrease on richer data sets}
 1 to 3, 4, 5 on UN corpus (much more sentence pairs per target language)
 

@@ -1,9 +1,12 @@
 \chapter{Background}
 
+%----------------------------------------------------------------------
 \section{\todo{History of machine translation}}
 
 \XXX{is it ok to quote the whole paragraph with short history? e.g. \cite{Han2016}}
 
+
+%----------------------------------------------------------------------
 \section{\todo{Transformer model}}
 
 Introduced in \perscite{vaswani-2017-transformer} Transformer model is used as a base
@@ -71,6 +74,7 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 \end{figure}
 
 
+%----------------------------------------------------------------------
 \section{Translation evaluation}
 
 \subsection{History}
@@ -188,8 +192,18 @@ from 0 to 100.
 	BLEU=BP \cdot \exp \left(\sum_{n=1}^{N} w_n \log p_n \right)
 \end{equation}
 
+
+%----------------------------------------------------------------------
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
+
+In this section we have a closer look at an area in \acrshort{mt}
+which this thesis is dedicated to -- multi-target \acrshort{mt}.
+First we talk about multi-lingual \acrshort{mt} in general: multi-way,
+multi-source and multi-target.
+Later we describe the specific approach from multi-target \acrshort{mt}
+which we are using in this work.
+
 
 \subsection{Multi-lingual machine translation}
 
@@ -318,6 +332,7 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 \end{figure}
 
 
+%----------------------------------------------------------------------
 \section{Conclusion}
 
 In this chapter we introduced theoretical and historical background for this work.
