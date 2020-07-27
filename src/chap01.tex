@@ -71,7 +71,7 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 \end{figure}
 
 
-\section{\todo{Translation evaluation}}
+\section{Translation evaluation}
 
 \subsection{History}
 
@@ -88,7 +88,7 @@ Nowadays the most popular metric is \acrfull{bleu} which is described
 in the next section.
 
 
-\subsection{\todo{\acrshort{bleu} - bilingual evaluation understudy}}
+\subsection{\acrshort{bleu} - bilingual evaluation understudy}
 
 In \cite{Papineni02bleu} a nowel method of automatic machine
 translation evaluation was introduced - \acrfull{bleu}.
@@ -157,22 +157,36 @@ and $c$ is the total length ofthe candidate translation corpus.
 To compute $r$ the best match lengths for each candidate sentence
 in the corpus are added.
 
-\[
-	    BP=
-	    \begin{cases}
-		        1,           & \text{if } c > r\\
-			e^{1-r/c}, & \text{otherwise}
-	    \end{cases}
-\]
+\begin{equation}
+\label{eq:brevity_penalty}
+    BP=
+    \begin{cases}
+		1,           & \text{if } c > r\\
+		e^{1-r/c}, & \text{otherwise}
+    \end{cases}
+\end{equation}
 
-\subsubsection*{\todo{The formula}}
+\subsubsection*{Equation}
 
-In short it makes sure that a produced translation matches its
-references in length.
+Combining all above, the metric works in this way (\cref{eq:bleu}):
+\begin{enumerate}
+	\item compute the geometric mean of the modified
+		n-gram precisions ($p_n$), using n-grams up to length $N$
+		and positive weights ($w_n$) summing to one.
+	\item compute \textit{brevity penalty} as in \cref{eq:brevity_penalty}.
+	\item multiply results of steps 1. and 2.
+\end{enumerate}
+Authors proposed to use $N=4$ and uniform weights $w_i = 1/4$.
 
-\[
+The metric value is in range from 0 to 1, however, popular implementations
+such as SacreBLEU \citep{Post2018-sacrebleu} report it in percent points
+from 0 to 100.
+
+
+\begin{equation}
+\label{eq:bleu}
 	BLEU=BP \cdot \exp \left(\sum_{n=1}^{N} w_n \log p_n \right)
-\]
+\end{equation}
 
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
