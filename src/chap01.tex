@@ -14,17 +14,26 @@ WMT19 \parcite{barrault-EtAl:2019:WMT} results.
 Prior to invention of the \textit{Transformer} model, \acrfull{rnn} and \acrfull{cnn}
 architectures were used
 to encode source side of the sentence pair and to decode it into the target sentence.
-Various window lengths in \acrshort{cnn} architectures allowed to capture long range relations
-as well as short range ones; still the range was limited by the maximum window length.
-In \acrshort{rnn}-like architectures \acrfull{lstm} and \acrfull{gru} cells were used,
-as their structure allowed to pass the internal state on longer distances
-due to selective forgetting.
+Various window lengths in \acrshort{cnn} architectures allowed to capture
+long range relations as well as short range ones;
+still the range was limited by the maximum window length.
+In \acrshort{rnn}-like architectures \acrfull{lstm} and \acrfull{gru} cells
+were used, as their structure allowed to pass the internal state
+on longer distances due to selective forgetting.
 
-\textit{Transformer} model uses \textit{self attention} mechanism to encode contextual
-information in each word position. \textit{Position encoding} allows passing the position
-information without explisit sequential connections as in \acrshort{rnn}.
+\textit{Transformer} model uses the \textit{self attention} mechanism
+to encode contextual information in each word position.
+\textit{Position encoding} allows passing the position
+information without explicit sequential connections as in \acrshort{rnn}.
+Architecture of the \textit{Transformer} model is shown
+on \cref{fig:transformer_architecture}.
+For tasks involving very long sequences autors also proposed \textit{restricted}
+self-attention, which considers only a neighborhood of size $r$ in the input
+sequence centered around the respective output position.
 As was stated by \textit{Transformer}'s authors, there are three main points why
-self-attention mechanism should be preferred:
+self-attention mechanism should be preferred
+(which are compared with \acrshort{rnn} and \acrshort{cnn}
+in \cref{tab:layer_complexity_comp}):
 \begin{itemize}
   \item total computational complexity per layer;
   \item the amount of computation that can be parallelized;
@@ -45,10 +54,10 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 \bottomrule
 \end{tabular}
 \mycaption{Maximum path lengths, per-layer complexity and minimum number of sequential operations for different layer types} {
-	n is the sequence length, 
-	d is the representation dimension, 
-	k is the kernel size of convolutions and 
-	r the size of the neighborhood in restricted self-attention.
+	$n$ is the sequence length, 
+	$d$ is the representation dimension, 
+	$k$ is the kernel size of convolutions and 
+	$r$ the size of the neighborhood in restricted self-attention.
 }
 \label{tab:layer_complexity_comp}
 \end{table}
@@ -68,40 +77,26 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 In 1966 first machine translation evaluation methods were proposed
 by the \acrfull{alpac}.
-The proposed metrics were "intelligibility" and "fidelity"\citep[p~67]{Translation1966}.
-Metrics were considered independent and the evaluation was meant to be conducted
-by two independent groups of raters.
-\textit{Intelligibility} was measured without reference to the original by
-group of raters fluent in target language and not familiar with the source language.
-The raters were comparing the "informativeness" of evaluated translation with carefully
-prepared reference translation. The metric scale was from 1 (hopelessly unintelligible)
-to 9 (perfectly clear and intelligible).
-\textit{Fidelity} to the sense of the original text was measured by another group of raters,
-which were native speakers of the target language and highly proficient in the source language.
-It was measured on a scale of 0-9 and showed how much additional information was added in
-the evaluated translation comparing to the reference translation.
+The proposed metrics were ``intelligibility" and ``fidelity"
+\citep[p~67]{Translation1966}.
+Trained human raters were needed to measure the metrics.
 
-\acrfull{arpa}
-\todo{from White 1999 and Church 1993}
-comprehension evaluation, quality panel evaluation, and evaluation based on adequacy and fluency
+Later, after years of using manual evaluation, automatical evaluation
+metrics were created, such as word error rate (WER) \cite{Su1992},
+translation edit rate (TER) \cite{Snover2006}, etc.
+Nowadays the most popular metric is \acrfull{bleu} which is described
+in the next section.
 
-Automatic evaluation
-
-- Metric should correlate with human judgments;
-
-- Works with texts of different domains
-
-- Banerjee et al. (2005) correlation, sensitivity, consistency, reliability and generality.
 
 \subsection{\todo{\acrshort{bleu} - bilingual evaluation understudy}}
 
-In \cite{Papineni02bleu} was introduced a nowel method of automatic machine
-translation evaluation - \acrfull{bleu}.
-Its advantages are high speed and low cost of evaluation,
+In \cite{Papineni02bleu} a nowel method of automatic machine
+translation evaluation was introduced - \acrfull{bleu}.
+Its advantages are the high speed and low cost of evaluation,
 language independence and high correlation with judgements
-of highly skilled human raters evaluations.
+of highly skilled human raters.
 
-Shortly, \acrshort{bleu} score incorporates modified n-gram precision scores
+Shortly, \acrshort{bleu} score consists of modified n-gram precision scores
 corrected by brevity penalty,
 which ensures the produced translation lenght is close to the reference one.
 \acrshort{bleu} score is computed for the whole test corpus.
@@ -109,10 +104,11 @@ which ensures the produced translation lenght is close to the reference one.
 \subsubsection*{Modified \textit{n}-gram precision score}
 
 The main element of the metric is the \textit{precision} measure.
-To compute precision, the number of candidation translatin words (unigrams) that are present in
+To compute precision, the number of candidate translation words (unigrams) that are present in
 any reference translation is divided by the total number of words in the candidate translation.
 This approach leads to overrating candidate translation which consist of only one or couple of
-words that occur in reference translations, as can be seen in the expample below.
+words that occur in reference translations, as can be seen in 
+\cref{exmp:precision-modified-1gram-precision}.
 
 Intuitively, after a word from the reference translation has occured it should not be considered
 in the calculation anymore.
@@ -121,36 +117,76 @@ It is computed in the following way: first, the maximum number of occurances of 
 reference translation is counted; then the total count of every candidate word is replaced by the
 maximum reference count, added up and divided by the initial total number of candidate words.
 As a result, the sentence which may receive high precision score will receive more realistic evaluation
-measured by modified precision score, as can be seen in the example below.\\
+measured by modified precision score, as can be seen in
+\cref{exmp:precision-modified-1gram-precision}.
 
-Candidate: \underline{of} \underline{of} \underline{of} of of of of of of of
+\begin{minipage}{0.9\textwidth}
 
-Reference: London is the capital \underline{of} England and \underline{of} the United Kingdom
-\underline{of} Great Britain and Northern Ireland.
+	Candidate: \underline{of} \underline{of} \underline{of} of of of of of of of
 
-Precision: 1
+	Reference: London is the capital \underline{of} England and \underline{of} the United Kingdom
+	\underline{of} Great Britain and Northern Ireland.
 
-Modified unigram precision: 3/10
-\\
-Similarly is computed modified \textit{n}-gram precision score for any \textit{n}, but \textit{n}-gram
-counts are collected instead.
+	Precision: 10/10 = 1.0
 
-\subsubsection*{\todo{Sentence length}}
+	Modified unigram precision: 3/10 = 0.3
+
+	\begin{exmp}
+	Precision and modified unigram precision.
+	Similarly is computed modified $n$-gram precision score for any $n$,
+	but $n$-gram counts are collected instead.
+	\label{exmp:precision-modified-1gram-precision}
+	\end{exmp}
+
+\end{minipage}
+
+\subsubsection*{Sentence length}
+
+A produced translation should not be too short or too long.
+This is usually done by pairing precision with \textit{recall}.
+However, in \acrshort{bleu} multiple reference sentences can be used
+for one source sentence, so recalling all possible translations from
+every reference is not what is needed.
+The \textit{brevity penalty} factor was introduced by \acrshort{bleu} authors.
+In short, it penalizes produced translations that are shorter than the references.
+To avoid excessive penalization of shorter sentences it is computed on the whole
+translated set.
+In the equation below,
+$r$ is the test corpus’ effective reference length
+and $c$ is the total length ofthe candidate translation corpus.
+To compute $r$ the best match lengths for each candidate sentence
+in the corpus are added.
+
+\[
+	    BP=
+	    \begin{cases}
+		        1,           & \text{if } c > r\\
+			e^{1-r/c}, & \text{otherwise}
+	    \end{cases}
+\]
 
 \subsubsection*{\todo{The formula}}
 
+In short it makes sure that a produced translation matches its
+references in length.
+
+\[
+	BLEU=BP \cdot \exp \left(\sum_{n=1}^{N} w_n \log p_n \right)
+\]
 
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
 
 \subsection{Multi-lingual machine translation}
 
-With constant improvement of neural \acrshort{mt} systems performance researchers started to
-experiment with incorporating multiple source and/or target languages into one model,
+With constant improvement of neural \acrshort{mt} systems performance,
+researchers started to experiment with incorporating multiple source
+and/or target languages into one model,
 and the results are promising: having L1\to{}L2 and L2\to{}L3 non-parallel
-corpora makes possible to train a model that can produce L1\to{}L3 tranlsation
-of decent quality; having high-resource L1 and low-resource L2 from the same language
-group helps increase Source\to{}L2 trainslation quality with pretraining on
+corpora allows to train a model that can produce L1\to{}L3 translation
+of decent quality; having high-resource L1 and low-resource L2
+from the same language
+group helps increase Source\to{}L2 translation quality with pretraining on
 Source\to{}L1 data.
 In general, in some situations using more target and/or source languages in one translation
 model may not only unsignificantly decrease its performance but also to improve it.
