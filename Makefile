@@ -27,6 +27,8 @@ abstract.pdf: abstract.tex abstract.xmpdata
 	pdflatex $<
 
 clean:
+	cd src && rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg *.xmpi
+	cd src && rm -f *.acn *.acr *.alg *.glg *.glo *.gls *.ist
 	rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg *.xmpi
 	rm -f *.acn *.acr *.alg *.glg *.glo *.gls *.ist
 

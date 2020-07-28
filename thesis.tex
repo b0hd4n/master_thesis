@@ -63,7 +63,7 @@
 \usepackage[noabbrev,capitalize]{cleveref}
 
 \usepackage[toc,acronym]{glossaries}     % for terms and abbreviations
-\input{abbreviations}
+\input{src/abbreviations}
 
 %%% Basic information on the thesis
 
@@ -117,27 +117,27 @@ Abstract.
 \hypersetup{breaklinks=true}
 
 % Definitions of macros (see description inside)
-\include{macros}
+\include{src/macros}
 
 % Terms and abbreviations
 %\include{abbreviations}
 
 % Title page and various mandatory informational pages
 \begin{document}
-\include{title}
+\include{src/title}
 
 %%% A page with automatically generated table of contents of the master thesis
 \tableofcontents
 
 %%% Each chapter is kept in a separate file
-\include{preface}
-\include{chap01}
-\include{chap02}
-\include{chap03}
-\include{chap04}
-\include{chap05}
+\include{src/preface}
+\include{src/chap01}
+\include{src/chap02}
+\include{src/chap03}
+\include{src/chap04}
+\include{src/chap05}
 
-\include{epilog}
+\include{src/epilog}
 
 %%% Bibliography
 \include{bibliography}
@@ -170,8 +170,8 @@ Abstract.
 \appendix
 \chapter{Attachments}
 
-\include{tables}
-\include{languages}
+\include{src/tables}
+\include{src/languages}
 
 \openright
 \end{document}
