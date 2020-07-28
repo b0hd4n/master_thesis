@@ -1,7 +1,7 @@
 \chapter{Experiment setup}
 \label{chapter:experiment_setup}
 
-In this chapter we describe the data used for experiments, training setup
+In this chapter, we describe the data used for experiments, training setup
 and experiments that were run to answer the questions asked in this thesis.
 
 %----------------------------------------------------------------------
@@ -10,21 +10,22 @@ and experiments that were run to answer the questions asked in this thesis.
 
 Constraints:
 \begin{displayquote}
-	Translation quality for multi-lingual system is insignificantly worse than for
-	mono-lingual one-to-one tranlsation system.
+	Translation quality for multi-lingual system is better or insignificantly
+	worse than for mono-lingual one-to-one tranlsation system.
 
 	Maximum possible target languages are combined in one model.
 \end{displayquote}
 
 Questions:
 \begin{displayquote}
-	How \emph{in average} adding one more randomly selected target language
-	to the multitarget model affects its En\to{}De performance?
+	How, \emph{on average}, does adding one more randomly selected target language
+	to the multitarget model affect its En\to{}De performance?
 
-	How is it different if we add a linguistically similar, not randomly selected language?
+	How is it different if we add a linguistically similar,
+	not a randomly selected language?
 
-	How is adding one more language from the same language family or group 
-	\emph{in average} affects tranlsation performance for selected language
+	How does adding one more language from the same language family or group 
+	\emph{on average} affect translation performance for a selected language
 	pair (e.g. En\to{}De)?
 \end{displayquote}
 
@@ -36,21 +37,30 @@ Questions:
 \subsection{Starting point}
 \label{subsection:starting_point}
 
-
-In the following papers from Google
+The approach described in \cref{section:multitarget_theory} with combining multiple
+translation directions into the standart \emph{Transformer} model can be also used to
+train just multi-target models, i.e. with one source language and multiple target languages.
+The following papers
 (\perscite{arivazhagan-2019-mmnmt-in-the-wild}, \perscite{aharoni-etal-2019-massively}),
-many different cases are tried and described.
+which further develop the approach, describe and try many different interesting cases.
 However, in each setting there is usually only one model of each kind considered.
 For example, when in \citet{aharoni-etal-2019-massively} compares 5-to-5,
 25-to-25, 50-to-50, etc. models, there is only one 5-to-5 model, one 25-to-25, etc.
 
-Target language tags do not affect \acrshort{bleu}:
-\perscite{Siddhant2019}
+To conduct our experiments, we use this approach, but with the following differences:
+\begin{itemize}
+	\item We fix English as a source language, as we are exploring the multi-target experiments only, .
+	\item For every translation direction and every setting we train multiple models.
+	E.g. for the \dir{En}{De} translation direction and 1-to-5 setting there are
+	couple of \dirmany{En}{De + 4 randomly selected targets} models.
+	\item We use only up to 5 target languages in the model because of:
+	\begin{itemize}
+		\item limited resources;
+		\item our selected datasets (which will be described in the next section)
+		do not contain more than 5-6 languages of the same language group.
+	\end{itemize}
+\end{itemize}
 
-mNMT models en-to-4 and 4-to-en trained;
- 1) \tagto{xx} added to the source;
- 2) target language encoded separately.
-\acrshort{bleu} scores are comparable using both approaches.
 
 
 \subsection{Proposed experiments}
@@ -60,40 +70,30 @@ mNMT models en-to-4 and 4-to-en trained;
 % the variable object in experiments is the data itself. Due to that, the setup similar
 % to \cite{johnson-etal-2017-googles} was chosen. 
 
-\subsubsection*{Bilingual baseline}
+\subsubsection*{Bilingual \gls{baseline}}
 
-It is important to have a reference point to be able to reason how
-does a change to the system affects its performance.
+Bilingual models. The purpose is to have a reference point to be able to reason how
+does every additional target language affects the model's performance.
+\perscite{Siddhant2019} shows that using target language tags results
+in the same model efficiency as separately encoding the target.
+Therefore, we use target tags in this setting too, so that we can use
+the same training pipeline.
 
-As a naïve and simple solution, so called \gls{baseline} system,
-should be used a bilingual system with the same settings
-as the systems in further experiments.
+\subsubsection*{Multi-lingual baselines (RANDOM)}
 
-Having a performance measurement for a bilingual system in some
-translation direction allows us to say about improvement or deterioration of results after
-implementing a change.
-
-
-
-\subsubsection*{n-lingual baselines (random)}
-
-Multilingual models with random set of languages.
+Multilingual models with a random set of target languages.
 The purpouse is twofold: 
 to show \acrshort{bleu} score decrease with increasing number of target languages and
 to serve as a baseline for multitarget models with target languages grouped by
 in non-random way, e.g. by language group or linguistic similarity.
 
 
-\subsubsection*{Group by language group}
+\subsubsection*{Group by language group (SIMILAR)}
 
-If all target languages are from one language group we expect to observe
-better translation quality comparing to multilingual baseline results 
-with randomly selected target languages.
-This is expected due to shared parts of vocabulary (todo: expand with examples)
-and linguistic properties (again, expand with examples).
-Germanic group: da, de, is, no, nl, sv.
-Slavic with cyrillic script: bg, mk, ru, uk.
-Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
+Multilingual models with a set of target languages from the same language group.
+Due to shared parts of vocabulary and linguistic properties we expect to
+see better results than for multi-lingual baselines.
+Ideally the results could be comparable with bilingual baselines.
 
 
 % \subsubsection*{Group by linguistic similarity}
@@ -105,9 +105,6 @@ Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
 % in different scripts.
 
 
-
-
-
 %----------------------------------------------------------------------
 \section{Dataset(s)}
 \label{section:datasets}
@@ -116,7 +113,7 @@ Slavic: bg, cs, hr, mk, pl, ru, sk, sl, sr, uk
 \subsection{\edit{English to 36 languages}}
 \label{subsection:en-to-36}
 
-To observe effects of linguistic similarity of target languages
+To observe effects of linguistic similarity of target languages,
 it is important to examine enough possible variations of those.
 The OPUS dataset (\cite{TIEDEMANN12.463}) is an open and free collection of texts
 that covers more than 90 languages with data from several
@@ -124,43 +121,41 @@ domains.\footnote{Available at \url{http://opus.nlpl.eu/}}
 
 For our experiments the source language is English only.
 
-Sampling and splitting of the data is the one used for
-ELITR project.%
+Given the list of target languages in this dataset (see full list in \cref{att:list_en-to-36}),
+we decided to select these two groups of languages for the SIMILAR experiment:
+\begin{itemize}
+	\item Germanic group: da, de, is, no, nl, sv.
+	\item Slavic with cyrillic script: bg, mk, ru, uk.
+\end{itemize}
+
+We made use of the sampling and splitting of the data created by the ELITR project.%
 \footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL\_.pdf}}
-For each of language pairs and each sub-dataset
-the data was splitted to training, validation and testing sets.
-For each of the two latter sets 2000 random sentences were selected
+For each of the language pairs and each sub-dataset
+the data was split to training, validation and testing sets.
+For each of the two latter sets, 2000 random sentences were selected
 and the rest of the data remained for the training set.
-In cases where the sub-dataset contained less than 16000 sentence pairs
+In cases where the sub-dataset contained less than 16000 sentence pairs,
 no data went to the validation set.
-Later for each language pair there were 1000000 sentence pairs
+Later, for each language pair there were 1000000 sentence pairs
 sampled from all training sub-sets.
+\fix{To be more explicit that the sampling is directed towards certain domains.
+This is somewhat unclear.}
 Firstly, if available, the sentences were taken from Europarl,
 then EUbooks, OpenSubtitles, and then all remaining sub-datasets.
-The same procedure was used to sample x000 of validation set sentences
+The same procedure was used to sample \todo{check} x000 of validation set sentences
 per each language pair.
 The test sets were left separate, so that the result on each domain would be observable.
 
-Later an overlap in the source side of different language pairs was found.
+Later we found an overlap in the source side of different language pairs.
 Although this would not directly lead to unfair increase of the test score,
 such sentence pairs were removed from the training sets.
-This filtering decreased the amound of sentence pairs
+This filtering decreased the number of sentence pairs
 to 0.85-0.95 millions per language pair.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.9\columnwidth]{../img/train_set_statistics.png}
-	\mycaption{Training data language statistics}{
-		Languages are on the \emph{X} axis sorted as in appendix.
-		From top to bottom:
-		total number of sentence pairs in training set per language,
-		average amount of subwords per sentence on the source side,
-		the same on the target side,
-		total amount of unique subwords for this target language on the source side,
-		the same on the target side.
-	}
-	\label{fig:language_statistics}
-\end{figure}
+\todo{describe the figure with stats}
+\todo{describe the table with groups of sub-datasets}
+\todo{group 4: open folder, save file}
+\todo{group 5: Tanzil - completely different domain, Books of 18th cent.-  dated vocabulary
+	      Wikipedia - automaticaly aligned sentences.}
 
 
 \begin{table}[h!]
@@ -178,15 +173,30 @@ to 0.85-0.95 millions per language pair.
 	   &  Short sentences, human speech, general domain \\
 	 4 &  OpenOffice, PHP, KDE4, Gnome
 	   &  Software documentation or interface elements \\
-	 5 &  Bible, Tanzil, Books 
-	   &  Other: completely different domain, dated vocabulary
-	      automaticaly aligned sentences, etc. \\
+	 5 &  Tanzil, Books, Wikipedia
+	   &  Other  \\
 	\bottomrule
 	\end{tabular}
 
 	\mycaption{Groups of subdatasets in OPUS}{}
 	\label{tab:subdatasets_groups}
 \end{table}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{../img/train_set_statistics.png}
+	\mycaption{Training data language statistics}{
+		Languages are on the $X$ axis sorted as in \cref{att:list_en-to-36}.
+		From top to bottom:
+		total number of sentence pairs in training set per language,
+		average number of subwords per sentence on the source side,
+		the same on the target side,
+		total number of unique subwords for this target language on the source side,
+		the same on the target side.
+	}
+	\label{fig:language_statistics}
+\end{figure}
+
 
 
 \subsection{\todo{UN parallel corpus: English to 5 languages}}
@@ -203,14 +213,14 @@ to 0.85-0.95 millions per language pair.
 In this section we describe how the models are trained, which metrics
 are collected and how are they analyzed.
 
-\subsection{\edit{Training}}
+\subsection{\todo{Training}}
 
-For example, let us take En\to{}$\{$Fr, De$\}$ setup, which means that
+For example, let us take \dirmany{En}{Fr, De} setup, which means that
 the model to be trained should take a source sentence in English and
 produce translation either in French or in German.
-The language of model's translation depends on the target tag at the beginning
+The language of model's output depends on the target tag at the beginning
 of the input sentence, i.e. \tagto{fr} tag in source sentence leads to French
-translation.
+target.
 
 To train such a model, only related sentence pairs are subsampled
 from the whole training set.
@@ -220,17 +230,17 @@ Such subsampled dataset is then used to train the model.
 
 During the training procedure, once per specified number of updates
 occurs the checkpointing of the model.
-The model weights are saved to the disc and number of metrics are logged.
+The model weights are saved to the disk and number of measurements are logged.
 
 \begin{samepage}
 \begin{itemize}
-	\item [Those metrics are:]
+	\item [Those measurements are:]
 	\item training loss value (mean value for all updates since
 	last checkpoint)
-	\item current learning rate value
+	\item learning rate value
 	\item training speed (processed words per second)
 	\item training time since last checkpoint
-	\item current number of updates
+	\item number of updates happened from the beginning till this checkpoint
 \end{itemize}
 \end{samepage}
 \begin{samepage}
@@ -239,50 +249,56 @@ Hardware usage should also be recorded if possible:
 	\item GPU usage
 	\item CPU usage
 	\item memory usage
-	\item disc I/O
+	\item disk I/O
 	\item network I/O
 \end{itemize}
 \end{samepage}
 
-The hardware metrics are not important for model's evalueation
+The hardware metrics are not important for model's evaluation
 but may help early spot mistakes like underuse of GPU or CPU, lack of RAM, etc.
+This is why they could possibly be recorded continuously. \todo{link to this point from wandb section}
 
 \subsection{\edit{Validation}}
 \label{subsection:validation}
 
-The validation set is used to track model's performance
+The validation set is used to track model's performance during the training
 on an unseen set of data and to perform early stopping.
+These measurements are only used during the training and not for the evaluation.
+
 Once per specified number of steps the validation occurs:
 validation metrics are recorded, for any metric which value was
 improved current model weights are saved as best model by this metric.
-If early stopping condition occured then the training process is stopped.
+If early stopping condition occurred then the training process is stopped.
 
-For any model the validation set is constructed of the big validation set
-by selection only relevant sentence pairs in the same way, as the training set.
-
-For the example setup from above, En\to{}$\{$De,Fr$\}$, the validation set
-consists of equal amount of En\to{}De and En\to{}Fr sentence pairs.
+For any model the validation set is constructed from the big validation set
+by selecting only relevant sentence pairs in the same way as the training set,
+i.e. pairs with the target in one of the examined languages.
+For the example setup from above, \dirmany{En}{De,Fr}, the validation set
+consists of an equal amount of \dir{En}{De} and \dir{En}{Fr} sentence pairs.
 E.g. if in the complete validation set there are 1000 sentence pairs for
-each of possible target languages, then for En\to{}$\{$De,Fr$\}$
+each of possible target languages, then for \dirmany{En}{De,Fr}
 model the validation set will contain 2000 sentence pairs, and for
-En\to{}$\{$De,Es,Fr$\}$ it will contain 3000 sentence pairs.
+\dirmany{En}{De,Es,Fr} it will contain 3000 sentence pairs.
 
-For the validation set we collect not only the loss function value
+For the validation set, we collect not only the loss function value
 but also the metric of interest, which is \acrshort{bleu} score.
-However, the \acrshort{bleu} of the whole model's validation set
+However, this \acrshort{bleu} scores are not used for the model's
+evaluation but only during the training process.
+The \acrshort{bleu} of the whole model's validation set
 is not something we are interested in.
-For the discussed example we collect bleu:fr and bleu:de scores
+For the discussed example we collect validation bleu:fr and bleu:de scores
 which represent \acrshort{bleu} scores for French and German
 parts of validation set.
 E.g., to compute bleu:fr we select only En\to{}Fr sentence pairs from the
 validation set.
 
-Also, an aggregated value of the bleu:xx scores is also recorded
+Also, an aggregated value of the bleu:xx scores, i.e. the mean of BLEU scores
+over all target languages of the current model, is also recorded
 and may be used for early stopping: ending the training process
 when the metric is not improved during last N validation steps.
 
 \begin{samepage}
-All together, the following validation metrics are recorded after the
+Altogether, the following validation metrics are recorded after the
 validation step:
 \begin{itemize}
 	\item loss function value
@@ -300,14 +316,14 @@ When should we stop the training?
 It is not possible to say precisely when did the model
 acquire its best performance because of stochastic nature of
 the training algorightm (\acrshort{sgd}).
-Because of that we need to use some method how to decide when
+Because of that we need to use some method to decide when
 training process should be stopped.
 
 
 \subsubsection*{Number of \glspl{epoch}}
 
-\todo{First occurance of a term to be italic}
-The easiest approach is to specify number of \glspl{epoch}
+\todo{First occurence of a term to be italic}
+The easiest approach is to specify the number of \glspl{epoch}
 after which the training is stopped.
 This could be a good solution for the case when all models
 that will be compared are trained on the same amount of data from
@@ -329,12 +345,13 @@ In general, it works in the following way: after every validation step
 it checks if the metric value improved during last $N$ validations.
 The metric to be controlled and number of validation steps $N$ are
 the parameters of this method
-(Figure \ref{fig:early_stopping}).
+(see \cref{fig:early_stopping}).
 
-Another situation is even more probable: model's validation performance
+Another situation is even more probable in the area of NMT with generally
+large training datasets: model's validation performance
 is either stalled or slightly improved
-(Figure \ref{fig:early_stopping_no_improvement}).
-In this case \gls{early-stopping} helps to avoid unnessecery spendings
+(see \cref{fig:early_stopping_no_improvement}).
+In this case \gls{early-stopping} helps to avoid unnecessary spendings
 on computational resources.
 
 \begin{samepage}
@@ -342,7 +359,7 @@ on computational resources.
 	\centering
 	\includegraphics[width=0.6\columnwidth]{../img/early_stopping.png}
 	\mycaption{\Gls{early-stopping} to prevent overfitting}{
-		At the 'early stopping' point the model's performance
+		At the `early stopping' point the model's performance
 		on unseen validation set of data does not improve
 		anymore. Further training leads to poorer performance
 		on unseen data. Stopping the training at this point
@@ -365,8 +382,8 @@ on computational resources.
 \end{samepage}
 
 In our case we could use \gls{early-stopping} to ensure more equal conditions
-for models with different sizes of training data. Suitable number $N$
-could be found experimentaly, but which metric should be used?
+for models with different sizes of training data.
+A suitable number $N$ could be found experimentaly, but which metric should be used?
 
 \todo{cross-entropy, perplexity; they may not represent the model's
 performance, what about BLEU}
@@ -383,26 +400,36 @@ Therefore, we should use separate BLEU scores which represent
 model's performance in each of translation directions.
 The most intuitive and naive way is to compare BLEU scores
 for each target language.
-But if we will try to set up an early stopping on each of the values,
-the following may happen: BLEU for on of the directions will stay the
-same for long enough to trigger early stopping, but for another direction
-the BLEU score is still growing.
 
-For example, suppose the model is being trained for \dirmany{En}{De, Fr}
-and validation happens after each 1000 update steps.
-At the step 20000 for some selected German validation set
-the model's \dir{En}{De} performance measured by BLEU score
-equals 20, for the \dir{En}{Fr} direction its BLEU score is 15.
-After 10 more validations, model's performance for \dir{En}{De}
-is still equal to 20 BLEU and did not grow, but for \dir{En}{Fr} 
-it has already reached 25 and is still increasing.
-Early stopping will be triggered, and even though the performance
-in \dir{En}{De} direction might have reached its possible maximum
-(assuming that the early stopping period of 10 checks was selected
-efficiently) its \dir{En}{Fr} performance might still improve.
+However, most of frameworks and toolkits can monitor only one metric
+for the early stopping.
+Considering that different validation \acrshort{bleu} scores
+are computed for different parts of the validation set and in
+which are in different languages, they cannot be directly compared
+and may have different scale.
 
-\todo{Geometric mean: good for multiple metrics with different scale}
+For example, a model for the \dirmany{En}{De,Fr} direction is being
+trained.
+Before the moment, an \dir{En}{De} model has already been trained and
+had the best \acrshort{bleu} score of 25 on the German part of the
+validation set.
+A \dir{En}{Fr} model has also been trained, and its result on the
+French part of the validation score is 35.
+So for the currently training \dirmany{En}{De,Fr}, one percentage point
+change for the \dir{En}{De} direction is not equal to the same change for the
+\dir{En}{Fr} direction.
 
+Geometric mean is known to be good for aggregating multiple metrics
+with different scale (see \cref{eq:geometric_mean}).
+
+\XXX{initially I wanted to achieve what was in the removed paragraph,
+but it did not happen (in some cases one of BLEU scores goes a bit down),
+so I have replaced it with this version}
+
+\begin{equation}
+\label{eq:geometric_mean}
+	geometric\_mean = \left(\prod _{i=1}^{n}x_{i}\right)^{\frac {1}{n}}={\sqrt[{n}]{x_{1}x_{2}\cdots x_{n}}}
+\end{equation}
 
 \subsection{\edit{Testing}}
 \label{subsection:testing}
@@ -456,7 +483,7 @@ metrics are collected, data should be analysed.
 In the following section we describe the tools that are uset to implement
 what was shown in Section \ref{section:method}.
 
-\subsection{Tool kits}
+\subsection{Toolkits}
 
 There exists a number of different tools that can be used for training a NMT model.
 General purpouse deep learning programming libraries like
