@@ -6,13 +6,13 @@ how good can a model perform on a specific translation direction
 for each test set.
 
 After bilingual results are collected and inspected, it is time for
-multi-lingual baselines. For this purpouse, we trained models
+multi-lingual baselines. For this purpose, we trained models
 with randomly selected sets of target languages.
-This way we can see how much adding more target languages to the model
+This way, we can see how much adding more target languages to the model
 changes its performance on the same specific translation direction.
 
-Most of experiments are done on the \gls{en-to-36} dataset with couple of
-additional experiments on the \gls{en-to-5} dataset.
+Most of the experiments are done on the \gls{en-to-36} dataset with
+a couple of additional experiments on the \gls{en-to-5} dataset.
 
 
 %----------------------------------------------------------------------
@@ -30,11 +30,11 @@ Test results for relevant target directions (i.e. languages from
 'Germanic' and 'Slavic with Cyrillic script'
 from Section \ref{subsection:proposed_experiments})
 are shown in Table \ref{table:bilingual-results}.
-For example, for \dir{En}{De} direction we trained a bilingual model.
+For example, for \dir{En}{De} direction, we trained a bilingual model.
 After that, we evaluated the model on the test set and received
 \acrshort{bleu} scores for each sub-dataset, as shown
 in \cref{fig:bilingual_en_de}.
-Later, when an \dirmany{En}{De, others} model will be trained and evaluated
+Later, when an \dirmany{En}{De, others} model is trained and evaluated
 on the same test set, its \dir{En}{De} performance on each sub-dataset
 will be compared with these values.
 
@@ -59,7 +59,7 @@ data.
 
 Let us look closer at some example translations from different
 sub-datasets of the \dir{En}{De} test set.
-In \cref{exmp:biling_de_europarl} we can see a translation produced
+In \cref{exmp:biling_de_europarl}, we can see a translation produced
 by our bilingual \dir{En}{De} model compared with the reference translation
 and two unnamed online translation systems.
 The sentence pair is from the Europarl/v7 sub-dataset of
@@ -98,10 +98,10 @@ erzielte Kompromissvereinbarung zu Artikel 5 Absatz 4.
 	compared with the reference one and online
 	translation systems OMT-G and OMT-D.
 	Here and further for the online translation system, the target
-	tag is omitted and the target language is selected directly
+	tag is omitted, and the target language is selected directly
 	in the system.
-	For our system, the following sentence is firstly preprocessed.
-	\todo{add link to preprocessing section; add short section about bpe}
+	For our system, the following sentence is firstly preprocessed
+	(see \cref{section:data_preprocessing}).
 	\label{exmp:biling_de_europarl}
 	\end{exmp}
 
@@ -112,14 +112,14 @@ erzielte Kompromissvereinbarung zu Artikel 5 Absatz 4.
 Next prioritized sources for sampling training data were
 Eurobookshop and OpenSubtitles.
 The first dataset has domain and vocabulary similar to the Europarl dataset.
-But OpenSubtitles dataset has data of a different domain:
-transcribed human speech from films and series.
-It has much shorter sentences and the speech of different register.
+OpenSubtitles dataset has data of a different domain:
+transcribed human speech from films and series;
+it has much shorter sentences and the speech of different register.
 
 In \cref{exmp:biling_de_opensubtitles} we can see an issue of another kind
-that might happen: short sentence might not have all
+that might happen: a short sentence might not have all
 the needed information. Here English `you' in the reference translation
-is translated as `ihr' (2. person, plural), and in our translation
+translates as `ihr' (2. person, plural), and in our translation
 as `Sie' (3. person, plural) which refers to a polite form of `you'.
 One of the online \acrshort{mt} systems translates it as
 `du' (2. person, singular).
@@ -155,25 +155,21 @@ to the verb for 3. person, singular.
 \section{\todo{Multilingual baseline}}
 \label{section:multilingual_baseline}
 
+Next after we have trained bilingual models and collected the results,
+we trained multilingual baseline models -- the models with randomly
+selected sets of targets.
+We generated RANDOM task in a way we described in \cref{section:training_tasks}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\columnwidth]{img/random_en_de.png}
 	\mycaption{En\to{}De monolingual baseline results (RANDOM)}{
-		Datasets with BLEU lower than 10 are removed
+		Datasets with BLEU lower than 10 are removed from
+		this figure.
 	}
 	\label{fig:random_en_de}
 \end{figure}
 
-En\to{}De,Fr, En\to{}${De,Az}$, En\to{}${De,Bg}$ En\to{}${Bg,Az}$ models
-provide us with 3 results for En\to{}De direction 2-target baseline, as well
-as one value for En\to{}Fr, two values for En\to{}Bg and two for En\to{}Az.
-These aggregated En\to{}${De,X}$ results will be later compared with
-aggregated En\to{}${De,X1,X2}$ for 3 target languages,
-En\to{}${De,X1,X2,X3}$ for 4 target languages, where X1, ... X\textit{i} are
-randomly selected languages.
-Also in the next chapters these results will serve as a baseline for
-aggregated En\to{}${De,Y1,Y2...}$ results of N target languages for languages
-Y\textit{i} being from some group of languages similar to De.
 
 
 %----------------------------------------------------------------------

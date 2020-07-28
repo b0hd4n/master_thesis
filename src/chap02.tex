@@ -213,6 +213,25 @@ to 0.85-0.95 millions per language pair.
 In this section we describe how the models are trained, which metrics
 are collected and how are they analyzed.
 
+
+\subsection{\todo{Data preprocessing}}
+\label{section:data_preprocessing}
+
+\todo{1. BPE is used, same vocabulary for all models from en-to-36 setup}
+
+
+\subsection{\todo{Data selection}}
+\label{section:data_selection}
+
+\todo{move here resp. parts from training, validation and test}
+
+
+\subsection{\todo{Training tasks}}
+\label{section:training_tasks}
+
+\todo{what is a task, multilingual task, sampling tasks for RANDOM and SIMILAR}
+
+
 \subsection{\todo{Training}}
 
 For example, let us take \dirmany{En}{Fr, De} setup, which means that
@@ -468,13 +487,28 @@ than 4 times \textit{n} records are created, where \textit{n}
 is number of OPUS subdatasets from which the data was sampled.
 
 
-\subsection{\todo{Analysis}}
+\subsection{Analysis}
 
 After required set of models is trained and their test
 metrics are collected, data should be analysed.
 
+For example, let us take these four models: \dirmany{En}{De, Fr},
+\dirmany{En}{De, Az}, \dirmany{En}{De, Bg}, and \dirmany{En}{Bg, Az}.
+After the training, they provide us with three results for \dir{En}{De}
+direction 2-target baseline,
+one value for \dir{En}{Fr},
+two values for \dir{En}{Bg}
+and two for \dir{En}{Az}.
+These aggregated \dirmany{En}{De, X} results will be later compared with
+aggregated \dirmany{En}{De, X1, X2} for three target languages,
+\dirmany{En}{De, X1, X2, X3} for four target languages, where X1, ... X$i$ are
+some other targets.
 
-
+Next, the \dirmany{En}{De, RANDOM} notation refers to a multilingual
+model that was trained in the RANDOM experiment (randomly selected targets),
+where one of the targets is German.
+In the same way, \dirmany{En}{De, GERMANIC} refers to a model from
+the GERMANIC experiment (targets selected from Germanic languages list).
 
 
 %----------------------------------------------------------------------

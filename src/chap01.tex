@@ -275,7 +275,7 @@ source language (e.g. cases, noun genders, etc.).
 \end{figure}
 
 
-\subsection{Massively multi-lingual machine translation \todo{with complete sharing}}
+\subsection{Massively multi-lingual machine translation with \\complete sharing}
 \label{section:multitarget_theory}
 
 \citet{johnson-etal-2017-googles} proposed a way to build a multi-lingual
@@ -283,6 +283,8 @@ machine translation model without any changes to the \emph{Transformer} architec
 The only change was performed on the input data.
 To make the \emph{Transformer} model process multi-lingual data,
 they added the desired target language tag to the source sentence.
+This way they achieved a \emph{complete sharing} of parameters and subword vocabulary
+among all the source and target languages.
 
 For example, the following \dir{En}{Cz} sentence pair:
 \begin{displayquote}
