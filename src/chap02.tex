@@ -36,31 +36,12 @@ Questions:
 \subsection{Starting point}
 \label{subsection:starting_point}
 
-In \cite{johnson-etal-2017-googles} autors proposed a way to build a multi-lingual
-machine tranlsation model without any changes to the \emph{Transformer} architecture.
-In fact, the only change should be performed on the input data. To make the \emph{Transformer}
-model process multi-lingual data the language tag is added to the source sentence.
-For example, the following En\to{}Cz sentence pair:
 
-\begin{displayquote}
-Hello world! \to{} Ahoj světe!
-\end{displayquote}
-is modified to:
-
-\begin{displayquote}
-\tagto{cs} Hello world! \to{} Ahoj světe!
-\end{displayquote}
-
-With given method it is possible to produce translations in multiple languages using the
-same model just by altering the prepended target language tag.
-It was also demonstrated that this method slightly improves translation quality for 
-low resource languages when compared to monolingual translation model.
-
-In this and the following
-(\perscite{arivazhagan-2019-mmnmt-in-the-wild}, \perscite{aharoni-etal-2019-massively})
-papers from Google many different cases are tried and described.
+In the following papers from Google
+(\perscite{arivazhagan-2019-mmnmt-in-the-wild}, \perscite{aharoni-etal-2019-massively}),
+many different cases are tried and described.
 However, in each setting there is usually only one model of each kind considered.
-For example, when in \parcite{aharoni-etal-2019-massively} authors compare 5-to-5,
+For example, when in \citet{aharoni-etal-2019-massively} compares 5-to-5,
 25-to-25, 50-to-50, etc. models, there is only one 5-to-5 model, one 25-to-25, etc.
 
 Target language tags do not affect \acrshort{bleu}:

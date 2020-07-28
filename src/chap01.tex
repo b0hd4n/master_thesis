@@ -1,9 +1,11 @@
 \chapter{Background}
 
+In this chapter, we go through the theory of methods which are used in the work.
+
 %----------------------------------------------------------------------
 \section{\todo{History of machine translation}}
 
-\XXX{is it ok to quote the whole paragraph with short history? e.g. \cite{Han2016}}
+\todo{rephrase \cite{Han2016}}
 
 
 %----------------------------------------------------------------------
@@ -75,6 +77,11 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 
 %----------------------------------------------------------------------
+\section{\todo{Preprocessing: \acrshort{bpe}}}
+\label{section:bpe}
+\todo{models for the big UN corpus were trained with SentencePiece, not BPE}
+
+%----------------------------------------------------------------------
 \section{Translation evaluation}
 
 \subsection{History}
@@ -108,22 +115,28 @@ which ensures the produced translation lenght is close to the reference one.
 \subsubsection*{Modified \textit{n}-gram precision score}
 
 The main element of the metric is the \textit{precision} measure.
-To compute precision, the number of candidate translation words (unigrams) that are present in
+It is computed in the following way:
+the number of candidate translation words (unigrams) that are present in
 any reference translation is divided by the total number of words in the candidate translation.
-This approach leads to overrating candidate translation which consist of only one or couple of
-words that occur in reference translations, as can be seen in 
+This approach leads to overrating candidate translation which consists of only one
+or a couple of words that occur in reference translations, as can be seen in
 \cref{exmp:precision-modified-1gram-precision}.
 
-Intuitively, after a word from the reference translation has occured it should not be considered
-in the calculation anymore.
+Intuitively, after a word from the reference translation has occurred,
+it should not be considered in the calculation anymore.
 This intuition is formalized as the \textit{modified unigram precision}.
-It is computed in the following way: first, the maximum number of occurances of a word in any
-reference translation is counted; then the total count of every candidate word is replaced by the
-maximum reference count, added up and divided by the initial total number of candidate words.
-As a result, the sentence which may receive high precision score will receive more realistic evaluation
-measured by modified precision score, as can be seen in
+It is computed in the following way:
+\begin{enumerate}
+	\item count the maximum number of occurrences of a word in any reference translation;
+	\item clip the total count of every candidate word by the maximum reference count;
+	\item sum the clipped counts;
+	\item divide this sum by the total (not clipped) number of candidate words.
+\end{enumerate}
+As a result, the sentence which may receive a high precision score will receive
+more realistic evaluation measured by modified precision score, as can be seen in
 \cref{exmp:precision-modified-1gram-precision}.
 
+\vspace{\baselineskip}
 \begin{minipage}{0.9\textwidth}
 
 	Candidate: \underline{of} \underline{of} \underline{of} of of of of of of of
@@ -143,21 +156,22 @@ measured by modified precision score, as can be seen in
 	\end{exmp}
 
 \end{minipage}
+\vspace{\baselineskip}
 
 \subsubsection*{Sentence length}
 
 A produced translation should not be too short or too long.
-This is usually done by pairing precision with \textit{recall}.
-However, in \acrshort{bleu} multiple reference sentences can be used
+It is usually done by pairing precision with \textit{recall}.
+However, in \acrshort{bleu}, multiple reference sentences can be used
 for one source sentence, so recalling all possible translations from
 every reference is not what is needed.
-The \textit{brevity penalty} factor was introduced by \acrshort{bleu} authors.
+\acrshort{bleu} authors introduced the \textit{brevity penalty} factor
+for this purpose.
 In short, it penalizes produced translations that are shorter than the references.
-To avoid excessive penalization of shorter sentences it is computed on the whole
-translated set.
-In the equation below,
-$r$ is the test corpus’ effective reference length
-and $c$ is the total length ofthe candidate translation corpus.
+To avoid excessive penalization of shorter sentences,
+the \textit{brevity penalty} is computed on the whole translated set.
+In the equation below, $r$ is the test corpus’ effective reference length
+and $c$ is the total length of the candidate translation corpus.
 To compute $r$ the best match lengths for each candidate sentence
 in the corpus are added.
 
@@ -165,14 +179,14 @@ in the corpus are added.
 \label{eq:brevity_penalty}
     BP=
     \begin{cases}
-		1,           & \text{if } c > r\\
+		1,           & \text{if } c > r;\\
 		e^{1-r/c}, & \text{otherwise}
     \end{cases}
 \end{equation}
 
 \subsubsection*{Equation}
 
-Combining all above, the metric works in this way (\cref{eq:bleu}):
+Combining all the above, the metric works in this way (\cref{eq:bleu}):
 \begin{enumerate}
 	\item compute the geometric mean of the modified
 		n-gram precisions ($p_n$), using n-grams up to length $N$
@@ -182,9 +196,9 @@ Combining all above, the metric works in this way (\cref{eq:bleu}):
 \end{enumerate}
 Authors proposed to use $N=4$ and uniform weights $w_i = 1/4$.
 
-The metric value is in range from 0 to 1, however, popular implementations
-such as SacreBLEU \citep{Post2018-sacrebleu} report it in percent points
-from 0 to 100.
+The metric value is in a range from 0 to 1.
+However, popular implementations such as SacreBLEU \citep{Post2018-sacrebleu}
+report it in percentage points from 0 to 100.
 
 
 \begin{equation}
@@ -197,27 +211,28 @@ from 0 to 100.
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
 
-In this section we have a closer look at an area in \acrshort{mt}
+In this section, we have a closer look at an area in \acrshort{mt},
 which this thesis is dedicated to -- multi-target \acrshort{mt}.
-First we talk about multi-lingual \acrshort{mt} in general: multi-way,
+First, we talk about multi-lingual \acrshort{mt} in general: multi-way,
 multi-source and multi-target.
-Later we describe the specific approach from multi-target \acrshort{mt}
-which we are using in this work.
+Later we describe the specific approach from multi-lingual \acrshort{mt}
+-- complete sharing of model parameters, which we are using in this work.
 
 
 \subsection{Multi-lingual machine translation}
 
 With constant improvement of neural \acrshort{mt} systems performance,
 researchers started to experiment with incorporating multiple source
-and/or target languages into one model,
-and the results are promising: having L1\to{}L2 and L2\to{}L3 non-parallel
-corpora allows to train a model that can produce L1\to{}L3 translation
-of decent quality; having high-resource L1 and low-resource L2
-from the same language
-group helps increase Source\to{}L2 translation quality with pretraining on
-Source\to{}L1 data.
-In general, in some situations using more target and/or source languages in one translation
-model may not only unsignificantly decrease its performance but also to improve it.
+languages, or target languages, or both, into one model,
+and the results are promising:
+\begin{itemize}
+	\item having \dir{L1}{L2} and \dir{L2}{L3} non-parallel
+	corpora allows to train a model that can produce \dir{L1}{L3} translation
+	of decent quality \fix{cite some paper};
+	\item having a high-resource L1 and low-resource L2
+	from the same language group helps increase \dir{Source}{L2} translation
+	quality with pretraining on \dir{Source}{L1} data \fix{cite the paper}.
+\end{itemize}
 
 Even if the concept of combining multiple languages into one model and possible outcomes
 of such combination may seem intuitive, there exist multiple approaches of how exactly
@@ -225,23 +240,22 @@ this might be performed. As for current time, \cite{Dabre2019} categorizes
 MNMT (multi-lingual neural machine translation) in the following way
 (Figure \ref{fig:mnmt_categorized}):
 
-\textbf{Multivay translation.}
+\textbf{Multi-Way Translation.}
 The goal is constructing a single \acrshort{nmt} system for
 one-to-many, many-to-one or many-to-many
 translation using parallel corpora for more than one language pair.
 
 \textbf{Low or Zero-Resource Translation.}
-Large amount of parallel texts of high quality is available for most of European
+Large amounts of parallel texts of high quality are available for most of European
 languages. However, it is not true for most of other languages in the world.
-Three main directions have been studied these cases.
+Three main directions have been studied for these cases.
 \textit{Transfer learning}: Transferring translation knowledge from a high-resource language pair
 to improve the translation of a low-resource language pair.
 \textit{Pivot translation}: Using a high-resource language (usually English) as a pivot to translate
 between a language pair.
 \textit{Zero-shot translation}: Translating between language pairs without parallel corpora.
 
-\textbf{Multi-Source Translation.} Important documents and internationally popular books have
-been translated into many languages. Having the source side represented by multiple languages
+\textbf{Multi-Source Translation.} Having the source side represented by multiple languages
 may increase translation quality in general or help to remove ambiguities present in one or another
 source language (e.g. cases, noun genders, etc.).
 
@@ -261,21 +275,46 @@ source language (e.g. cases, noun genders, etc.).
 \end{figure}
 
 
-\subsection{Massively multi-lingual machine translation with complete sharing}
+\subsection{Massively multi-lingual machine translation \todo{with complete sharing}}
 \label{section:multitarget_theory}
 
-In \cite{aharoni-etal-2019-massively} models with up to 103 languages were tested.
-English centric in-house dataset was used to train En\to{}Any and Any\to{}En multilingual models.
+\citet{johnson-etal-2017-googles} proposed a way to build a multi-lingual
+machine translation model without any changes to the \emph{Transformer} architecture.
+The only change was performed on the input data.
+To make the \emph{Transformer} model process multi-lingual data,
+they added the desired target language tag to the source sentence.
+
+For example, the following \dir{En}{Cz} sentence pair:
+\begin{displayquote}
+Hello world! \to{} Ahoj světe!
+\end{displayquote}
+is modified to:
+\begin{displayquote}
+\tagto{cs} Hello world! \to{} Ahoj světe!
+\end{displayquote}
+
+With the given method, it is possible to produce translations in multiple
+languages using the same model just by altering the prepended target language tag.
+It was also demonstrated that this method slightly improves translation quality for 
+low resource languages when compared to monolingual translation model.
+
+In \cite{aharoni-etal-2019-massively}, models with up to 103 languages were tested.
+English centric in-house dataset was used to train \dirmany{En}{Any} and
+\dir{$\{$Any$\}$}{En} multilingual models.
 The average number of examples per language pair is 940k:
 for 13 out of the 102 pairs there were less than one million examples available.
-All languages from 5-to-5 model are present in 25-to-25, same is true for all languages from 25-to-25 with respect to 50-to-50 and so forth.
-In all cases they trained large Transformer model with 473.7M parameters.
-As can be seen on Table \ref{tab:aharoni-2019-performance-drop}, the quality of translation
-is significantly worse when model is trained to translate more languages.
-However, it is worth reminding that this many-to-many experiment may have different results due to many-to-one direction present in it.
 
-The decrease of model's performance with adding more target langueges
-is clearly shown in \cite{aharoni-etal-2019-massively}.
+In one of the experiments, they varied the number of languages in the model and measured
+the model's performance on the specified set of translation directions.
+They started with a 5-to-5 model with English, Arabic, French, Russian, and Ukrainian selected.
+Given that the dataset was English-centric, they trained the 5-to-5 model to translate
+in \dirmany{En}{Ar, Fr, Ru, Uk} and \dirmanyrev{Ar, Fr, Ru, Uk}{En} directions.
+Therefore, name 5-to-5 refers to the model's ability to accept source sentence in 5 languages
+and to translate into the same five languages.
+For 25-to-25 model they added 20 more randomly selected languages to the 5-to-5 setup.
+In all the cases they trained a large Transformer model with 473.7M parameters.
+As can be seen in Table \ref{tab:aharoni-2019-performance-drop}, the quality of translation
+is significantly worse when a model is trained to translate more languages.
 
 
 \begin{table}[h!]
@@ -284,11 +323,11 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 \toprule
            & En-Ar & En-Fr & En-Ru & En-Uk \\
 \midrule
-5-to-5     & \textbf{12.42} & \textbf{37.3} & \textbf{24.86} &         16.48  \\
-25-to-25   &         11.77  &         36.79 &         23.24  & \textbf{17.17} \\
-50-to-50   &         11.65  &         35.83 &         21.95  &         15.32  \\
-75-to-75   &         10.69  &         34.35 &         20.7   &         14.59  \\
-103-to-103 &         10.25  &         34.42 &         19.9   &         13.89  \\
+5-to-5     & \textbf{12.42} & \textbf{37.30} & \textbf{24.86} &         16.48  \\
+25-to-25   &         11.77  &         36.79  &         23.24  & \textbf{17.17} \\
+50-to-50   &         11.65  &         35.83  &         21.95  &         15.32  \\
+75-to-75   &         10.69  &         34.35  &         20.70  &         14.59  \\
+103-to-103 &         10.25  &         34.42  &         19.90  &         13.89  \\
 \bottomrule
 \end{tabular}
 \mycaption{\acrshort{bleu} scores for translation in one direction
@@ -317,13 +356,13 @@ is clearly shown in \cite{aharoni-etal-2019-massively}.
 	\end{minipage}
 	\mycaption{
 		Tranlsation performance for 102 languages from
-		\citet{arivazhagan-2019-mmnmt-in-the-wild}
+		\citet{arivazhagan-2019-mmnmt-in-the-wild}%
 	}{
-		Axis \emph{X} is shared between left and right plot.
-		On axis \emph{X} there are languages sorted by amount of training data.
-		Left: amount of training data (axis \emph{Y}) for a language.
+		Axis $X$ is shared between left and right plot.
+		On axis $X$ there are languages sorted by amount of training data.
+		Left: amount of training data (axis $Y$) for a language.
 		Right (best viewed in color): Effect of increasing the number of languages on
-		the translation quality. On the axis \emph{X} the languages are sorted the
+		the translation quality. On the axis $X$ the languages are sorted the
 		same way as on the left plot. The points visualized are 10 languages
 		that are present in all setups
 		from En $\leftrightarrow$ 10 to En $\leftrightarrow$ 102.
@@ -341,5 +380,5 @@ Then we described the most used type of \acrshort{nmt} models --
 self-attention \textit{Transformer} model.
 After that we went over the history of translation evaluation in general and the most
 used method of automatic evaluation -- \acrshort{bleu} -- in particular.
-In the end multi-lingual neural machine tranlsation was reviewed
-with more detailed view into 'complete sharing' scheme.
+In the end, multi-lingual neural machine translation was reviewed
+with more detailed view into `complete sharing' scheme.
