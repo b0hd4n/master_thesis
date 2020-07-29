@@ -621,34 +621,33 @@ Its main features that are useful in this prospective are following:
 	\1 Hardware utilization
 \end{outline}
 
-\begin{figure}[h]
+\begin{sidewaysfigure}[b]
 	\centering
 	\includegraphics[width=1.0\columnwidth]{img/slavic_cyrillic_bg.png}
 	\mycaption{%
-		Single language results visualization: models other
-		target languages are randomly selected
-		vs. those selected from similar group of languages%
+		Training progress dashboard for one translation direction%
 	}{
-		\todo{split it in print-friendly way}
-		Here is a part of interactive report for 'slavic languages with cyrillic script vs. random'
-		experiment. In this specific case models' performace on Bulgarian part of
-		validation set is compared.
+		Here is a part of interactive report for `Slavic languages
+		with Cyrillic script vs. random' experiment.
+		In this specific case models' performance on Bulgarian part of
+		validation set is compared. Note: the visualized BLEU scores are only
+		used during the training and are not used for evaluation.
 
-		\emph{Left}: \acrshort{bleu} score for En\to{}Bg translation direction is monitored with
-		training step on \emph{X} axis (top) and training epoch  (bottom).
+		\emph{Left}: \acrshort{bleu} score for \dir{En}{Bg} translation direction is monitored with
+		training step on $X$ axis (top) and training epoch  (bottom).
 		Each curve represents mean value (line) and its min/max value
 		(range) at the point of time of multiple models' results.
-		Models are grouped by number of target languages and experiment subgroup
-		(En\to{}Bg, En\to{}Slavic and En\to{}Random).
+		Models are grouped by the number of target languages and experiment subgroup
+		(bilingual \dir{En}{Bg}, multilingual \dirmany{En}{Slavic} and \dirmany{En}{Random}).
 
-		\emph{Middle}: Number of targets (axis \emph{X}) vs.
-		\acrshort{bleu} on En\to{}Bg validation set (axis \emph{Y}) vs.
+		\emph{Middle}: Number of targets (axis $X$) vs.
+		\acrshort{bleu} on \dir{En}{Bg} validation set (axis $Y$) vs.
 		update steps (colos with scale at the top).
 
-		\emph{Right}: Individual models' En\to{}Bg validation \acrshort{bleu} scores.
+		\emph{Right}: Individual models' \dir{En}{Bg} validation \acrshort{bleu} scores.
 	}
 	\label{fig:single-lang-group-vs-random-dashboard}
-\end{figure}
+\end{sidewaysfigure}
 
 
 \begin{figure}[h]
@@ -661,36 +660,38 @@ Its main features that are useful in this prospective are following:
 	\includegraphics[width=1.0\columnwidth]{img/inspect-bleu-vs-loss.png}
 	\end{minipage}
 	\mycaption{%
-		Overall model convergence dashboard%
+		Overall convergence dashboard%
 	}{
-		On these two interactive graphs each point represents one model.
+		In these two interactive graphs, each point represents one model.
 		Models that are currently training are visualized here together with
 		completely converged models and those which training process is currently
 		on hold.
 
-		\emph{Left}: axis \emph{X} represents the training loss value,
-		axis \emph{Y} represents the value for the same loss function calculated
+		\emph{Top}: the $X$ axis represents the training loss value,
+		the $Y$ axis represents the value for the same loss function calculated
 		on the validation set. The color of each point represents current training
-		epoch for the model. Normally for any model the point moves from top right
+		epoch for the model. Normally for any model the point \fix{moves} from top right
 		part of this graph to the bottom left part, representing both training and
 		validation loss being gradually decreased during the training procedure.
 		The point that moves to the middle left part of the graph may signalize about
 		either \gls{overfitting} of the model on training set, or difference in data
 		distribution in training and validation set, or else some mistake in training
 		settings.
+		This is useful for finding which training runs need attention and perhaps debugging.
 
-		\emph{Right}: on this plot loss value on the validation set (axis \emph{X})
+		\emph{Right}: in this plot loss value on the validation set (axis $X$)
 		is compared with geometric mean of \acrshort{bleu} scores
 		for each of target languages.
-		For any model during the training procedure its point usually moves from
+		For any model during the training, its point usually \fix{move} from
 		bottom right corner into the cluster of other points.
-		Model which point 'arrives' to any other location than the cluster may need
-		special attention.
+		The model the point of which `arrives' to any other location than
+		the cluster may need special attention.
 	}
 	\label{fig:inspect-convergence}
 \end{figure}
 
 
+\cleardoublepage
 
 \subsection{\todo{Model settings}}
 
@@ -706,24 +707,34 @@ Then the selected parameters were used on all experimends with the dataset.
 The initial \gls{early-stopping} setting was that after 5 consecutive
 validation steps without improvement of validation \gls{loss} value
 the training process stopped.
-However, during the training of first couple of bilingual models the following
-situation have happened quite often.
-Further improving performance on validation set by
-couple of tenths of BLEU points took as much time as reaching the optimal state.
+However, during the training of the first couple of bilingual models
+the following situation has happened quite often:
+further improving performance on validation set by
+couple of tenths of BLEU points took as much time as reaching
+the pre-optimal state.
 
-On the Figure \ref{fig:no_improvement_de} can be seen that path from
-the beginning of training to optimal point B (26.9 \acrshort{bleu})
+In the \cref{fig:no_improvement_de}, it  can be seen that the path from
+the beginning of training to the optimal point B (26.9 \acrshort{bleu})
 took as much time as its further improvement by 0.2 BLEU
 at point D (27.1 \acrshort{bleu}). However, there were certain models
 with a bit bigger improvement after a much longer time, e.g.
 0.8 \acrshort{bleu} points on Figure \ref{fig:no_improvement_fi}.
 
-Possible situations of this kind were discussed in
-Section \ref{section:finishing-the-training}.
-After considering also some of preliminary multilingual runs
-the 'patience' parameter of \gls{early-stopping} was set to 15.
-After 15 consequent validation steps without metric improvement
+This behaviour makes our decision on where to stop particularly
+complicated for multilingual models, as discussed in
+\cref{section:finishing-the-training}.
+After considering also some of preliminary multilingual runs,
+the `patience' parameter of \gls{early-stopping} was set to 15.
+After 15 consequtive validation steps without a metric improvement,
 the training process is stopped.
+
+\fix{it needs to be presented earlier and *commented including motivation*.
+The red lines are unnatural at the first sight.}
+In order to visually highlight when an increase in the validation score
+is observed, we plot the number of ``steps stalled'',
+see the red line in \cref{fig:no_improvement_de}.
+The higher the diagonal line grows, the longer we have to wait for an improvement.
+For instance, we see that the path..from beg to B took...
 
 \begin{figure}[p]
 	\centering
@@ -752,7 +763,7 @@ the training process is stopped.
 	\centering
 	\includegraphics[width=1.0\columnwidth]{img/no_improvement_fi.png}
 	\mycaption{Small improvement during long training}{
-		In this case (\dir{En}{Fi}) the difference is a bit more
+		In this case (\dir{En}{Fi}), the difference is a bit more
 		visible: 21.3 at the first point and 21.9 at the best.
 		Colors and scales are the same as at
 		Figure \ref{fig:no_improvement_de}.
