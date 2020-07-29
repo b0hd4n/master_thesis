@@ -1,6 +1,6 @@
 export TEXINPUTS=../tex//:
 
-all: thesis.pdf abstract.pdf 
+all: thesis.pdf abstract_en.pdf abstract_cz.pdf
 
 # LaTeX must be run multiple times to get references right
 thesis.pdf: $(wildcard *.tex) $(wildcard src/*.tex) bibliography.bib thesis.xmpdata
@@ -23,7 +23,7 @@ thesis.pdf: $(wildcard *.tex) $(wildcard src/*.tex) bibliography.bib thesis.xmpd
 	pdflatex $<
 	pdflatex $<
 
-abstract.pdf: abstract.tex abstract.xmpdata
+abstract_%.pdf: abstract_%.tex abstract_%.xmpdata
 	pdflatex $<
 
 clean:

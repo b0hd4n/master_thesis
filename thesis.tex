@@ -104,12 +104,42 @@ Dedication.
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-Abstract.
+In international and highly-multilingual environments,
+it often happens, that a talk, a document, or any other
+input, needs to be translated into a huge number of other languages.
+Hovewer, it is not always an option to have a distinct system for each
+possible sentence pair due to the fact that such kind of translation
+systems are computationaly demanding.
+
+Combining multiple target languages into one translation model usually
+causes a decrease in quality of output for each its translation
+direction.
+In this thesis we experiment with combinations of target languages
+to see, if specific grouping of them can lead to better results,
+than just randomly selecting target languages.
+
+We make use of recent researches about training a multilingual
+Transformer model without any change to its architecture:
+adding a target language tag to the source sentence.
+
+We trained a number of bilingual and multilingual
+Transformer models and evaluated them on multiple test sets
+from different domains.
+We found, that in most of the cases, grouping related
+target languages into one model caused better performance
+compared to models with randomly selected languages.
+However, when comparing any of tried multilingual models
+with bilingual ones, we noticed that the domain of the test
+set as well as domains of datasets used for sampling
+the training data for each language pair, might have a higher
+effect that the grouping of target languages.
+
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
 \def\Keywords{%
-{Machine translation} {words}
+	{Neural machine translation}, {Multi-target MT},
+	{linguistic relatedness}
 }
 
 %% The hyperref package for clickable links in PDF and also for storing
