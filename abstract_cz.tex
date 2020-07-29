@@ -14,34 +14,36 @@
 
 %% Do not forget to edit abstract.xmpdata.
 
-In international and highly-multilingual environments,
-it often happens, that a talk, a document, or any other
-input, needs to be translated into a massive number of other languages.
-However, it is not always an option to have a distinct system for each
-possible sentence pair due to the fact that such kind of translation
-systems are computationally demanding.
+V mezinárodním a vysoce mnohojazyčném prostředí se často
+stává, že řeč, dokument nebo jakýkoli jiný vstup musí být
+přeložen do velkého počtu jazyků.
 
-Combining multiple target languages into one translation model usually
-causes a decrease in quality of output for each its translation
-direction.
-In this thesis, we experiment with combinations of target languages
-to see, if a specific grouping of them can lead to better results,
-than just randomly selecting target languages.
+Není to vždy možné, mít zvlaštní systém pro každou možnou
+dvojici jazyků vzhledem k tomu, že takový druh překladatelských
+systémů je výpočetně náročný.
 
-We make use of recent researches about training a multilingual
-Transformer model without any change to its architecture:
-adding a target language tag to the source sentence.
+Kombinace více cílových jazyků do jednoho překladového modelu
+obvykle způsobuje snížení kvality výstupu pro každý jeho směr
+překladu.
 
-We trained a number of bilingual and multilingual
-Transformer models and evaluated them on multiple test sets
-from different domains.
-We found that in most of the cases grouping related
-target languages into one model caused better performance
-compared to models with randomly selected languages.
-However, we also found that a domain of the test set,
-as well as domains of data sampled into the training set,
-usually have a more significant effect on improving or
-deterioration of multilingual model's translation quality
-compared to the bilingual one.
+V této práci provádime experimenty s kombinací cílových jazyků,
+abychom zjistili, zda jejich nejaké konkrétní seskupení může vést
+k lepším výsledkům, v porovnání s náhodným výběrem cílových jazyků.
+
+Využíváme výsledky nejnovějších výzkumích prací o školení
+vícejazyčného modelu transformátoru beze změny jeho architektury:
+přidáváme značku cílového jazyku do zdrojové věty.
+
+Natrénováli jsme řadu dvojjazyčných a vícejazyčných Transformer
+modelů a vyhodnotili jsme je na několika testovacích sadách z
+různých domén.
+Zjistili jsme, že ve většině případů seskupení souvisejících
+cílových jazyků do jednoho modelu způsobuje lepší výkon ve
+srovnání s modely s náhodně vybranými jazyky.
+
+Zjistili jsme však také, že doména testovací množiny, stejně jako
+domény dat vybráných do trénovácí množiny, má obvykle významnější
+vliv na zlepšení nebo zhoršení kvality překladu vícejazyčného modelu
+ve srovnání s dvojjazyčnou.
 
 \end{document}
