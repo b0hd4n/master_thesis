@@ -48,7 +48,6 @@ similar patterns of subwords.}
 
 	\begin{minipage}{0.48\textwidth}
 		\mycaption{En\to{}De \acrshort{bleu} score difference: Random vs. Germanic}{
-			\fix{remove n\_targets 2 and 4}
 			On $X$ axis - number of target languages.
 			On $Y$ axis - difference score comparing with bilingual baseline
 			\acrshort{bleu}.
@@ -76,8 +75,8 @@ similar patterns of subwords.}
 	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 15.6 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{img/da_opensubtitles_15_6.png}
 	}\hfill
-	\subcaptionbox{Europarl/v3, bilingual score: 24.6 \acrshort{bleu}}[0.48\textwidth]{
-		\includegraphics[width=0.48\textwidth]{img/da_europarl_24_6.png}
+	\subcaptionbox{Europarl/v3, bilingual score: 32.5 \acrshort{bleu}}[0.48\textwidth]{
+		\includegraphics[width=0.48\textwidth]{img/da_europarl_v7_32_5.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
 	\subcaptionbox{Subword dictionary size used for target side}[0.48\textwidth]{
@@ -85,11 +84,10 @@ similar patterns of subwords.}
 	}\hfill
 	\begin{minipage}{0.48\textwidth}
 		\mycaption{\dir{En}{Da} \acrshort{bleu} score difference: Random vs. Germanic}{
-		\fix{remove n\_targets 2 and 4}
 		The axis are same as above.
 		(a) For OpenSubtitles test set which which consists of human speech transcripts,
 		adding similar target language to the mix significantly imporves the result.
-		(b) For Europarl/v3 which consists of prepared speeches transcripts and documents,
+		(b) For Europarl/v7 which consists of prepared speeches transcripts and documents,
 		adding more germanic languages to the mix did not worsen Danish translation
 		quality (unlike the case with German).
 		(c) Adding random target language to the mix adds more subwords to the target
@@ -127,7 +125,7 @@ added to the mix.
 	\subcaptionbox{OpenSubtitles/v2018, bilingual score: 23.7 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{img/bg_opensubtitles_23_7.png}
 	}\hfill
-	\subcaptionbox{Europarl/v3, bilingual score: 41.4 \acrshort{bleu}}[0.48\textwidth]{
+	\subcaptionbox{Europarl/v7, bilingual score: 41.4 \acrshort{bleu}}[0.48\textwidth]{
 		\includegraphics[width=0.48\textwidth]{img/bg_europarl_41_4.png}
 	}\hfill
 	%\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
