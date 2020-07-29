@@ -16,18 +16,14 @@ a couple of additional experiments on the \gls{en-to-5} dataset.
 
 
 %----------------------------------------------------------------------
-\section{\todo{Bilingual baseline}}
+\section{\fix{Bilingual baseline}}
 \label{section:bilingual_baseline}
 
-% mNMT models en-to-4 and 4-to-en trained;
-%  1) \tagto{xx} added to the source;
-%  2) target language encoded separately.
-% \acrshort{bleu} scores are comparable using both approaches.
-
 We trained bilingual models on the \gls{en-to-36} dataset and received
-a number of values for each translation direction.
+a number of values for each translation direction, each value reflecting
+the performance on a particular domain of the corpus.
 Test results for relevant target directions (i.e. languages from
-'Germanic' and 'Slavic with Cyrillic script'
+`Germanic' and `Slavic with Cyrillic script'
 from Section \ref{subsection:proposed_experiments})
 are shown in Table \ref{table:bilingual-results}.
 For example, for \dir{En}{De} direction, we trained a bilingual model.
@@ -42,7 +38,8 @@ will be compared with these values.
 	\centering
 	\includegraphics[width=0.9\columnwidth]{img/bilingual_en_de.png}
 	\mycaption{\dir{En}{De} bilingual results}{
-		Datasets on the \emph{X} axis are sorted by declining BLEU score.
+		Datasets on the $X$ axis are sorted by declining BLEU score.
+		\fix{Color each column by dataset's group or add prefixes}
 	}
 	\label{fig:bilingual_en_de}
 \end{figure}
@@ -109,7 +106,7 @@ erzielte Kompromissvereinbarung zu Artikel 5 Absatz 4.
 \vspace{\baselineskip}
 
 
-Next prioritized sources for sampling training data were
+The next prioritized sources for sampling training data were
 Eurobookshop and OpenSubtitles.
 The first dataset has domain and vocabulary similar to the Europarl dataset.
 OpenSubtitles dataset has data of a different domain:
@@ -150,6 +147,12 @@ to the verb for 3. person, singular.
 \end{minipage}
 \vspace{\baselineskip}
 
+The main reason for introducing these detailed and domain-specific
+baselines is that we want to make comparisons of BLEU scores as
+reliable as possible.
+Specifically, since different languages are differently covered by
+the text domains, a single BLEU over a mixed test set would likely
+hide important observations.
 
 %----------------------------------------------------------------------
 \section{\todo{Multilingual baseline}}
@@ -160,38 +163,37 @@ we trained multilingual baseline models -- the models with randomly
 selected sets of targets.
 We generated RANDOM task in a way we described in \cref{section:training_tasks}.
 
+As we have seen in \cref{section:multitarget_theory}, models with more languages
+in the mix usually perform slightly or significantly worse than bilingual ones.
+
+However, there might be different unexpected effects due to slight domain-wise differences
+in corpora content for different target languages.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.0\columnwidth]{img/random_en_de.png}
-	\mycaption{En\to{}De monolingual baseline results (RANDOM)}{
+	\mycaption{\dir{En}{De} multilingual baseline results (RANDOM)}{
+		BLEU scores for \dir{En}{De} of multigarget models with
+		randomly selected target languages and German as one
+		of the targets.
 		Datasets with BLEU lower than 10 are removed from
 		this figure.
 	}
 	\label{fig:random_en_de}
 \end{figure}
 
-
-
-%----------------------------------------------------------------------
-\section{Expected results}
-
-As we have seen in section \ref{section:multitarget_theory}, models with more languages
-in the mix usually perform slightly or significantly worse than bilingual ones.
-Also, for bilingual baselines no significant change in performace is expected with adding
-the target language tags.
-
-However, there might be different unexpected effects due to slight domain-wise differences
-in corpora content for different target languages.
-
-
-%----------------------------------------------------------------------
-\section{Performance drop on massively multilingual setup}
-1-to-3, 5, 7, etc. models on en-to-36 dataset (0.9 mil. sentences per target language)
-
+\todo{?}
 When the size of the model is fixed, adding more translation directions usually causes
-worsening of its performance. Multiple studies have shown this to be truth for
-many-to-many setup.
+worsening of its performance.
 
+\fix{refer to the table, explain, something like}
+Across all considered configurations (e.g. English to 5 target languages),
+there are too many specific settings how to conduct the experiment.
+Already the choice of the particular languages offers too many setups
+and we cannot afford to run them all.
+We thus randomly sample and report the average BLEU and standard deviation
+over all the particular runs we performed.
+The actual number of runs is given in the column `count'.
 
 
 \begin{table}[h!]
@@ -218,12 +220,12 @@ many-to-many setup.
 	\centering
 	\begin{tabular}{rrrrrrr}
 	\toprule
-	n\_targets & mean & count & std \\
+	n\_targets &      mean &  std & count \\
 	\midrule
-	        1 &     19.50 &    1 &   --  \\
-	        2 &     18.88 &    4 &  0.39 \\
-	        3 &     17.45 &    4 &  0.52 \\
-	        4 &     17.80 &    2 &  0.42 \\
+	        1  &     19.50 &  --  &     1 \\
+	        2  &     18.88 & 0.39 &     4 \\
+	        3  &     17.45 & 0.52 &     4 \\
+	        4  &     17.80 & 0.42 &     2 \\
 	\bottomrule
 	\end{tabular}
 	
@@ -267,8 +269,8 @@ many-to-many setup.
 
 
 %----------------------------------------------------------------------
-\section{Performance decrease on richer data sets}
-1 to 3, 4, 5 on UN corpus (much more sentence pairs per target language)
+\section{\todo{Performance decrease on richer data sets}}
+1 to 1, 2, 3 on UN corpus (much more sentence pairs per target language)
 
 \begin{table}[h!]
 \centering
