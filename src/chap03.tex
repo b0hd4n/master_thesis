@@ -267,29 +267,59 @@ The actual number of runs is given in the column `count'.
 % \label{ table:ru/OpenSubtitles/v2016 }
 % \end{table}
 
+\cleardoublepage
 
 %----------------------------------------------------------------------
-\section{\todo{Performance decrease on richer data sets}}
-1 to 1, 2, 3 on UN corpus (much more sentence pairs per target language)
+\section{\todo{Additional experiments with richer dataset}}
 
-\begin{table}[h!]
+Additionaly to the previus results, we trained a couple of
+1-to-1, 1-to-2 and 1-to-3 models on the bigger dataset from
+\cref{subsection:en-to-5} -- \gls{en-to-5}.
+This dataset has the two main differences:
+\begin{itemize}
+	\item it has much more sentence pairs per target language;
+	\item it is created from a parallel corpus.
+\end{itemize}
+
+The first point refers to the fact, that for each target language
+it contains 10 millions of sentence pairs; 5 thousand of which
+were used for a validation set, another 5 thousand were used
+for a test set, and all remaining is a test set.
+
+The second point means, that for every sentence pair for
+one of the languages there is a sentence pair with the same
+source side for every other target language.
+
+
+\begin{table}[h]
 \centering
-\begin{tabular}{r|c}
+\begin{tabular}{c|ccc}
 \toprule
-model         & BLEU  \\
+	model targets &    Es &    Fr &    Ru \\
 \midrule
-m.esfrru t.ru & 40.35 \\
-m.esru t.ru   & 42.16 \\
-m.frru t.ru   & 41.95 \\
-m.ru t.ru     & 44.20 \\
-m.esfrru t.fr & 45.03 \\
-m.esfr t.fr   & 46.84 \\
-m.frru t.fr   & 45.66 \\
-m.fr t.fr     & 48.64 \\
-m.esfrru t.es & 56.33 \\
-m.esfr t.es   & 57.94 \\
-m.esru t.es   & 57.31 \\
-m.es t.es     & 59.94 \\
+	Es, Fr, Ru    & 56.33 & 45.03 & 40.35 \\
+\midrule
+	Es, Fr        & 57.94 & 46.84 &  ---  \\
+	Fr, Ru        &  ---  & 45.66 & 41.95 \\
+	Es, Ru        & 57.31 &  ---  & 42.16 \\
+\midrule
+	Es            & 59.94 &  ---  &  ---  \\
+	Fr            &  ---  & 48.64 &  ---  \\
+	Ru            &  ---  &  ---  & 44.20 \\
 \bottomrule
 \end{tabular}
+\mycaption{Results of an additional experiment on the larget corpus}{
+	Targets in the first column refer to a model's targets,
+	given that English is always the source language.
+	E.g. the first row shows results for a \dirmany{En}{Es, Fr, Ru}
+	model.
+	Further columns show BLEU scores for specific target direction,
+	written in the column's header.
+	For example, the \dirmany{En}{Es, Fr, Ru} model's BLEU score
+	for \dir{En}{Fr} part of the test set is 45.03.
+	The \dirmany{En}{Es, Fr} model has a \dir{En}{Es} score of 57.94
+	and a \dir{En}{Fr} score of 46.84, but does not have any
+	score for \dir{En}{Ru} part of test set.
+}
+\label{table:un_results}
 \end{table}
