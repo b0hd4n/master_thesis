@@ -144,6 +144,10 @@ then EUbooks, OpenSubtitles, and then from all remaining sub-datasets.
 The same procedure was used for validation set sentences per each language pair.
 The test sets were left separate, so that the result on each domain would be observable.
 
+The \acrshort{bpe} algorithm was used on both target and source sides of the
+training set. After that, this vocabulary was used to preprocess (segment into subwords)
+the training set, the validation set, and all the test sets.
+
 For our experiments we used only the part of the resulting ELITR dataset where
 the source language is English.
 This way we received a dataset with one source (English) and 36 target 
@@ -166,18 +170,47 @@ Although this would not directly lead to unfair increase of the test score,
 such sentence pairs were removed from the training sets.
 This filtering decreased the number of sentence pairs
 to 0.85-0.95 millions per language pair.
-\todo{describe the figure with stats}
-\todo{describe the table with groups of sub-datasets}
-\todo{group 4: open folder, save file}
-\todo{group 5: Tanzil - completely different domain, Books of 18th cent.-  dated vocabulary
-	      Wikipedia - automaticaly aligned sentences.}
+
+The data statistics for the resulting training set are displayed in \cref{fig:language_statistics}.
+The first plot shows the amount of sentence pairs per translation direction, e.g.
+the value for the `cs' column refers to the \dir{En}{Cs} part of the training set.
+Because the source side is always in English, from the `Average \emph{source} sentence length'
+plot (in subwords) we can deduce that for some languages the sentences are almost three times
+as long as for the others, e.g. \dir{En}{Is} vs. \dir{En}{De}.
+The shape of the curve displays the difference in domains of parts of the training set.
+The `Average \emph{target} sentence length' curve is a bit different: the most possible
+explanation is that different source languages are segmented differently and may have
+different number of words for the same translation.
+Unique subwords sount at the source side reflects the diversity of the respective part
+of the training set.
+For the last plot, the higher number means that there were more words left as the whole
+words and not splitted into subwords.
+
+We also grouped the sub-datasets into groups by their domain
+(see \cref{tab:subdatasets_groups}).
+In the first group, the sub-datasets mostly consist of
+either documents, or meeting proceedings.
+The sentences are longer, drier and more formal.
+In the second group, the datasets domains are news and
+commentaries to the news articles.
+The vocabulary is diverse and the sentences are less formal.
+Spoken language transcripts are represented in the third group:
+informal speech, spoken vocabulary, unfinished sentences.
+
+As for groups 4 and 5, we expect to observe much lower results
+in any experiment. The fourth group has much shorter sentences
+and very different vocabulary.
+In the fifth group: the `Tanzil' consists of Quran texts, so its sentences'
+structure and the vocabulary is very different from the most data in the training set;
+The `Books' dataset contains sentences from 18th century books, so the issue is the same.
+The `Wikipedia' consists of automaticaly aligned sentences.
 
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c|p{0.5\columnwidth}|p{0.4\columnwidth}}
 	\toprule
-	     group & subdataset names  & description \\
+	     group & sub-dataset names  & description \\
 	\midrule
 	 1 &  Europarl/vx, DGT, MultiUN, EUbookshop, JRC-Acquis,
 	      ECB, EMEA
