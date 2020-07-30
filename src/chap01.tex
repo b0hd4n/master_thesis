@@ -1,4 +1,4 @@
-\chapter{Background}
+\chapter{\edit{Background}}
 
 In this chapter, we go through the theory of methods which are used in the work.
 
@@ -83,9 +83,50 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 
 %----------------------------------------------------------------------
-\section{\todo{Preprocessing: BPE}}
+\section{\edit{Preprocessing: BPE}}
 \label{section:bpe}
-\todo{models for the big UN corpus were trained with SentencePiece, not BPE}
+
+The words that are rare or belong to some other domain, than the domain
+of the training data the model has seen during the training, are called
+\acrshort{oov} words.
+The \acrfull{bpe} algorithm \parcite{Gage1994} of data compression
+was successfully adopted for approaching this issue by \perscite{Sennrich2016}.
+Its idea is that the less frequent words are segmented into subword units,
+while the more frequently occuring ones remain to be represented as a single
+tokens (see \cref{exmp:bpe_segmentation}).
+
+In short, the algorithm is the following:
+\begin{outline}
+	\1 Specify the vocabulary size
+	\1 Parse the training set and collect all unique characters
+
+\end{outline}
+
+\vspace{\baselineskip}
+\begin{minipage}[t]{0.9\textwidth}
+
+\textbf{Source:} You can definitely ride a bicycle or a motorcycle in
+	Zaporizhzhia.
+
+\textbf{Segmented:} You can defi@@ nitely ride a bi@@ cycle or a motor@@
+	cycle in Z@@ a@@ p@@ o@@ r@@ i@@ z@@ h@@ z@@ \\
+	h@@ i@@ a@@ .
+
+
+	\begin{exmp}
+	Suppose, this sentence appears in an English corpus with rare
+	proper names in other languages or even scripts.
+	Then it might look after the segmentation in the following way:
+	the frequent words left the same, some were split
+	by subwords, a rare personal noun is even splitted by characters.
+	The `@@' at the end of a subword is added when it is not
+	the end of a word.
+	\label{exmp:bpe_segmentation}
+	\end{exmp}
+
+\end{minipage}
+\vspace{\baselineskip}
+
 
 %----------------------------------------------------------------------
 \section{Translation evaluation}
