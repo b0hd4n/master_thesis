@@ -2,9 +2,32 @@
 \addcontentsline{toc}{chapter}{Introduction}
 With increasing availability of computational resources and enormous amount
 of publicly available corpora it is now possible to obtain
-a \acrfull{mt} system which produces translations of acceptable quality.
+a \acrfull{mt} system, which produces translations of acceptable quality.
 But in the use cases similar to conferences, where one speech is translated
 into multiple target languages, the same amount of models needs to be deployed.
 Another option is to use multilingual \acrshort{mt} system for all needed languages together,
 which may lead to a decreased quality of translations. \par
 
+The aim of this master thesis is to explore whether the relatedness of target languages in multitarget models could soften the translation quality decrease, caused by adding more and more languages into the mix.
+
+
+The presented work consists of five chapters:
+\begin{itemize}
+    \item In the first chapter, we introduce the theoretical background for this thesis.
+
+ \item In the second chapter, we describe the setup for the experiments.
+First, we specify the questions to be answered and propose the experimets to do that:
+bilingual systems, multilingual systems with unrelated target languages, and then
+multilingual systems with related target languages.
+Then, we describe the data that was used, its preprocessing and sampling.
+After that, we describe the training pipeline and the experiment monitoring tools.
+
+ \item In the third section, we present some selected results that were received after training
+bilingual models and multilingual models with unrelated target languages.
+
+ \item In the fourth section, we present the most relevant results from the main experiment --
+multilingual models with related targets.
+
+ \item In the discussion section, we present the result, received during a set of experiments, described in Chapter 3 and Chapter 4.
+
+\end{itemize}

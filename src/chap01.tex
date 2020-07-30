@@ -1,14 +1,14 @@
-\chapter{\edit{Background}}
+\chapter{{Background}}
 
-In this chapter, we go through the theory of methods which are used in the work.
+In this chapter, we will discuss the theory of methods used in the thesis.
 
 %----------------------------------------------------------------------
-\section{\edit{History of machine translation}}
+\section{{History of machine translation}}
 
 The history of \acrfull{mt} started with the `Translation' memorandum
 by \citet{Weaver1955}, where the first goals and ideas were proposed.
 Only in late 1988 the idea of statistical machine translation was 
-brought back to the research world by IBM's research center \citet{stat-mt}.
+brought back to the research world by IBM's research center \parcite{stat-mt}.
 
 After years of domination of a statistical approach to \acrshort{mt},
 first \acrfull{nmt} systems were introduced:
@@ -17,7 +17,7 @@ sequence-to-sequence models (\inparcite{Sutskever2014-lstm}; \inparcite{Cho2014}
 Later, \acrfull{rnn} based models were improved by introducing an
 \emph{attention} mechanism \citep{Bahdanau2014-attention}.
 
-Various window lengths in \acrshort{cnn} architectures allowed to capture
+Various window lengths in \acrshort{cnn} architectures allowed capturing
 long range relations as well as short range ones;
 still the range was limited by the maximum window length.
 In \acrshort{rnn}-like architectures, \acrfull{lstm} and \acrfull{gru} cells
@@ -25,7 +25,8 @@ were used, as their structure allowed to pass the internal state
 on longer distances due to selective forgetting.
 
 %----------------------------------------------------------------------
-\section{\edit{Transformer model}}
+\section{{Transformer model}}
+\label{section:transformer}
 
 Introduced in \perscite{vaswani-2017-transformer}, Transformer model is used as a base
 for numerous state-of-the-art systems as can be seen for example in 
@@ -83,7 +84,7 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 
 %----------------------------------------------------------------------
-\section{\edit{Preprocessing: BPE}}
+\section{{Preprocessing: BPE}}
 \label{section:bpe}
 
 The words that are rare or belong to some other domain, than the domain
@@ -97,8 +98,8 @@ tokens (see \cref{exmp:bpe_segmentation}).
 
 In short, the algorithm is the following:
 \begin{outline}
-	\1 Specify the vocabulary size
-	\1 Parse the training set and collect all unique characters
+	\1 Specify the vocabulary size;
+	\1 Parse the training set and collect all unique characters.
 
 \end{outline}
 
@@ -116,9 +117,9 @@ In short, the algorithm is the following:
 	\begin{exmp}
 	Suppose, this sentence appears in an English corpus with rare
 	proper names in other languages or even scripts.
-	Then it might look after the segmentation in the following way:
-	the frequent words left the same, some were split
-	by subwords, a rare personal noun is even splitted by characters.
+    Then after the segmentation it may look in the following way:
+	the frequent words would be left in the same form, some would be split
+	by subwords, whereas a rare personal pronoun could even be split by characters.
 	The `@@' at the end of a subword is added when it is not
 	the end of a word.
 	\label{exmp:bpe_segmentation}
@@ -263,9 +264,9 @@ report it in percentage points from 0 to 100.
 
 In this section, we have a closer look at the area of \acrshort{mt},
 which this thesis is dedicated to -- multi-target \acrshort{mt}.
-First, we talk about multi-lingual \acrshort{mt} in general: multi-way,
+First, we will talk about multi-lingual \acrshort{mt} in general: multi-way,
 multi-source and multi-target.
-Later we describe the specific approach from multi-lingual \acrshort{mt}
+After that, we will describe the specific approach from multi-lingual \acrshort{mt}
 -- complete sharing of model parameters, which we rely on in this work.
 
 
@@ -300,11 +301,17 @@ translation using parallel corpora for more than one language pair.
 \textbf{Low or Zero-Resource Translation.}
 Large amounts of parallel texts of high quality are available for most of European
 languages. However, it is not true for most of other languages in the world.
-Three main directions have been studied for these cases.
+Three main directions have been studied for these cases:
+
+
 \textit{Transfer learning}: Transferring translation knowledge from a high-resource language pair
-to improve the translation of a low-resource language pair.
+to improve the translation of a low-resource language pair;
+
+
 \textit{Pivot translation}: Using a high-resource language (usually English) as a pivot to translate
-between a language pair.
+between a language pair;
+
+
 \textit{Zero-shot translation}: Translating between language pairs without parallel corpora.
 
 \textbf{Multi-Source Translation.} Having the source side represented by multiple languages
@@ -356,10 +363,10 @@ It was also demonstrated that this method slightly improves translation quality 
 low resource languages when compared to monolingual translation model.
 
 In \cite{aharoni-etal-2019-massively}, models with up to 103 languages were tested.
-English centric in-house dataset was used to train \dirmany{En}{Any} and
+English-centric in-house dataset was used to train \dirmany{En}{Any} and
 \dir{$\{$Any$\}$}{En} multilingual models.
 The average number of examples per language pair is 940k:
-for 13 out of the 102 pairs there were less than one million examples available.
+for 13 out of the 102 pairs there was less than one million examples available.
 
 In one of the experiments, they varied the number of languages in the model and measured
 the model's performance on the specified set of translation directions.
@@ -367,7 +374,7 @@ They started with a 5-to-5 model with English, Arabic, French, Russian, and Ukra
 Given that the dataset was English-centric, they trained the 5-to-5 model to translate
 in \dirmany{En}{Ar, Fr, Ru, Uk} and \dirmanyrev{Ar, Fr, Ru, Uk}{En} directions.
 Therefore, name 5-to-5 refers to the model's ability to accept source sentence in 5 languages
-and to translate into the same five languages.
+and to perform translations into the same five languages.
 For 25-to-25 model they added 20 more randomly selected languages to the 5-to-5 setup.
 In all the cases they trained a large Transformer model with 473.7M parameters.
 As can be seen in Table \ref{tab:aharoni-2019-performance-drop}, the quality of translation
@@ -432,11 +439,11 @@ is significantly worse when a model is trained to translate more languages.
 %----------------------------------------------------------------------
 \section{Conclusion}
 
-In this chapter we introduced theoretical and historical background for this work.
+In this chapter we introduced theoretical and historical background for this thesis.
 Firstly, we took a short walk through the history of machine translation.
-Then we described the most used type of \acrshort{nmt} models --
+Then we described the most commonly used type of \acrshort{nmt} models --
 self-attention \textit{Transformer} model.
-After that we went over the history of translation evaluation in general and the most
+After that, we went over the history of translation evaluation in general and the most
 used method of automatic evaluation -- \acrshort{bleu} -- in particular.
-In the end, multi-lingual neural machine translation was reviewed
+Finally, multi-lingual neural machine translation was reviewed
 with more detailed view into `complete sharing' scheme.

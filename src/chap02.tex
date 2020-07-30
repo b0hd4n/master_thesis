@@ -5,7 +5,7 @@ In this chapter, we describe the data used for experiments, training setup
 and experiments that were run to answer the questions asked in this thesis.
 
 %----------------------------------------------------------------------
-\section{\todo{Questions and constraints}}
+\section{{Questions and constraints}}
 \label{section:questions_and_constraints}
 
 Constraints:
@@ -39,19 +39,19 @@ Questions:
 \label{subsection:starting_point}
 
 The approach described in \cref{section:multitarget_theory} with combining multiple
-translation directions into the standart \emph{Transformer} model can be also used to
+translation directions into the standart \emph{Transformer} model can also be used to
 train just multi-target models, i.e. with one source language and multiple target languages.
-The following papers
+In the following papers
 (\perscite{arivazhagan-2019-mmnmt-in-the-wild}, \perscite{aharoni-etal-2019-massively}),
-which further develop the approach, describe and try many different interesting cases.
+  the approach is furtherly developed, described and many different interesting cases are tested.
 However, in each setting there is usually only one model of each kind considered.
-For example, when in \citet{aharoni-etal-2019-massively} compares 5-to-5,
+For example, when \citet{aharoni-etal-2019-massively} compares 5-to-5,
 25-to-25, 50-to-50, etc. models, there is only one 5-to-5 model, one 25-to-25, etc.
 
 To conduct our experiments, we use this approach, but with the following differences:
 \begin{itemize}
 	\item We fix English as a source language, as we are exploring the multi-target experiments only, .
-	\item For every translation direction and every setting we train multiple models.
+	\item We train multiple models for every translation direction and every setting.
 	E.g. for the \dir{En}{De} translation direction and 1-to-5 setting there are
 	couple of \dirmany{En}{De + 4 randomly selected targets} models.
 	\item We use only up to 5 target languages in the model because of:
@@ -75,7 +75,7 @@ To conduct our experiments, we use this approach, but with the following differe
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Bilingual \gls{baseline}}
 
-Bilingual models. The purpose is to have a reference point to be able to reason how
+The purpose of training bilingual models is to have a reference point to be able to reason how
 does every additional target language affects the model's performance.
 \perscite{Siddhant2019} shows that using target language tags results
 in the same model efficiency as separately encoding the target.
@@ -85,20 +85,20 @@ the same training pipeline.
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Multi-lingual baselines (RANDOM)}
 
-Multilingual models with a random set of target languages.
-The purpouse is twofold: 
+For training multilingual models with a random set of target languages
+the purpose is twofold: 
 to show \acrshort{bleu} score decrease with increasing number of target languages and
 to serve as a baseline for multitarget models with target languages grouped by
-in non-random way, e.g. by language group or linguistic similarity.
+in a non-random way, e.g. by language group or linguistic similarity.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Group by language group (SIMILAR)}
 
-Multilingual models with a set of target languages from the same language group.
-Due to shared parts of vocabulary and linguistic properties we expect to
-see better results than for multi-lingual baselines.
-Ideally the results could be comparable with bilingual baselines.
+Multilingual models with a set of target languages from the same language group:
+due to shared parts of vocabulary and linguistic properties we expect to
+receive better results in comparison with multi-lingual baselines.
+Ideally, the results would be comparable with bilingual baselines.
 
 
 % \subsubsection*{Group by linguistic similarity}
@@ -116,7 +116,7 @@ Ideally the results could be comparable with bilingual baselines.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{English to 36 languages}}
+\subsection{{English to 36 languages}}
 \label{subsection:en-to-36}
 
 To observe effects of linguistic similarity of target languages,
@@ -128,11 +128,11 @@ domains.\footnote{Available at \url{http://opus.nlpl.eu/}}
 We made use of the sampling and splitting of the data created by the ELITR project.%
 \footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL\_.pdf}}
 For each of the language pairs and each sub-dataset
-the data was split to training, validation and testing sets.
+the data was split into training, validation and testing sets.
 For each of the two latter sets, 2000 random sentences were selected
 and the rest of the data remained for the training set.
-In cases where the sub-dataset contained less than 16000 sentence pairs,
-no data went to the validation set.
+In cases, where the sub-dataset contained less than 16000 sentence pairs,
+no data was left for the validation set.
 Later, for each language pair there were 1000000 sentence pairs
 sampled from all training sub-sets.
 
@@ -181,10 +181,10 @@ The shape of the curve displays the difference in domains of parts of the traini
 The `Average \emph{target} sentence length' curve is a bit different: the most possible
 explanation is that different source languages are segmented differently and may have
 different number of words for the same translation.
-Unique subwords sount at the source side reflects the diversity of the respective part
+Unique subwords count at the source side reflects the diversity of the respective part
 of the training set.
 For the last plot, the higher number means that there were more words left as the whole
-words and not splitted into subwords.
+words and not split into subwords.
 
 We also grouped the sub-datasets into groups by their domain
 (see \cref{tab:subdatasets_groups}).
@@ -199,7 +199,7 @@ informal speech, spoken vocabulary, unfinished sentences.
 
 As for groups 4 and 5, we expect to observe much lower results
 in any experiment. The fourth group has much shorter sentences
-and very different vocabulary.
+and a very different vocabulary.
 In the fifth group: the `Tanzil' consists of Quran texts, so its sentences'
 structure and the vocabulary is very different from the most data in the training set;
 The `Books' dataset contains sentences from 18th century books, so the issue is the same.
@@ -234,7 +234,7 @@ The `Wikipedia' consists of automaticaly aligned sentences.
 	\centering
 	\includegraphics[width=1.0\columnwidth]{img/train_set_statistics.png}
 	\mycaption{Training data language statistics}{
-		Languages are on the $X$ axis sorted as in \cref{att:list_en-to-36}.
+		Languages that could be observed on the $X$ axis, are sorted in the same way as in \cref{att:list_en-to-36}.
 		From top to bottom:
 		total number of sentence pairs in training set per language,
 		average number of subwords per sentence on the source side,
@@ -248,29 +248,26 @@ The `Wikipedia' consists of automaticaly aligned sentences.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{UN parallel corpus: English to 5 languages}}
+\subsection{{UN parallel corpus: English to 5 languages}}
 \label{subsection:en-to-5}
 
 For an additional experiment about adding non-related target languages
 into the mix, we used `The UN Parallel Corpus v1.0'
 \parcite{ziemski-etal-2016-united}.
 It consists of more that 11 millions sentence 6-tuples in six UN languages,
-i.e. every English sentece has a translation into Arabic (ar), Chinese (zh),
+i.e. every English sentence has a translation into Arabic (ar), Chinese (zh),
 French (fr), Russian (ru), and Spanish (es).
 
-First, we splitted data into training, validation and test sets.
+First, we split the data into training, validation and test sets.
 We selected 30000 sentence tuples into the test set, then from the remaining
 data we took 30000 sentence tuples into the validation set.
-From the remaining data we removed all sentence tuples that overlapped the
-test set in the same way as in \cref{subsection:en-to-36}, which gave us
-10987284 sentence tuples.
+After that all sentence tuples that overlapped the test set in the same way as in the \cref{subsection:en-to-36},  were removed, which gave us 10987284 sentence tuples
 
 After that, we divided each 6-tuple into five sentence pairs,
-where English was used as a source and every other language as a target.
-We also added the target language tag as in \cref{subsection:en-to-36}.
+where English was selected as a source language and all other languages were target languages. We also added the target language tag as seen in  \cref{subsection:en-to-36}.
 
 As a result, we received a dataset in the same format as the \gls{en-to-36}.
-The main differences are:
+The main differences of the new dataset are:
 \begin{itemize}
 	\item the size: training data for each translation direction
 		contains ten times more sentence pairs;
@@ -279,7 +276,7 @@ The main differences are:
 	\item only one test set, due to the previous point.
 \end{itemize}
 When using the same model as for \gls{en-to-36}, these differences may
-allow us to see how the model's translation quality changes if we add
+allow us seeing how the model's translation quality changes if we add
 more target languages in the mix.
 In the following text the `en-to-5' notation refers to this dataset.
 We specify explicitly, if this dataset is used in a experiment;
@@ -295,30 +292,54 @@ are collected and how are they analyzed.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\todo{Training tasks}}
+\subsection{Training tasks}
 \label{section:training_tasks}
 
-\todo{what is a task, multilingual task, sampling tasks for RANDOM and SIMILAR}
-\todo{introduce model \dirmany{En}{L1, L2, ...} notation}
+We define a task as a set of models that needs to be trained.
+In the training pipeline, the task is represented by a plain text file,
+in which each row contains a set of target languages for one model.
+In \cref{exmp:task}, a task for training three bilingual models looks like in
+
+\vspace{\baselineskip}
+\begin{minipage}[t]{0.9\textwidth}
+    germanic\_2.task:
+    
+    ---------------
+    
+    da de
+    
+    da is
+    
+    de is
+
+	\begin{exmp}
+	The task is to train three models with target languages sampled from
+	Germanic group: \dirmany{En}{Da, De} (from English to Danish and German),
+	\dirmany{En}{Da, Is} and \dirmany{En}{De, Is}.
+
+	\label{exmp:task}
+	\end{exmp}
+\end{minipage}
+\vspace{\baselineskip}
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{Data preprocessing and selection}}
+\subsection{{Data preprocessing and selection}}
 \label{section:data_selection}
 \label{section:data_preprocessing}
 
 \subsubsection*{Preprocessing}
-	Both en-to-36 and en-to-5 datasets
-are preprocessed before any sampling in this way:
+	Before any sampling both en-to-36 and en-to-5 datasets
+were preprocessed  in the following way:
 \begin{itemize}
-	\item the vocabulary is created using the \acrshort{bpe}
+	\item the vocabulary was created using the \acrshort{bpe}
 		on both target and source parts of the training set only;
 	\item using the vocabulary, the train set, the validation
-		set, and the test set are segmented and then stored
+		set, and the test set were segmented and then stored
 		in this preprocessed form.
 \end{itemize}
 
-Note, that due to the fact that every sentence starts from a
+It must also be noted, that due to the fact that every sentence starts from a
 target tag, these target tags are not splitted by the \acrshort{bpe}.
 
 \subsubsection*{Dataset subsampling}
@@ -340,23 +361,23 @@ the \emph{\dirmany{En}{L1, L2, ...} validation set}.
 To prepare a training set for a specific model, we need to select
 sentence pairs with relevant source languages from
 \emph{the whole training set}.
-This is done similarly for both \gls{en-to-5} and \gls{en-to-36}
+This step is done in the same way for both \gls{en-to-5} and \gls{en-to-36}
 datasets.
 Further, the notation `\emph{\dirmany{En}{L1, L2, ...} training set}'
 refers to a subsampled in this way training set.
 
-For example, let us take \dirmany{En}{Fr, De} setup, which means that
+For example, let us take the \dirmany{En}{Fr, De} setup, which means that
 the model to be trained should take a source sentence in English and
 produce translation either in French or in German.
-The language of model's output depends on the target tag at the beginning
+The language of the model's output depends on the target tag at the beginning
 of the input sentence, i.e. \tagto{fr} tag in source sentence leads to French
-target.
+target language.
 
 To train such a model, only related sentence pairs are subsampled
 from the whole training set.
 In this case, from \emph{the whole training set} we select only those sentence
 pairs, which source side starts with tags \tagto{fr} or \tagto{de}.
-Such a subsampled dataset is then used to train this model, and refered to 
+Such a subsampled dataset is then used to train this model, and referred to 
 as the \\ \emph{\dirmany{En}{Fr, De} training set}.
 
 
@@ -367,7 +388,7 @@ by selecting only relevant sentence pairs in the same way as the training set,
 i.e. pairs with the target in one of the examined languages.
 For the example setup from above, \dirmany{En}{De,Fr}, the validation set
 consists of an equal amount of \dir{En}{De} and \dir{En}{Fr} sentence pairs.
-E.g. if in the complete validation set there are 1000 sentence pairs for
+E.g., if in the complete validation set there are 1000 sentence pairs for
 each of possible target languages, then for \dirmany{En}{De,Fr}
 model the validation set will contain 2000 sentence pairs, and for
 \dirmany{En}{De,Es,Fr} it will contain 3000 sentence pairs.
@@ -375,17 +396,17 @@ model the validation set will contain 2000 sentence pairs, and for
 \subsubsection*{Test set}
 
 For experiments with \gls{en-to-5} dataset (Section \ref{subsection:en-to-5})
-the test sets are created in the same way as validation sets.
+the test sets are created in the same way as the validation sets.
 For \gls{en-to-36} dataset (Section \ref{subsection:en-to-36})
 the test set is divided on subsets by the source dataset.
-It means, that each of source datasets (like OpenSubtitles/v11, 
+It means, that for each of the source datasets (like OpenSubtitles/v11, 
 Europarl/v7, etc.) there exists a separate test set.
 
-\todo{Why is this needed?}
+\subsubsection*{Example}
 In the experiments proposed above the expected number of models to be trained is quite big.
 First of all, there should be 36 models for \textit{mono-target baseline} for En\to{}36 dataset.
-For \textit{multi-target random} experiment the number is much bigger.
-For example, let us consider a case with En\to{}3 models - each model translates from English to 
+For the \textit{multi-target random} experiment the number is much bigger.
+For example, let us consider a case with En\to{}3 models, where each model translates from English to 
 3 target languages. Specifying that each of 36 target languages from En\to{}36 dataset
 should appear at least in 3 En\to{}3 models, series of random generation of En\to{}3 setups gave
 the smallest amount of such setups equal to 44. For En\to{}5 case with 5 target languages in each
@@ -395,7 +416,7 @@ minimum amount of needed models equal to 34.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\todo{Model settings}}
+\subsection{Model settings}
 
 The initial parameter selection is made with respect to \cite{training-tips}.
 First of all, the hyperparameters of MT model are tuned
@@ -403,18 +424,68 @@ on couple of language pairs from one dataset.
 The parameters leading to the same result in shorter time were preferred.
 Then the selected parameters were used on all experimends with the dataset.
 
-\subsubsection*{Model settings?}
+\subsubsection*{Model settings}
 
-\todo{paste model settings here}
+In all the experiments, models were trained with the same parameters.
+It is a vanilla Transformer model from \cref{section:transformer} with the following
+settings:
+
+\begin{verbatim}
+# General options
+workspace: 7000
+seed: 1111
+# Model options
+type: transformer
+layer-normalization: true
+tied-embeddings-all: true
+# Training options
+sync-sgd: true
+cost-type: ce-mean-words
+dim-vocabs:
+  - 42671
+  - 42671
+disp-freq: 100
+save-freq: 100
+overwrite: true
+max-length: 500
+devices:
+  - 0
+  - 1
+cpu-threads: 0
+mini-batch-fit: true
+maxi-batch-sort: src
+exponential-smoothing: 0.0001
+learn-rate: 0.0004
+lr-warmup: 4000
+lr-decay-inv-sqrt: 4000
+lr-report: true
+clip-norm: 1
+transformer-dropout: 0.1
+label-smoothing: 0.1
+optimizer-delay: 8
+optimizer-params:
+  - 0.9
+  - 0.98
+  - 1e-09
+# Validation set options
+valid-freq: 1000
+valid-metrics:
+  - translation
+  - ce-mean-words
+early-stopping: 15
+beam-size: 6
+normalize: 0.6
+keep-best: true
+\end{verbatim}
 
 \subsubsection*{Tuning early stopping on early runs}
 
-The initial \gls{early-stopping} setting was that after 5 consecutive
+The initial \gls{early-stopping} setting was such, that after 5 consecutive
 validation steps without improvement of validation \gls{loss} value
-the training process stopped.
+the training process would stop.
 However, during the training of the first couple of bilingual models
 the following situation has happened quite often:
-further improving performance on validation set by
+further performance improvement on validation set by
 couple of tenths of BLEU points took as much time as reaching
 the pre-optimal state.
 
@@ -424,8 +495,14 @@ took as much time as its further improvement by 0.2 BLEU
 at point D (27.1 \acrshort{bleu}). However, there were certain models
 with a bit bigger improvement after a much longer time, e.g.
 0.8 \acrshort{bleu} points on Figure \ref{fig:no_improvement_fi}.
+In order to visually highlight when an increase in the validation score
+is observed, we plot the number of ``steps stalled'',
+see the red line in \cref{fig:no_improvement_de}.
+The higher the diagonal line grows, the longer we have to wait for an improvement.
+For instance, we see the path from A to B, where the validation
+metric was not improving for 13 validation steps in \cref{fig:no_improvement_de}.
 
-This behaviour makes our decision on where to stop particularly
+This behaviour makes our decision on where to stop the training process particularly
 complicated for multilingual models, as discussed in
 \cref{section:finishing-the-training}.
 After considering also some of preliminary multilingual runs,
@@ -433,13 +510,6 @@ the `patience' parameter of \gls{early-stopping} was set to 15.
 After 15 consequtive validation steps without a metric improvement,
 the training process is stopped.
 
-\fix{it needs to be presented earlier and *commented including motivation*.
-The red lines are unnatural at the first sight.}
-In order to visually highlight when an increase in the validation score
-is observed, we plot the number of ``steps stalled'',
-see the red line in \cref{fig:no_improvement_de}.
-The higher the diagonal line grows, the longer we have to wait for an improvement.
-For instance, we see that the path..from beg to B took...
 
 \begin{figure}[p]
 	\centering
@@ -477,12 +547,11 @@ For instance, we see that the path..from beg to B took...
 \end{figure}
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\todo{Training}}
+\subsection{Training}
 
 
-During the training procedure, once per specified number of updates
-occurs the checkpointing of the model.
-The model weights are saved to the disk and number of measurements are logged.
+During the training procedure, the checkpointing of the model occurs once per specified number of updates.
+The model weights are saved to the disk and a set of measurements is logged.
 
 \begin{samepage}
 \begin{itemize}
@@ -508,10 +577,10 @@ Hardware usage should also be recorded if possible:
 
 The hardware metrics are not important for model's evaluation
 but may help early spot mistakes like underuse of GPU or CPU, lack of RAM, etc.
-This is why they could possibly be recorded continuously. \todo{link to this point from wandb section}
+This is why they could possibly be recorded continuously. 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{Validation}}
+\subsection{Validation}
 \label{subsection:validation}
 
 The validation set is used to track model's performance during the training
@@ -523,7 +592,7 @@ These measurements are only used during the training and not for the evaluation.
 Once per specified number of steps the validation occurs:
 validation metrics are recorded, for any metric which value was
 improved current model weights are saved as best model by this metric.
-If early stopping condition occurred then the training process is stopped.
+If early stopping condition occurred, then the training process is stopped.
 
 For the validation set, we collect not only the loss function value
 but also the metric of interest, which is \acrshort{bleu} score.
@@ -555,13 +624,12 @@ validation step:
 \end{samepage}
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{Finishing the training}}
+\subsection{Finishing the training}
 \label{section:finishing-the-training}
 
 When should we stop the training?
-It is not possible to say precisely when did the model
-acquire its best performance because of stochastic nature of
-the training algorightm (\acrshort{sgd}).
+It is not possible to say precisely when the model will acquire its best performance because of stochastic nature of
+the training algorithm (\acrshort{sgd}).
 Because of that we need to use some method to decide when
 training process should be stopped.
 
@@ -610,7 +678,6 @@ on computational resources.
 		anymore. Further training leads to poorer performance
 		on unseen data. Stopping the training at this point
 		results in better model's performance on unseen data.
-		Image: 
 	}
 	\label{fig:early_stopping}
 \end{figure}
@@ -620,7 +687,7 @@ on computational resources.
 	\includegraphics[width=0.6\columnwidth]{img/early_stopping_no_improvement.png}
 	\mycaption{\Gls{early-stopping} as the model is not improving}{
 		Even though the metric value on the training set is
-		still slowly improving, the its value on the unseen
+		still slowly improving, its value on the unseen
 		validation set is stalled. Further spending of 
 		computational resources is unjustified.
 	}
@@ -628,12 +695,12 @@ on computational resources.
 \end{figure}
 \end{samepage}
 
-In our case we could use \gls{early-stopping} to ensure more equal conditions
+In our case, we could use \gls{early-stopping} to ensure more equal conditions
 for models with different sizes of training data.
 A suitable number $N$ could be found experimentaly, but which metric should be used?
 
 Given that the task is to train a model that is as good as possible in
-\textbf{every} of its target directions, the \acrshort{bleu} score of
+\textbf{all} of its target directions, the \acrshort{bleu} score of
 the whole translated validation set for this set of languages does not
 say anything about the model's performance in each specified
 translation direction.
@@ -648,8 +715,8 @@ for each target language.
 However, most of frameworks and toolkits can monitor only one metric
 for the early stopping.
 Considering that different validation \acrshort{bleu} scores
-are computed for different parts of the validation set and in
-which are in different languages, they cannot be directly compared
+are computed for different parts of the validation set 
+which are also in different languages, they cannot be directly compared
 and may have different scale.
 
 For example, a model for the \dirmany{En}{De,Fr} direction is being
@@ -672,7 +739,7 @@ with different scale (see \cref{eq:geometric_mean}).
 \end{equation}
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\edit{Testing}}
+\subsection{Testing}
 \label{subsection:testing}
 
 After the training is finished, the received models should be evaluated on unseen
@@ -693,20 +760,20 @@ Let us return to the example setup is \dirmany{En}{De, Fr} and
 suppose the reported validation metrics are the mean loss function value on
 test set and 'translation' (geometric mean of all reported BLEU scores,
 see Section \ref{subsection:validation}).
-After the training is finished, there will be two models: best by
-loss value and best by 'translation'.
-For each of those two records are created: for \dir{En}{Fr} translation
+After the training is finished, there will be two models: the best by
+the loss value and the best by 'translation'.
+Records are then created for each of them: for \dir{En}{Fr} translation
 and for \dir{En}{Es}. In total, 4 results are recorded.
 
 If the model was trained and tested on \gls{en-to-36} dataset,
-than 4 times $n$ records are created, where $n$
-is number of OPUS subdatasets from which the data was sampled.
+then $n$ records are created 4 times, where $n$
+is the number of the OPUS subdataset from which the data was sampled.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Analysis}
 
-After required set of models is trained and their test
+After the required set of models is trained and their test
 metrics are collected, data should be analysed.
 
 For example, let us take these four models: \dirmany{En}{De, Fr},
@@ -731,26 +798,26 @@ the GERMANIC experiment (targets selected from Germanic languages list).
 %----------------------------------------------------------------------
 \section{Training tools}
 
-In the following section we describe the tools that are uset to implement
+In the following section we describe the tools that are used for implementing 
 what was shown in Section \ref{section:method}.
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Toolkits}
 
-There exists a number of different tools that can be used for training a NMT model.
+There is a number of different tools that can be used for training a NMT model.
 General purpouse deep learning programming libraries like
 Tensorflow\footnote{\url{https://tensorflow.org/}} and
-PyTorch\footnote{\url{https://pytorch.org/}} are most popular for deep learning related
+PyTorch\footnote{\url{https://pytorch.org/}} are the most popular for deep learning related
 research. With their help it is possible to construct any of today's state-of-the-art
 NMT models; pre-built and pre-trained models are initially present in such frameworks,
 but it is also possible to describe a model from scratch.
 
-Another option is presented by specialized NMT tool kits.
+Another option is presented by specialized NMT toolkits.
 They usually contain efficient and tested implementations of NMT models as well as some of
-usefull preprocessing tools.
-For the experiments described in \ref{section:experiments} there is a need to train significant
+the usefull preprocessing tools.
+For the experiments described in \ref{section:experiments} there is a need to train a significant
 amount of models with the same architecture and settings but different datasets.
-Due to that fact, in this work the use of specialized NMT tool kit is more suitable.
+Due to that fact, in this work the use of specialized NMT toolkit is more suitable.
 Let us consider the foolowing list of broadly used tool kits as for year 2020,
 presented in \cite{koehn_2020}:
 
@@ -789,31 +856,31 @@ the cluster's users, the following training pipeline was designed:
 \begin{outline}
     \1 Prepare task list
     \1 Iterate over the list working with at most N tasks in parallel
-    \1 For each task
+    \1 For each task:
         \2 Subsample the dataset taking only those sentence pairs with target languages
-	   specified in the task
+	   specified in the task;
 	\2 Run the training procedure for limited amount of time (e.g. for one hour only)
-	   starting with previous checkpoint if it already exists
-	\2 Regularly compute metrics on the developement set and report them
-	\2 On the event of evaluation on the developenemt set save the best model for each metric
-	\2 After time is out the training is stopped and subsampled datasets are removed
-    \1 If for next selected task the model is already trained then select next task from the list
-    \1 If for next selected task the model is currently being trained then decrease
-       the number N of tasks processed in parallel
+	   starting with previous checkpoint if it already exists;
+	\2 Regularly compute metrics on the developement set and report them;
+	\2 On the event of evaluation on the developenemt set save the best model for each metric;
+	\2 After time is out the training is stopped and subsampled datasets are removed.
+    \1 If the model is already trained for the next selected task,  select the next task from the list;
+    \1 If the model is currently being trained for the next selected task, decrease
+       the number N of tasks processed in parallel.
 \end{outline}
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Inspecting the training process}
 
-As the number of models trained and being trained is growing, monitoring of the training
+As the number of trained models, as well as models that are being trained is growing, monitoring of the training
 process becomes more and more complicated. If the experiments are also being run on different
 computational clusters it becomes very possible that a parameter mistakenly set up to different
 value or a corrupted dataset, or even hardware version may lead to an unexpected difference in results.
 
 To address these and other issues that may occur during the training process we use
 Weights$\&$Biases\footnote{\cite{wandb}} experiment tracking tool.
-Its main features that are useful in this prospective are following:
+Its main features that are useful in this prospective are the following:
 \begin{outline}
 	\1 Metric visualization
 		\2 Training and validation loss curves
@@ -884,7 +951,7 @@ Its main features that are useful in this prospective are following:
 		\emph{Top}: the $X$ axis represents the training loss value,
 		the $Y$ axis represents the value for the same loss function calculated
 		on the validation set. The color of each point represents current training
-		epoch for the model. Normally for any model the point \fix{moves} from top right
+		epoch for the model. Normally for any model the point moves from top right
 		part of this graph to the bottom left part, representing both training and
 		validation loss being gradually decreased during the training procedure.
 		The point that moves to the middle left part of the graph may signalize about
@@ -893,12 +960,12 @@ Its main features that are useful in this prospective are following:
 		settings.
 		This is useful for finding which training runs need attention and perhaps debugging.
 
-		\emph{Right}: in this plot loss value on the validation set (axis $X$)
+		\emph{Bottom}: in this plot loss value on the validation set (axis $X$)
 		is compared with geometric mean of \acrshort{bleu} scores
 		for each of target languages.
-		For any model during the training, its point usually \fix{move} from
-		bottom right corner into the cluster of other points.
-		The model the point of which `arrives' to any other location than
+		For any model during the training, its point usually moves from
+		bottom right corner into the cluster of other points with each validation step.
+		The model, the point of which `arrives' to any other location than
 		the cluster may need special attention.
 	}
 	\label{fig:inspect-convergence}

@@ -1,19 +1,47 @@
 \chapter{Discussion}
 \label{chapter:discussion}
 
+In this section we discuss the results from \cref{section:experiment_base}
+and \cref{section:experiment_groups}, and suggest possible ways of further development of the topic.
 
 %----------------------------------------------------------------------
 \section{Results}
 \label{section:results}
 
-More languages in the mix:
- - share word ordering patterns
- - share vocabulary
 
-More training data illustrates the properties of distribution better (some words are rare, some are often used)
 
+Results of the whole master thesis should be viewed in frames of the results, discussed in Chapters 3 and 4 of the current paper.
+
+
+As for \cref{section:experiment_base}, we observed the results that we expected:
+with adding more target languages in the mix, the translation quality, in general, decreases.
+However, there were couple of exceptions, like EUbookshop.
+Even though both Europarl and EUbookshop were preferred sources of sentence pairs
+during the training set creation, the opposite results in this case lead us to
+a more detailed view into the specific dataset contents.
+Also, for the sub-datasets with lower bilingual score, the improvement was observed.
+
+The additional experiment with en-to-5 dataset, which consists of 10 times bigger number
+of sentence pairs per each translation direction, we observed the expected significant decrease
+of the translation quality with adding more languages to the targets.
+
+As for \cref{section:experiment_groups}, the results for two selected groups are
+the opposite. For the `Germanic group', adding a related language to the mix caused
+smaller quality decrease or higher increase. 
+For the `Slavic with Cyrillic script' we observed the opposite effect of adding a related language.
+The possible reason can be the fact, that in the \dir{En}{Uk} dataset there were found
+some \dir{En}{Ru} sentences.
 
 
 %----------------------------------------------------------------------
 \section{Further work}
 \label{section:further_work}
+
+In general, we would propose the following:
+\begin{itemize}
+    \item construct more domain-balanced datasets
+    \item to give an additional attention to the data quality
+    \item try to randomize the segmentation before each epoch: this way the words
+    from richer datasets could be split in different ways, thus enriching the subwords of
+    datasets with smaller presence in the shared vocabulary.
+\end{itemize}

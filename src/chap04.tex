@@ -1,8 +1,9 @@
 \chapter{Group by language groups}
+\label{section:experiment_groups}
 
-\todo{Intro here}
-1 to 2, 3, 4, 5, etc. models on en-to-36 dataset (0.9 mil. sentences per target language)
-compared with random runs
+
+In this section we describe the results of the multilingual models with related target languages, i.e.: 1 to 2, 3, 4, 5, etc. models on en-to-36 dataset (0.9 mil. sentences per target language)
+compared with random runs.
 
 
 %----------------------------------------------------------------------
@@ -11,11 +12,11 @@ compared with random runs
 
 Here Germanic group consists of German, Dutch, Swedish, Danish, Norwegian and Islandic.
 Models \dirmany{En}{Germanic} are compared to \dirmany{En}{non-Germanic}, where non-Germanic consists
-of any langauge except from the Germanic group.
+of any langauge except of the languages from the Germanic group.
 In \cref{fig:de_random_vs_germanic} and \cref{fig:da_random_vs_germanic}, some selected
 results are visualized along with vocabulary changes. Results for OpenSubtitles/v2018 mean
-the \acrshort{bleu} score on test set part sampled from OpenSubtitles/v2018.
-In both figures, the subfigure (a) shows the result on spontaneous or pseudo-spontaneous speech
+the \acrshort{bleu} score on test set part was sampled from OpenSubtitles/v2018.
+In both figures, the subfigure (a) shows the result for spontaneous or pseudo-spontaneous speech
 transcripts, i.e. subtitles, while sub-figure (b) shows the result for prepared
 speeches or documents from Europarl or UN meetings.
 
@@ -29,12 +30,12 @@ In this cases observations are twofold:
 		but worsens them for prepared speech or documents.
 \end{itemize}
 
-\fix{Describe observation (c):
-When comparing the vocabulary size of models where languages related to the
+From the (c), we can see, that when comparing the vocabulary size of models
+where languages related to the
 target German are added with models where random languages are added,
 the vocabulary clearly grows faster with random languages.
 This behaviour is expected and confirms that related languages contain
-similar patterns of subwords.}
+similar patterns of subwords.
 
 \begin{figure}[h]
 	\subcaptionbox{OpenSubtitles/v2018, the baseline is
@@ -48,8 +49,8 @@ similar patterns of subwords.}
 
 	\begin{minipage}{0.48\textwidth}
 		\mycaption{En\to{}De \acrshort{bleu} score difference: Random vs. Germanic}{
-			On $X$ axis - number of target languages.
-			On $Y$ axis - difference score comparing with bilingual baseline
+			On $X$ axis is the number of target languages.
+			On $Y$ axis id the difference score when comparing with bilingual baseline
 			\acrshort{bleu}.
 			Black vertical lines show standard deviation across the
 			runs we sampled.
@@ -85,13 +86,13 @@ similar patterns of subwords.}
 	\begin{minipage}{0.48\textwidth}
 		\mycaption{\dir{En}{Da} \acrshort{bleu} score difference: Random vs. Germanic}{
 		The axis are same as above.
-		(a) For OpenSubtitles test set which which consists of human speech transcripts,
+		(a) For OpenSubtitles test set, which consists of human speech transcripts,
 		adding similar target language to the mix significantly imporves the result.
 		(b) For Europarl/v7 which consists of prepared speeches transcripts and documents,
-		adding more germanic languages to the mix did not worsen Danish translation
+		adding more Germanic languages to the mix did not worsen Danish translation
 		quality (unlike the case with German).
 		(c) Adding random target language to the mix adds more subwords to the target
-		subword dictionary
+		subword dictionary.
 	}
 	\label{fig:da_random_vs_germanic}
 	\end{minipage}
@@ -104,10 +105,10 @@ similar patterns of subwords.}
 \section{Slavic with Cyrillic script}
 \label{section:cyrillic_group}
 
-Here \textit{Slavic with Cyrillic script} group consists of
+The \textit{Slavic with Cyrillic script} group consists of
 Bulgarian, Macedonian, Russian and Ukrainian.
 Models \dirmany{En}{Cyrillic} are compared to \dirmany{En}{non-Cyrillic},
-where non-Cyrillic consists of any langauge except from those from the group above.
+where non-Cyrillic consists of any language except of those selected from the group above.
 In Figures \ref{fig:bg_random_vs_cyrillic} and \ref{fig:ru_random_vs_cyrillic},
 some selected results are visualized along with vocabulary changes.
 Test sets for subfigures (a) and (b) were
@@ -136,7 +137,7 @@ added to the mix.
 	\mycaption{En\to{}Bg \acrshort{bleu} score difference: Random vs. Slavic with Cyrillic script}{
 		The axes are same as for Figures \ref{fig:da_random_vs_germanic}
 		and \ref{fig:de_random_vs_germanic}.
-		There is not any data for Cyrillic and 5 targets as there are only
+		There is no data for Cyrillic and 5 targets as there are only
 		4 such languages in the en-to-36 dataset.
 		Both (a) and (b) show a significant decrease in translation quality
 		as more languages are added to the setup.
@@ -174,7 +175,6 @@ added to the mix.
 	\end{minipage}
 \end{figure}
 
-\todo{can describe some more hidden tables here}
 %\begin{table}[h]
 %\begin{subtable}[t]{1\linewidth}
 %\begin{tabular}{rrrrrrr}

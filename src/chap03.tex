@@ -1,4 +1,5 @@
 \chapter{Bilingual and multi-lingual baselines}
+\label{section:experiment_base}
 
 In this chapter, we describe the baseline experiments.
 Bilingual baselines are needed to specify the starting point:
@@ -16,8 +17,8 @@ a couple of additional experiments on the \gls{en-to-5} dataset.
 
 
 %----------------------------------------------------------------------
-\section{\edit{Bilingual baseline}}
-\label{section:bilingual_baseline}
+\section{Bilingual baseline}
+\label{section:experiment_bilingual_baseline}
 
 We trained bilingual models on the \gls{en-to-36} dataset and received
 a number of values for each translation direction, each value reflecting
@@ -39,23 +40,23 @@ will be compared with these values.
 	\includegraphics[width=0.9\columnwidth]{img/bilingual_en_de.png}
 	\mycaption{\dir{En}{De} bilingual results}{
 		Datasets on the $X$ axis are sorted by declining BLEU score.
-		\fix{Color each column by dataset's group or add prefixes}
 	}
 	\label{fig:bilingual_en_de}
 \end{figure}
 
 % -- table with bilingual results
 \input{src/table_biling_results.tex}
+\cleardoublepage
 % - - - - - -
 
 In \cref{fig:bilingual_en_de} we can see that \acrshort{bleu} scores
 for datasets in group 1 (\cref{tab:subdatasets_groups}), i.e.
 Europarl/v7, MultiUN/v1, DGT/v4 and JRC-Acquis/v3.0 are the highest;
-the lowest it is for sub-datasets from groups 4 and 5, such as
-PHP/v1, KDE/v4, Tanzil/v1, GNOME/v1, and Books/v1.
+at the same time, sub-datasets from groups 4 and 5, such as PHP/v1, KDE/v4,
+Tanzil/v1, GNOME/v1, and Books/v1 received the lowest BLEU scores.
 
 BLEU score values for different test sets cannot be compared directly.
-However, too big or too small value can give us some insight about the
+However, too big or too small, value can give us some insight about the
 data.
 
 Let us look closer at some example translations from different
@@ -65,9 +66,9 @@ by our bilingual \dir{En}{De} model compared with the reference translation
 and two unnamed online translation systems.
 The sentence pair is from the Europarl/v7 sub-dataset of
 \dir{En}{De} test set.
-As was stated in \cref{subsection:en-to-36}, Europarl/v7 was a prioritized
+As it was previously stated in \cref{subsection:en-to-36}, Europarl/v7 was a prioritized
 source of data to be sampled to the training set.
-Even though our translation has different wording comparing to the reference one,
+Even though our translation has different wording in comparison with the reference one,
 the sense is preserved.
 Interestingly, at the same time, our translation is much closer
 to the ones produced by online \acrshort{mt} systems.
@@ -115,10 +116,9 @@ Eurobookshop and OpenSubtitles.
 The first dataset has domain and vocabulary similar to the Europarl dataset.
 OpenSubtitles dataset has data of a different domain:
 transcribed human speech from films and series;
-it has much shorter sentences and the speech of different register.
+it has much shorter sentences and the speech of a different register.
 
-In \cref{exmp:biling_de_opensubtitles}, we can see an issue of another kind
-that might happen: a short sentence might not have all
+In \cref{exmp:biling_de_opensubtitles}, we can see a possible issue of another kind: a short sentence might not have all
 the needed information. Here English `you' in the reference translation
 translates as `ihr' (2. person, plural), and in our translation
 as `Sie' (3. person, plural) which refers to a polite form of `you'.
@@ -159,10 +159,10 @@ the text domains, a single \acrshort{bleu} over a mixed test set would likely
 hide important observations.
 
 %----------------------------------------------------------------------
-\section{\todo{Multilingual baseline}}
-\label{section:multilingual_baseline}
+\section{Multilingual baseline}
+\label{section:experiment_multilingual_baseline}
 
-Next after we have trained bilingual models and collected the results,
+Next, after we have trained bilingual models and collected the results,
 we trained multilingual baseline models -- the models with randomly
 selected sets of targets.
 We generated RANDOM task in a way we described in \cref{section:training_tasks}.
@@ -186,13 +186,10 @@ in corpora content for different target languages.
 	\label{fig:random_en_de}
 \end{figure}
 
-\todo{?}
-When the size of the model is fixed, adding more translation directions usually causes
-worsening of its performance.
-
-\fix{refer to the table, explain, something like}
+In \cref{table:bilingual_ru_and_bg} there are selected results
+for \dir{En}{Bg} and \dir{En}{Ru}.
 Across all considered configurations (e.g. English to 5 target languages),
-there are too many specific settings how to conduct the experiment.
+there are too many specific settings controlling how to conduct the experiment.
 Already the choice of the particular languages offers too many setups
 and we cannot afford to run them all.
 We thus randomly sample and report the average BLEU and standard deviation
@@ -244,8 +241,9 @@ The actual number of runs is given in the column `count'.
     models with two target languages
     (column \emph{n\_targets}) one of which is Bulgarian
     the mean \acrshort{bleu} score is 40.60 with standard deviation 0.20.
-    (b): same way as (a)
+    (b): same way as but evaluating the translation into Russian instead of Bulgarian and on OpenSubtitles test set instead of Europarl. (a)
 }
+	\label{table:bilingual_ru_and_bg}
 \end{table}
 
 
@@ -271,15 +269,15 @@ The actual number of runs is given in the column `count'.
 % \label{ table:ru/OpenSubtitles/v2016 }
 % \end{table}
 
-\cleardoublepage
 
 %----------------------------------------------------------------------
-\section{\todo{Additional experiments with richer dataset}}
+\section{Additional experiments with richer dataset}
+\label{section:experiment_en-to-5}
 
-Additionaly to the previus results, we trained a couple of
+In addition to the previus results, we trained a couple of
 1-to-1, 1-to-2 and 1-to-3 models on the bigger dataset from
 \cref{subsection:en-to-5} -- \gls{en-to-5}.
-This dataset has the two main differences:
+This dataset has two main differences:
 \begin{itemize}
 	\item it has much more sentence pairs per target language;
 	\item it is created from a parallel corpus.
@@ -288,11 +286,11 @@ This dataset has the two main differences:
 The first point refers to the fact, that for each target language
 it contains 10 millions of sentence pairs; 5 thousand of which
 were used for a validation set, another 5 thousand were used
-for a test set, and all remaining is a test set.
+for a test set, and all the remaining is a test set.
 
-The second point means, that for every sentence pair for
+The second point means, that for every sentence pair from
 one of the languages there is a sentence pair with the same
-source side for every other target language.
+source side in every other target language.
 
 
 \begin{table}[h]
@@ -313,7 +311,7 @@ source side for every other target language.
 \bottomrule
 \end{tabular}
 \mycaption{Results of an additional experiment on the larget corpus}{
-	Targets in the first column refer to a model's targets,
+	Targets in the first column refer to model's targets,
 	given that English is always the source language.
 	E.g. the first row shows results for a \dirmany{En}{Es, Fr, Ru}
 	model.

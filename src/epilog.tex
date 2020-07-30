@@ -1,19 +1,26 @@
-\chapter*{\todo{Conclusion}}
+\chapter*{{Conclusion}}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-On the technical side:
 
-- Created a set up for running a very large number of experiments on a moderate GPU cluster
-- Proposed and re-assessed a stopping criterion for the experiments.
-- Found and utilized a tool for visual inspection of a massive number of experiment results (how many results in total?)
-...maybe something else, too
+After completing a course of setting and running a number of MT experiments, described in this thesis, it is now possible to draw the following conclusions:
+
+On the technical side:
+\begin{itemize}
+    \item Created a setup for running a very large number of experiments on a moderate GPU cluster;
+    \item Proposed and re-assessed a stopping criterion for the experiments;
+    \item Found and utilized a tool for visual inspection of a massive number of experiment results.
+\end{itemize}
 
 On the experimental side, carried out and interpreted the results for many English-to-X multilingual models:
 
-- Setups were run on a domain-diverse training set for up to 36 target languages, and also sometimes complemented on a multi-parallel set for up to 5 target languages.
-- Confirmed that generally, the more target languages in the model, the worse the performance.
-- Identified interesting exceptions:
-  (you need to check the following)
-  - Targetting the spoken domain, the quality does not decrease.
-  - Targetting the same script (Cyrillic), the quality decreases less or does not decrease.
-  - maybe something else
+\begin{outline}
+\1 Setups were run on a domain-diverse training set for up to 36 target languages, and also sometimes complemented on a multi-parallel set for up to 5 target languages;
+\1 Confirmed that generally, the more target languages in the model, the worse the performance.
+\1 Observed the improved results for a Germanic set of languages
+\1 Identified interesting exceptions:
+  
+  \2 Targeting the spoken domain, the quality does not decrease;
+  \2 Targeting the same script (Cyrillic), the quality decreases less or does not decrease;
+ 
+
+\end{outline}
