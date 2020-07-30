@@ -3,36 +3,42 @@
 In this chapter, we go through the theory of methods which are used in the work.
 
 %----------------------------------------------------------------------
-\section{\todo{History of machine translation}}
+\section{\edit{History of machine translation}}
 
-\todo{rephrase \cite{Han2016}}
+The history of \acrfull{mt} started with the `Translation' memorandum
+by \citet{Weaver1955}, where the first goals and ideas were proposed.
+Only in late 1988 the idea of statistical machine translation was 
+brought back to the research world by IBM's research center \citet{stat-mt}.
 
+After years of domination of a statistical approach to \acrshort{mt},
+first \acrfull{nmt} systems were introduced:
+\acrfull{cnn} based models \citep{kalchbrenner-blunsom-2013-recurrent} and
+sequence-to-sequence models (\inparcite{Sutskever2014-lstm}; \inparcite{Cho2014}).
+Later, \acrfull{rnn} based models were improved by introducing an
+\emph{attention} mechanism \citep{Bahdanau2014-attention}.
 
-%----------------------------------------------------------------------
-\section{\todo{Transformer model}}
-
-Introduced in \perscite{vaswani-2017-transformer} Transformer model is used as a base
-for numerous state-of-the-art systems as can be seen for example in 
-WMT18 \parcite{bojar-etal-2018-findings} and
-WMT19 \parcite{barrault-EtAl:2019:WMT} results.
-
-Prior to invention of the \textit{Transformer} model, \acrfull{rnn} and \acrfull{cnn}
-architectures were used
-to encode source side of the sentence pair and to decode it into the target sentence.
 Various window lengths in \acrshort{cnn} architectures allowed to capture
 long range relations as well as short range ones;
 still the range was limited by the maximum window length.
-In \acrshort{rnn}-like architectures \acrfull{lstm} and \acrfull{gru} cells
+In \acrshort{rnn}-like architectures, \acrfull{lstm} and \acrfull{gru} cells
 were used, as their structure allowed to pass the internal state
 on longer distances due to selective forgetting.
 
-\textit{Transformer} model uses the \textit{self attention} mechanism
+%----------------------------------------------------------------------
+\section{\edit{Transformer model}}
+
+Introduced in \perscite{vaswani-2017-transformer}, Transformer model is used as a base
+for numerous state-of-the-art systems as can be seen for example in 
+\acrshort{wmt}18 \parcite{bojar-etal-2018-findings} and
+WMT19 \parcite{barrault-EtAl:2019:WMT} results.
+
+\textit{Transformer} model uses the \textit{\gls{self-attention}} mechanism
 to encode contextual information in each word position.
 \textit{Position encoding} allows passing the position
 information without explicit sequential connections as in \acrshort{rnn}.
-Architecture of the \textit{Transformer} model is shown
+The architecture of the \textit{Transformer} model is shown
 on \cref{fig:transformer_architecture}.
-For tasks involving very long sequences autors also proposed \textit{restricted}
+For tasks involving very long sequences authors also proposed \textit{restricted}
 self-attention, which considers only a neighborhood of size $r$ in the input
 sequence centered around the respective output position.
 As was stated by \textit{Transformer}'s authors, there are three main points why
@@ -70,7 +76,7 @@ Self-Attention (restricted) & $O(r \cdot n \cdot d)$       & $O(1)$ & $O(n/r)$  
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{img/transformer_architecture.png}
+	\includegraphics[width=0.5\columnwidth]{img/transformer_architecture.png}
 	\mycaption{Transformer model architecture} {}
 	\label{fig:transformer_architecture}
 \end{figure}
@@ -101,8 +107,8 @@ in the next section.
 
 \subsection{BLEU - bilingual evaluation understudy}
 
-In \cite{Papineni02bleu} a nowel method of automatic machine
-translation evaluation was introduced - \acrfull{bleu}.
+In \cite{Papineni02bleu}, a novel method of automatic machine
+translation evaluation was introduced -- \acrfull{bleu}.
 Its advantages are the high speed and low cost of evaluation,
 language independence and high correlation with judgements
 of highly skilled human raters.
@@ -132,7 +138,7 @@ It is computed in the following way:
 	\item sum the clipped counts;
 	\item divide this sum by the total (not clipped) number of candidate words.
 \end{enumerate}
-As a result, the sentence which may receive a high precision score will receive
+As a result, the sentence which may receive a high precision score will receive a
 more realistic evaluation measured by modified precision score, as can be seen in
 \cref{exmp:precision-modified-1gram-precision}.
 
@@ -161,7 +167,10 @@ more realistic evaluation measured by modified precision score, as can be seen i
 \subsubsection*{Sentence length}
 
 A produced translation should not be too short or too long.
-It is usually done by pairing precision with \textit{recall}.
+Any excessive length will be automatically penalized by the modified precision:
+extra words will not get the credit.
+However, too short outputs could game the metric.
+This balance is usually achieved by pairing precision with \textit{recall}.
 However, in \acrshort{bleu}, multiple reference sentences can be used
 for one source sentence, so recalling all possible translations from
 every reference is not what is needed.
@@ -194,9 +203,9 @@ Combining all the above, the metric works in this way (\cref{eq:bleu}):
 	\item compute \textit{brevity penalty} as in \cref{eq:brevity_penalty}.
 	\item multiply results of steps 1. and 2.
 \end{enumerate}
-Authors proposed to use $N=4$ and uniform weights $w_i = 1/4$.
+The authors proposed to use $N=4$ and uniform weights $w_i = 1/4$.
 
-The metric value is in a range from 0 to 1.
+The metric value is in the range from 0 to 1.
 However, popular implementations such as SacreBLEU \citep{Post2018-sacrebleu}
 report it in percentage points from 0 to 100.
 
@@ -211,23 +220,24 @@ report it in percentage points from 0 to 100.
 \section{Multi-target machine translation}
 \label{section:multitarget_mt}
 
-In this section, we have a closer look at an area in \acrshort{mt},
+In this section, we have a closer look at the area of \acrshort{mt},
 which this thesis is dedicated to -- multi-target \acrshort{mt}.
 First, we talk about multi-lingual \acrshort{mt} in general: multi-way,
 multi-source and multi-target.
 Later we describe the specific approach from multi-lingual \acrshort{mt}
--- complete sharing of model parameters, which we are using in this work.
+-- complete sharing of model parameters, which we rely on in this work.
 
 
 \subsection{Multi-lingual machine translation}
 
 With constant improvement of neural \acrshort{mt} systems performance,
 researchers started to experiment with incorporating multiple source
-languages, or target languages, or both, into one model,
+languages, target languages, or both into one model,
 and the results are promising:
 \begin{itemize}
-	\item having \dir{L1}{L2} and \dir{L2}{L3} non-parallel
-	corpora allows to train a model that can produce \dir{L1}{L3} translation
+	\item having \dir{L1}{L2} and \dir{L2}{L3} corpora, of which only
+	the two separate pairs L1-L2 and L2-L3 are parallel,
+	allows to train a model that can produce \dir{L1}{L3} translation
 	of decent quality \citep{johnson-etal-2017-googles};
 	\item having a high-resource L1 and low-resource L2
 	from the same language group helps increase \dir{Source}{L2} translation
@@ -337,14 +347,15 @@ is significantly worse when a model is trained to translate more languages.
 \bottomrule
 \end{tabular}
 \mycaption{\acrshort{bleu} scores for translation in one direction
-        (part of Table 7 from \citep{aharoni-etal-2019-massively})
+        (part of Table 7 from \citep{aharoni-etal-2019-massively})%
 	}{
-		Model trained on 5-to-5 English centric dataset
+		We see that the model trained on 5-to-5 English centric dataset
 		(English to any and any to English) scores 12.42 \acrshort{bleu} for
-		English-Arabic test set. Every language from 5 languages
-		of 5-to-5 data set is included into 25-to-25 set, as well
-		as every language from 25-to-25 data set is included into
-		50-to-50 and so forth.
+		English-Arabic test set and the performance decreases as more languages
+		are added to the model.
+		Every language from 5 languages of 5-to-5 data set is included into
+		25-to-25 set, as well as every language from 25-to-25 data set is
+		included into 50-to-50 and so forth.
 	}
 \label{tab:aharoni-2019-performance-drop}
 \end{table}
@@ -365,11 +376,11 @@ is significantly worse when a model is trained to translate more languages.
 		\citet{arivazhagan-2019-mmnmt-in-the-wild}%
 	}{
 		Axis $X$ is shared between left and right plot.
-		On axis $X$, there are languages sorted by amount of training data.
+		On axis $X$, there are languages sorted by the amount of training data.
 		Left: amount of training data (axis $Y$) for a language.
 		Right (best viewed in color): Effect of increasing the number of languages on
 		the translation quality. On the axis $X$ the languages are sorted the
-		same way as on the left plot. The points visualized are 10 languages
+		same way as on the left plot. The points visualized are the 10 languages
 		that are present in all setups
 		from En $\leftrightarrow$ 10 to En $\leftrightarrow$ 102.
 	}
