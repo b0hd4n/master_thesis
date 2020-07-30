@@ -34,6 +34,7 @@ Questions:
 %----------------------------------------------------------------------
 \section{Experiments}
 \label{section:experiments}
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Starting point}
 \label{subsection:starting_point}
 
@@ -63,6 +64,7 @@ To conduct our experiments, we use this approach, but with the following differe
 
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Proposed experiments}
 \label{subsection:proposed_experiments}
 
@@ -70,6 +72,7 @@ To conduct our experiments, we use this approach, but with the following differe
 % the variable object in experiments is the data itself. Due to that, the setup similar
 % to \cite{johnson-etal-2017-googles} was chosen. 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Bilingual \gls{baseline}}
 
 Bilingual models. The purpose is to have a reference point to be able to reason how
@@ -79,6 +82,7 @@ in the same model efficiency as separately encoding the target.
 Therefore, we use target tags in this setting too, so that we can use
 the same training pipeline.
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Multi-lingual baselines (RANDOM)}
 
 Multilingual models with a random set of target languages.
@@ -88,6 +92,7 @@ to serve as a baseline for multitarget models with target languages grouped by
 in non-random way, e.g. by language group or linguistic similarity.
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsubsection*{Group by language group (SIMILAR)}
 
 Multilingual models with a set of target languages from the same language group.
@@ -110,6 +115,7 @@ Ideally the results could be comparable with bilingual baselines.
 \label{section:datasets}
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{\edit{English to 36 languages}}
 \label{subsection:en-to-36}
 
@@ -199,6 +205,7 @@ to 0.85-0.95 millions per language pair.
 
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{\todo{UN parallel corpus: English to 5 languages}}
 \label{subsection:en-to-5}
 
@@ -214,25 +221,56 @@ In this section we describe how the models are trained, which metrics
 are collected and how are they analyzed.
 
 
-\subsection{\todo{Data preprocessing}}
-\label{section:data_preprocessing}
-
-\todo{1. BPE is used, same vocabulary for all models from en-to-36 setup}
-
-
-\subsection{\todo{Data selection}}
-\label{section:data_selection}
-
-\todo{move here resp. parts from training, validation and test}
-
-
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{\todo{Training tasks}}
 \label{section:training_tasks}
 
 \todo{what is a task, multilingual task, sampling tasks for RANDOM and SIMILAR}
+\todo{introduce model \dirmany{En}{L1, L2, ...} notation}
 
 
-\subsection{\todo{Training}}
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+\subsection{\edit{Data preprocessing and selection}}
+\label{section:data_selection}
+\label{section:data_preprocessing}
+
+\subsubsection*{Preprocessing}
+	Both en-to-36 and en-to-5 datasets
+are preprocessed before any sampling in this way:
+\begin{itemize}
+	\item the vocabulary is created using the \acrshort{bpe}
+		on both target and source parts of the training set only;
+	\item using the vocabulary, the train set, the validation
+		set, and the test set are segmented and then stored
+		in this preprocessed form.
+\end{itemize}
+
+Note, that due to the fact that every sentence starts from a
+target tag, these target tags are not splitted by the \acrshort{bpe}.
+
+\subsubsection*{Dataset subsampling}
+
+Both training sets from \cref{section:datasets} contain data for
+many language pairs, but in order to train some specific model,
+we do not need them all.
+The same holds for the validation sets.
+
+Therefore, for each specific model \dirmany{En}{L1, L2, ...}
+we need to subsample the \emph{\dirmany{En}{L1, L2, ...} training set}
+from \emph{the whole training set} (e.g. \gls{en-to-36}),
+the \emph{\dirmany{En}{L1, L2, ...} validation set}.
+
+
+
+\subsubsection*{Training set}
+
+To prepare a training set for a specific model, we need to select
+sentence pairs with relevant source languages from
+\emph{the whole training set}.
+This is done similarly for both \gls{en-to-5} and \gls{en-to-36}
+datasets.
+Further, the notation `\emph{\dirmany{En}{L1, L2, ...} training set}'
+refers to a subsampled in this way training set.
 
 For example, let us take \dirmany{En}{Fr, De} setup, which means that
 the model to be trained should take a source sentence in English and
@@ -243,9 +281,131 @@ target.
 
 To train such a model, only related sentence pairs are subsampled
 from the whole training set.
-In this case, from the whole training set we select only those sentence
-pairs which source side starts with tags \tagto{fr} or \tagto{de}.
-Such subsampled dataset is then used to train the model.
+In this case, from \emph{the whole training set} we select only those sentence
+pairs, which source side starts with tags \tagto{fr} or \tagto{de}.
+Such a subsampled dataset is then used to train this model, and refered to 
+as the \\ \emph{\dirmany{En}{Fr, De} training set}.
+
+
+\subsubsection*{Validation set}
+
+For any model the validation set is constructed from the big validation set
+by selecting only relevant sentence pairs in the same way as the training set,
+i.e. pairs with the target in one of the examined languages.
+For the example setup from above, \dirmany{En}{De,Fr}, the validation set
+consists of an equal amount of \dir{En}{De} and \dir{En}{Fr} sentence pairs.
+E.g. if in the complete validation set there are 1000 sentence pairs for
+each of possible target languages, then for \dirmany{En}{De,Fr}
+model the validation set will contain 2000 sentence pairs, and for
+\dirmany{En}{De,Es,Fr} it will contain 3000 sentence pairs.
+
+\subsubsection*{Test set}
+
+For experiments with \gls{en-to-5} dataset (Section \ref{subsection:en-to-5})
+the test sets are created in the same way as validation sets.
+For \gls{en-to-36} dataset (Section \ref{subsection:en-to-36})
+the test set is divided on subsets by the source dataset.
+It means, that each of source datasets (like OpenSubtitles/v11, 
+Europarl/v7, etc.) there exists a separate test set.
+
+\todo{Why is this needed?}
+In the experiments proposed above the expected number of models to be trained is quite big.
+First of all, there should be 36 models for \textit{mono-target baseline} for En\to{}36 dataset.
+For \textit{multi-target random} experiment the number is much bigger.
+For example, let us consider a case with En\to{}3 models - each model translates from English to 
+3 target languages. Specifying that each of 36 target languages from En\to{}36 dataset
+should appear at least in 3 En\to{}3 models, series of random generation of En\to{}3 setups gave
+the smallest amount of such setups equal to 44. For En\to{}5 case with 5 target languages in each
+model and with the same restriction of minimum occurance the same procedure gave the
+minimum amount of needed models equal to 34.
+
+
+
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+\subsection{\todo{Model settings}}
+
+The initial parameter selection is made with respect to \cite{training-tips}.
+First of all, the hyperparameters of MT model are tuned
+on couple of language pairs from one dataset.
+The parameters leading to the same result in shorter time were preferred.
+Then the selected parameters were used on all experimends with the dataset.
+
+\subsubsection*{Model settings?}
+
+\todo{paste model settings here}
+
+\subsubsection*{Tuning early stopping on early runs}
+
+The initial \gls{early-stopping} setting was that after 5 consecutive
+validation steps without improvement of validation \gls{loss} value
+the training process stopped.
+However, during the training of the first couple of bilingual models
+the following situation has happened quite often:
+further improving performance on validation set by
+couple of tenths of BLEU points took as much time as reaching
+the pre-optimal state.
+
+In the \cref{fig:no_improvement_de}, it  can be seen that the path from
+the beginning of training to the optimal point B (26.9 \acrshort{bleu})
+took as much time as its further improvement by 0.2 BLEU
+at point D (27.1 \acrshort{bleu}). However, there were certain models
+with a bit bigger improvement after a much longer time, e.g.
+0.8 \acrshort{bleu} points on Figure \ref{fig:no_improvement_fi}.
+
+This behaviour makes our decision on where to stop particularly
+complicated for multilingual models, as discussed in
+\cref{section:finishing-the-training}.
+After considering also some of preliminary multilingual runs,
+the `patience' parameter of \gls{early-stopping} was set to 15.
+After 15 consequtive validation steps without a metric improvement,
+the training process is stopped.
+
+\fix{it needs to be presented earlier and *commented including motivation*.
+The red lines are unnatural at the first sight.}
+In order to visually highlight when an increase in the validation score
+is observed, we plot the number of ``steps stalled'',
+see the red line in \cref{fig:no_improvement_de}.
+The higher the diagonal line grows, the longer we have to wait for an improvement.
+For instance, we see that the path..from beg to B took...
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{img/no_improvement_de.png}
+	\mycaption{Example change of model's performance on validation set
+		   in time}{
+		Preliminary \dir{En}{De} model.
+
+		\textit{Blue}: validation metric (value on the left axis in BLEU)
+
+		\textit{Red}: validation metric (BLEU) stalled.
+		Each consecutive validation step when the metric
+		is not improved this value is incremented by 1.
+		When the metric is improved this value is reset to 0.
+
+		\textit{Green}: loss function value on validation set is
+		stalled. Same logic as for \textit{Red}.
+
+		BLEU score values at the points of improvement:
+		$A$ -- 26.8, $B$ -- 26.9, $C$ -- 27.0, $D$ -- 27.1.
+	}
+	\label{fig:no_improvement_de}
+
+	\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
+
+	\centering
+	\includegraphics[width=1.0\columnwidth]{img/no_improvement_fi.png}
+	\mycaption{Small improvement during long training}{
+		In this case (\dir{En}{Fi}), the difference is a bit more
+		visible: 21.3 at the first point and 21.9 at the best.
+		Colors and scales are the same as at
+		Figure \ref{fig:no_improvement_de}.
+	}
+	\label{fig:no_improvement_fi}
+\end{figure}
+
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+\subsection{\todo{Training}}
+
 
 During the training procedure, once per specified number of updates
 occurs the checkpointing of the model.
@@ -277,27 +437,20 @@ The hardware metrics are not important for model's evaluation
 but may help early spot mistakes like underuse of GPU or CPU, lack of RAM, etc.
 This is why they could possibly be recorded continuously. \todo{link to this point from wandb section}
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{\edit{Validation}}
 \label{subsection:validation}
 
 The validation set is used to track model's performance during the training
 on an unseen set of data and to perform early stopping.
+This model-specific validation set is created as described
+in \cref{section:data_selection}.
 These measurements are only used during the training and not for the evaluation.
 
 Once per specified number of steps the validation occurs:
 validation metrics are recorded, for any metric which value was
 improved current model weights are saved as best model by this metric.
 If early stopping condition occurred then the training process is stopped.
-
-For any model the validation set is constructed from the big validation set
-by selecting only relevant sentence pairs in the same way as the training set,
-i.e. pairs with the target in one of the examined languages.
-For the example setup from above, \dirmany{En}{De,Fr}, the validation set
-consists of an equal amount of \dir{En}{De} and \dir{En}{Fr} sentence pairs.
-E.g. if in the complete validation set there are 1000 sentence pairs for
-each of possible target languages, then for \dirmany{En}{De,Fr}
-model the validation set will contain 2000 sentence pairs, and for
-\dirmany{En}{De,Es,Fr} it will contain 3000 sentence pairs.
 
 For the validation set, we collect not only the loss function value
 but also the metric of interest, which is \acrshort{bleu} score.
@@ -328,7 +481,8 @@ validation step:
 \end{itemize}
 \end{samepage}
 
-\subsection{\todo{Finishing the training}}
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+\subsection{\edit{Finishing the training}}
 \label{section:finishing-the-training}
 
 When should we stop the training?
@@ -341,7 +495,6 @@ training process should be stopped.
 
 \subsubsection*{Number of \glspl{epoch}}
 
-\todo{First occurence of a term to be italic}
 The easiest approach is to specify the number of \glspl{epoch}
 after which the training is stopped.
 This could be a good solution for the case when all models
@@ -377,12 +530,14 @@ on computational resources.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\columnwidth]{img/early_stopping.png}
-	\mycaption{\Gls{early-stopping} to prevent overfitting}{
+	\mycaption{\Gls{early-stopping} to prevent overfitting
+		(Fig. 1 from \citet{early-stopping-img})}{
 		At the `early stopping' point the model's performance
 		on unseen validation set of data does not improve
 		anymore. Further training leads to poorer performance
 		on unseen data. Stopping the training at this point
 		results in better model's performance on unseen data.
+		Image: 
 	}
 	\label{fig:early_stopping}
 \end{figure}
@@ -403,9 +558,6 @@ on computational resources.
 In our case we could use \gls{early-stopping} to ensure more equal conditions
 for models with different sizes of training data.
 A suitable number $N$ could be found experimentaly, but which metric should be used?
-
-\todo{cross-entropy, perplexity; they may not represent the model's
-performance, what about BLEU}
 
 Given that the task is to train a model that is as good as possible in
 \textbf{every} of its target directions, the \acrshort{bleu} score of
@@ -441,27 +593,18 @@ change for the \dir{En}{De} direction is not equal to the same change for the
 Geometric mean is known to be good for aggregating multiple metrics
 with different scale (see \cref{eq:geometric_mean}).
 
-\XXX{initially I wanted to achieve what was in the removed paragraph,
-but it did not happen (in some cases one of BLEU scores goes a bit down),
-so I have replaced it with this version}
-
 \begin{equation}
 \label{eq:geometric_mean}
 	geometric\_mean = \left(\prod _{i=1}^{n}x_{i}\right)^{\frac {1}{n}}={\sqrt[{n}]{x_{1}x_{2}\cdots x_{n}}}
 \end{equation}
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{\edit{Testing}}
 \label{subsection:testing}
 
 After the training is finished, the received models should be evaluated on unseen
 test data.
-For experiments with \gls{en-to-5} dataset (Section \ref{subsection:en-to-5})
-the test sets are created in the same way as validation sets.
-For \gls{en-to-36} dataset (Section \ref{subsection:en-to-36})
-the test set is divided on subsets by the source dataset.
-It means, that each of source datasets (like OpenSubtitles/v11, 
-Europarl/v7, etc.) there exists a separate test set.
-So after translating the test set for each of target directions of the model
+After translating the test set for each of target directions of the model
 the following record is created:
 \begin{itemize}
 	\item model name
@@ -473,20 +616,21 @@ the following record is created:
 	\item dataset name (for \gls{en-to-36})
 \end{itemize}
 
-Let us return to the example setup is En\to{}$\{$De, Fr$\}$ and
+Let us return to the example setup is \dirmany{En}{De, Fr} and
 suppose the reported validation metrics are the mean loss function value on
 test set and 'translation' (geometric mean of all reported BLEU scores,
 see Section \ref{subsection:validation}).
 After the training is finished, there will be two models: best by
 loss value and best by 'translation'.
-For each of those two records are created: for En\to{}Fr translation
-and for En\to{}Es. In total, 4 results are recorded.
+For each of those two records are created: for \dir{En}{Fr} translation
+and for \dir{En}{Es}. In total, 4 results are recorded.
 
 If the model was trained and tested on \gls{en-to-36} dataset,
-than 4 times \textit{n} records are created, where \textit{n}
+than 4 times $n$ records are created, where $n$
 is number of OPUS subdatasets from which the data was sampled.
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Analysis}
 
 After required set of models is trained and their test
@@ -517,6 +661,7 @@ the GERMANIC experiment (targets selected from Germanic languages list).
 In the following section we describe the tools that are uset to implement
 what was shown in Section \ref{section:method}.
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Toolkits}
 
 There exists a number of different tools that can be used for training a NMT model.
@@ -552,23 +697,18 @@ with stable and efficient \textit{Transformer} \cite{vaswani-2017-transformer} i
 minimum of third-party dependencies, and ability to train models on multiple GPU units in parallel.
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Computational cluster}
-
-In the experiments proposed above the expected number of models to be trained is quite big.
-First of all, there should be 36 models for \textit{mono-target baseline} for En\to{}36 dataset.
-For \textit{multi-target random} experiment the number is much bigger.
-For example, let us consider a case with En\to{}3 models - each model translates from English to 
-3 target languages. Specifying that each of 36 target languages from En\to{}36 dataset
-should appear at least in 3 En\to{}3 models, series of random generation of En\to{}3 setups gave
-the smallest amount of such setups equal to 44. For En\to{}5 case with 5 target languages in each
-model and with the same restriction of minimum occurance the same procedure gave the
-minimum amount of needed models equal to 34.
 
 To be able to train large number of models in a reasonable amount of time we needed to use
 computational cluster with GPU cards.
 The computational clusters available at the institution are operating under
 SGE\footnote{\url{https://arc.liv.ac.uk/trac/SGE}} scheduling software and are equipped with
 GPU cards with minimum CUDA \textit{compute capability} 6.1.
+
+
+\subsection{Training pipeline}
+\label{section:training_pipeline}
 
 Considering data storage quota limitation and high utilization of computational resources by
 the cluster's users, the following training pipeline was designed:
@@ -590,6 +730,7 @@ the cluster's users, the following training pipeline was designed:
 \end{outline}
 
 
+%-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 \subsection{Inspecting the training process}
 
 As the number of models trained and being trained is growing, monitoring of the training
@@ -692,81 +833,3 @@ Its main features that are useful in this prospective are following:
 
 
 \cleardoublepage
-
-\subsection{\todo{Model settings}}
-
-The initial parameter selection is made with respect to \cite{training-tips}.
-First of all, the hyperparameters of MT model are tuned
-on couple of language pairs from one dataset.
-The parameters leading to the same result in shorter time were preferred.
-Then the selected parameters were used on all experimends with the dataset.
-
-
-\subsubsection*{Tuning early stopping on early runs}
-
-The initial \gls{early-stopping} setting was that after 5 consecutive
-validation steps without improvement of validation \gls{loss} value
-the training process stopped.
-However, during the training of the first couple of bilingual models
-the following situation has happened quite often:
-further improving performance on validation set by
-couple of tenths of BLEU points took as much time as reaching
-the pre-optimal state.
-
-In the \cref{fig:no_improvement_de}, it  can be seen that the path from
-the beginning of training to the optimal point B (26.9 \acrshort{bleu})
-took as much time as its further improvement by 0.2 BLEU
-at point D (27.1 \acrshort{bleu}). However, there were certain models
-with a bit bigger improvement after a much longer time, e.g.
-0.8 \acrshort{bleu} points on Figure \ref{fig:no_improvement_fi}.
-
-This behaviour makes our decision on where to stop particularly
-complicated for multilingual models, as discussed in
-\cref{section:finishing-the-training}.
-After considering also some of preliminary multilingual runs,
-the `patience' parameter of \gls{early-stopping} was set to 15.
-After 15 consequtive validation steps without a metric improvement,
-the training process is stopped.
-
-\fix{it needs to be presented earlier and *commented including motivation*.
-The red lines are unnatural at the first sight.}
-In order to visually highlight when an increase in the validation score
-is observed, we plot the number of ``steps stalled'',
-see the red line in \cref{fig:no_improvement_de}.
-The higher the diagonal line grows, the longer we have to wait for an improvement.
-For instance, we see that the path..from beg to B took...
-
-\begin{figure}[p]
-	\centering
-	\includegraphics[width=1.0\columnwidth]{img/no_improvement_de.png}
-	\mycaption{Example change of model's performance on validation set
-		   in time}{
-		Preliminary \dir{En}{De} model.
-
-		\textit{Blue}: validation metric (value on the left axis in BLEU)
-
-		\textit{Red}: validation metric (BLEU) stalled.
-		Each consecutive validation step when the metric
-		is not improved this value is incremented by 1.
-		When the metric is improved this value is reset to 0.
-
-		\textit{Green}: loss function value on validation set is
-		stalled. Same logic as for \textit{Red}.
-
-		BLEU score values at the points of improvement:
-		$A$ -- 26.8, $B$ -- 26.9, $C$ -- 27.0, $D$ -- 27.1.
-	}
-	\label{fig:no_improvement_de}
-
-	\vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
-
-	\centering
-	\includegraphics[width=1.0\columnwidth]{img/no_improvement_fi.png}
-	\mycaption{Small improvement during long training}{
-		In this case (\dir{En}{Fi}), the difference is a bit more
-		visible: 21.3 at the first point and 21.9 at the best.
-		Colors and scales are the same as at
-		Figure \ref{fig:no_improvement_de}.
-	}
-	\label{fig:no_improvement_fi}
-\end{figure}

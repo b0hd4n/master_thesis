@@ -228,10 +228,11 @@ and the results are promising:
 \begin{itemize}
 	\item having \dir{L1}{L2} and \dir{L2}{L3} non-parallel
 	corpora allows to train a model that can produce \dir{L1}{L3} translation
-	of decent quality \fix{cite some paper};
+	of decent quality \citep{johnson-etal-2017-googles};
 	\item having a high-resource L1 and low-resource L2
 	from the same language group helps increase \dir{Source}{L2} translation
-	quality with pretraining on \dir{Source}{L1} data \fix{cite the paper}.
+	quality with pretraining on \dir{Source}{L1} data 
+	\citep{Dabre2017}.
 \end{itemize}
 
 Even if the concept of combining multiple languages into one model and possible outcomes
@@ -284,7 +285,10 @@ The only change was performed on the input data.
 To make the \emph{Transformer} model process multi-lingual data,
 they added the desired target language tag to the source sentence.
 This way they achieved a \emph{complete sharing} of parameters and subword vocabulary
-among all the source and target languages.
+among all the source and target languages, i.e. the same encoder with the same
+parameters is used for every source language, the same decoder is used for
+every target direction, and the same vocabulary is used for both encoding
+and decoding of any input and output.
 
 For example, the following \dir{En}{Cz} sentence pair:
 \begin{displayquote}
@@ -357,11 +361,11 @@ is significantly worse when a model is trained to translate more languages.
 	\includegraphics[width=0.9\columnwidth]{img/arivazhagan-2019-diff-per-n-targets.png}
 	\end{minipage}
 	\mycaption{
-		Tranlsation performance for 102 languages from
+		Translation performance for 102 languages from
 		\citet{arivazhagan-2019-mmnmt-in-the-wild}%
 	}{
 		Axis $X$ is shared between left and right plot.
-		On axis $X$ there are languages sorted by amount of training data.
+		On axis $X$, there are languages sorted by amount of training data.
 		Left: amount of training data (axis $Y$) for a language.
 		Right (best viewed in color): Effect of increasing the number of languages on
 		the translation quality. On the axis $X$ the languages are sorted the
