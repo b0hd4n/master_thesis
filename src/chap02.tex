@@ -184,7 +184,7 @@ to 0.85-0.95 millions per language pair.
 	\bottomrule
 	\end{tabular}
 
-	\mycaption{Groups of subdatasets in OPUS}{}
+	\mycaption{Groups of subdatasets in the \emph{en-to-36} dataset}{}
 	\label{tab:subdatasets_groups}
 \end{table}
 
@@ -206,11 +206,42 @@ to 0.85-0.95 millions per language pair.
 
 
 %-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-\subsection{\todo{UN parallel corpus: English to 5 languages}}
+\subsection{\edit{UN parallel corpus: English to 5 languages}}
 \label{subsection:en-to-5}
 
-\todo{as I show en-to-5 results in RANDOM section, this DS should be here}
-\cite{eisele-chen-2010-multiun}
+For an additional experiment about adding non-related target languages
+into the mix, we used `The UN Parallel Corpus v1.0'
+\parcite{ziemski-etal-2016-united}.
+It consists of more that 11 millions sentence 6-tuples in six UN languages,
+i.e. every English sentece has a translation into Arabic (ar), Chinese (zh),
+French (fr), Russian (ru), and Spanish (es).
+
+First, we splitted data into training, validation and test sets.
+We selected 30000 sentence tuples into the test set, then from the remaining
+data we took 30000 sentence tuples into the validation set.
+From the remaining data we removed all sentence tuples that overlapped the
+test set in the same way as in \cref{subsection:en-to-36}, which gave us
+10987284 sentence tuples.
+
+After that, we divided each 6-tuple into five sentence pairs,
+where English was used as a source and every other language as a target.
+We also added the target language tag as in \cref{subsection:en-to-36}.
+
+As a result, we received a dataset in the same format as the \gls{en-to-36}.
+The main differences are:
+\begin{itemize}
+	\item the size: training data for each translation direction
+		contains ten times more sentence pairs;
+	\item variety: the training, validation, and test sets
+		consist of data from the same domain;
+	\item only one test set, due to the previous point.
+\end{itemize}
+When using the same model as for \gls{en-to-36}, these differences may
+allow us to see how the model's translation quality changes if we add
+more target languages in the mix.
+In the following text the `en-to-5' notation refers to this dataset.
+We specify explicitly, if this dataset is used in a experiment;
+otherwise the en-to-36 dataset is used.
 
 
 %----------------------------------------------------------------------

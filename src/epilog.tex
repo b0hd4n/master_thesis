@@ -1,2 +1,19 @@
-\chapter*{Conclusion}
+\chapter*{\todo{Conclusion}}
 \addcontentsline{toc}{chapter}{Conclusion}
+
+On the technical side:
+
+- Created a set up for running a very large number of experiments on a moderate GPU cluster
+- Proposed and re-assessed a stopping criterion for the experiments.
+- Found and utilized a tool for visual inspection of a massive number of experiment results (how many results in total?)
+...maybe something else, too
+
+On the experimental side, carried out and interpreted the results for many English-to-X multilingual models:
+
+- Setups were run on a domain-diverse training set for up to 36 target languages, and also sometimes complemented on a multi-parallel set for up to 5 target languages.
+- Confirmed that generally, the more target languages in the model, the worse the performance.
+- Identified interesting exceptions:
+  (you need to check the following)
+  - Targetting the spoken domain, the quality does not decrease.
+  - Targetting the same script (Cyrillic), the quality decreases less or does not decrease.
+  - maybe something else
