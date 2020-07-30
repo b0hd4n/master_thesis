@@ -125,15 +125,6 @@ The OPUS dataset (\cite{TIEDEMANN12.463}) is an open and free collection of text
 that covers more than 90 languages with data from several
 domains.\footnote{Available at \url{http://opus.nlpl.eu/}} 
 
-For our experiments the source language is English only.
-
-Given the list of target languages in this dataset (see full list in \cref{att:list_en-to-36}),
-we decided to select these two groups of languages for the SIMILAR experiment:
-\begin{itemize}
-	\item Germanic group: da, de, is, no, nl, sv.
-	\item Slavic with cyrillic script: bg, mk, ru, uk.
-\end{itemize}
-
 We made use of the sampling and splitting of the data created by the ELITR project.%
 \footnote{\url{https://elitr.eu/wp-content/uploads/2019/07/D11.FINAL\_.pdf}}
 For each of the language pairs and each sub-dataset
@@ -144,15 +135,33 @@ In cases where the sub-dataset contained less than 16000 sentence pairs,
 no data went to the validation set.
 Later, for each language pair there were 1000000 sentence pairs
 sampled from all training sub-sets.
-\fix{To be more explicit that the sampling is directed towards certain domains.
-This is somewhat unclear.}
-Firstly, if available, the sentences were taken from Europarl,
-then EUbooks, OpenSubtitles, and then all remaining sub-datasets.
-The same procedure was used to sample \todo{check} x000 of validation set sentences
-per each language pair.
+
+The target domain in the ELITR project was combined of the public administration
+domain and the spoken speech.
+Due to this fact, the sentences were sampled from OPUS sub-datasets in this order:
+firstly, if available, the sentences were taken from Europarl,
+then EUbooks, OpenSubtitles, and then from all remaining sub-datasets.
+The same procedure was used for validation set sentences per each language pair.
 The test sets were left separate, so that the result on each domain would be observable.
 
-Later we found an overlap in the source side of different language pairs.
+For our experiments we used only the part of the resulting ELITR dataset where
+the source language is English.
+This way we received a dataset with one source (English) and 36 target 
+(see full list in \cref{att:list_en-to-36}) languages.
+Given that,
+we decided to select these two groups of languages for the SIMILAR experiment:
+\begin{itemize}
+	\item Germanic group: Danish (da), German (de), Icelandic (is),
+	Norwegian (no), Dutch (nl), and Swedish (sv).
+	\item Slavic with cyrillic script: Bulgarian (bg), Macedonian (mk),
+	Russian (ru), and Ukrainian (uk).
+\end{itemize}
+
+% -- table with bilingual results
+\input{src/table_en-to-36_langs.tex}
+% - - - - - -
+
+We found an overlap in the source side of different language pairs.
 Although this would not directly lead to unfair increase of the test score,
 such sentence pairs were removed from the training sets.
 This filtering decreased the number of sentence pairs
